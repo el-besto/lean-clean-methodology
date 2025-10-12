@@ -340,7 +340,205 @@ class AddCalibrationUseCase:
 
 ---
 
-## Decision Area 5: Python Patterns - Which to Include?
+## Decision Area 5: TDD Strategy (NEW - Enterprise Acceleration)
+
+**Question:** Should we use Test-Driven Development for this PoC?
+
+⚠️ **Read `plan/TDD_ENTERPRISE_POC.md` for complete framework**
+
+### The TDD Advantage
+
+**Outside-In TDD enables:**
+1. **Writing tests with stakeholders** - Executable specifications, not vague requirements
+2. **Implementing with fakes first** - No expensive external dependencies until spec is locked
+3. **Parallel team development** - Agree on interfaces, teams implement independently
+4. **Faster alignment** - 1-week delivery vs 2-3 weeks with rewrites
+
+### Decision Matrix
+
+| Factor | Use TDD? | TDD Approach | Why? |
+|--------|----------|--------------|------|
+| **Multiple stakeholders need alignment** | ✅ YES | Specification-First | Tests = executable requirements |
+| **Enterprise approval process** | ✅ YES | Outside-In TDD | Tests = documentation for governance |
+| **Complex business rules** | ✅ YES | Business-First TDD | Use case tests capture domain knowledge |
+| **Expensive external dependencies** | ✅ YES | Fake-First TDD | Test without API costs (OpenAI, S3, etc.) |
+| **Parallel team development** | ✅ YES | Interface-First TDD | Agree on contracts, implement independently |
+| **Unclear requirements** | ❌ NO | Exploratory Spike | Discover requirements first |
+| **Solo dev, 2-3 day spike** | ❌ NO | Direct Implementation | Too much overhead |
+| **Simple CRUD, no complex logic** | ⚠️ MAYBE | Light TDD | May not need full approach |
+
+### TDD Workflow Options
+
+**Option A: Full Outside-In TDD**
+- Write controller tests with stakeholders (1-hour workshop)
+- Write use case tests with domain experts
+- Implement with fakes (no external deps)
+- Implement real adapters last
+- **Timeline:** 1 week, no rewrites
+- **Best for:** Enterprise PoCs, multiple stakeholders
+
+**Option B: Light TDD**
+- Write use case tests only
+- Skip controller tests
+- Implement directly with real adapters
+- **Timeline:** 1.5 weeks
+- **Best for:** Solo dev, clear requirements
+
+**Option C: No TDD**
+- Write code first
+- Add tests after (if at all)
+- **Timeline:** Variable (fast initially, but rewrites add time)
+- **Best for:** Exploratory spikes, throwaway code
+
+**Option D: TDD for Critical Paths Only**
+- Identify 2-3 most complex/risky features
+- Use TDD only for those
+- Direct implementation for simple features
+- **Timeline:** 1-2 weeks
+- **Best for:** Mixed complexity PoCs
+
+### Test Structure Requirements (If using TDD)
+
+**Must have:**
+```python
+# 1. Protocol ports (enable faking)
+class ImageGenPort(Protocol):
+    def generate_png(self, prompt: str, size: str) -> bytes: ...
+
+# 2. Fake implementations (not mocks for use cases)
+class FakeImageGen:
+    def generate_png(self, prompt: str, size: str) -> bytes:
+        return f"FAKE_{prompt}_{size}".encode()
+
+# 3. Entity factories
+def create_calibration(**overrides) -> Calibration:
+    defaults = {...}
+    return Calibration(**(defaults | overrides))
+
+# 4. Clear test organization
+tests/
+├── unit/
+│   ├── controllers/  # Mock use cases
+│   └── use_cases/    # Fake adapters
+├── integration/      # Real adapters
+└── utils/
+    └── entity_factories.py
+```
+
+### Example: Stakeholder Workshop Output
+
+**1-hour workshop produces:**
+```python
+# tests/unit/controllers/test_creative_controller.py
+
+async def test_generate_creatives_for_summer_campaign():
+    """Marketing team: Generate Instagram and Facebook ads for summer sale."""
+    # Stakeholders define expected behavior
+    request = GenerateRequest(
+        campaign_message="50% Off All Summer Gear",
+        products=["sunglasses", "sandals"],
+        aspects=["1:1", "9:16"]  # Instagram post, Story
+    )
+
+    response = await controller.generate(request)
+
+    # Assertions stakeholders agreed to:
+    assert len(response.assets) == 4  # 2 products × 2 aspects
+    assert all(asset.image_url for asset in response.assets)
+    assert all("50% Off" in asset.campaign_message for asset in response.assets)
+
+async def test_rejects_invalid_aspect_ratio():
+    """Business rule: Only support Instagram/Facebook formats."""
+    request = GenerateRequest(aspects=["16:10"])  # Not supported
+
+    with pytest.raises(ValidationError, match="Unsupported aspect ratio"):
+        await controller.generate(request)
+```
+
+**Then implement to make tests pass.**
+
+### Architectural Impact
+
+**If using TDD (especially Outside-In):**
+- ✅ **MUST use controllers** - Tests define controller API
+- ✅ **MUST use rich use cases** - Business logic tested before adapters
+- ✅ **MUST use protocol ports** - Enable faking
+- ✅ **MUST use dependency injection** - Wire fakes, then real implementations
+- ✅ **SHOULD use entity factories** - Reusable test data builders
+
+**If NOT using TDD:**
+- Can skip controllers (direct driver → use case)
+- Can use thin use cases (delegate to adapters)
+- Can use concrete classes (no need for protocols)
+
+### Integration with Methodology Phases
+
+**P1: Decomposition**
+- [ ] **With TDD:** Write test scenarios in Given/When/Then format
+- [ ] **Without TDD:** Write acceptance criteria as prose
+
+**P3: Steel Thread**
+- [ ] **With TDD:** Write controller tests, implement with fakes (all tests pass)
+- [ ] **Without TDD:** Direct implementation, maybe smoke tests
+
+**P5: Implementation Planning**
+- [ ] **With TDD:** Test scenarios become implementation specs
+- [ ] **Without TDD:** YAML specs become implementation guide
+
+**P6: Execution**
+- [ ] **With TDD:** Red → Green → Refactor cycle
+- [ ] **Without TDD:** Implement → Test → Debug cycle
+
+### Decision Questions
+
+1. **Do you need stakeholder sign-off on behavior before expensive implementation?**
+   - YES → Use Full Outside-In TDD (Option A)
+   - NO → Consider Light TDD or No TDD
+
+2. **Do you have expensive external dependencies (OpenAI, databases)?**
+   - YES → Use TDD with fakes
+   - NO → TDD less critical
+
+3. **Do you have multiple teams working in parallel?**
+   - YES → Use Interface-First TDD
+   - NO → TDD optional
+
+4. **Are requirements clear and stable?**
+   - NO → Exploratory spike first, then TDD
+   - YES → TDD can start immediately
+
+5. **Is this throwaway code?**
+   - YES → Skip TDD
+   - NO → Consider TDD
+
+### Decision
+
+**Primary decision:**
+- [ ] **Full Outside-In TDD** (Workshop → Tests → Fakes → Implementation)
+- [ ] **Light TDD** (Use case tests only)
+- [ ] **No TDD** (Direct implementation, maybe tests after)
+- [ ] **Selective TDD** (Critical paths only)
+
+**If using TDD, which layers get tests first?**
+- [ ] Controllers (with stakeholders) → Use Cases → Adapters
+- [ ] Use Cases (with domain experts) → Adapters
+- [ ] All layers simultaneously (if team has TDD experience)
+
+**Test structure:**
+- [ ] Use fakes (InMemoryRepository) for use case tests
+- [ ] Use mocks (AsyncMock) for controller tests
+- [ ] Create entity factories in tests/utils/
+
+**Integration with phases:**
+- [ ] P1: Write test scenarios
+- [ ] P3: Implement with fakes (red → green)
+- [ ] P6: Implement real adapters (refactor)
+
+**Notes:** _______________________________________________
+
+---
+
+## Decision Area 6: Python Patterns - Which to Include?
 
 **Question:** Which Python patterns should be mandatory vs. optional vs. not recommended?
 
@@ -655,6 +853,14 @@ decisions:
     reasoning: |
 
 
+  tdd_strategy:  # NEW - Enterprise acceleration
+    choice: [full_outside_in | light_tdd | no_tdd | selective_tdd]
+    layers_tested_first: [controllers_then_use_cases | use_cases_only | all_layers]
+    test_structure: [fakes_for_use_cases | mocks_everywhere | mixed]
+    phase_integration: [p1_scenarios | p3_tests_first | p6_tests_after]
+    reasoning: |
+
+
   mandatory_patterns:
     - pattern: immutable_dataclasses
       status: [mandatory | recommended | optional | not_recommended]
@@ -767,6 +973,13 @@ use_case_complexity:
   poc_phases: thin_allowed  # Focus on speed
   production_phases: rich_required  # Add business logic when productionizing
 
+# NEW: TDD strategy
+tdd_strategy:
+  choice: selective_tdd  # Use TDD for critical/complex features only
+  layers_tested_first: use_cases_only  # Focus on business logic
+  test_structure: fakes_for_use_cases  # InMemory fakes, not mocks
+  phase_integration: p3_tests_first  # Write tests in steel thread phase
+
 mandatory_patterns:
   - immutable_dataclasses: recommended  # @dataclass(slots=True, frozen=True)
   - typed_dict_payloads: recommended    # For adapter payload building
@@ -797,6 +1010,13 @@ controllers_vs_mappers:
 use_case_complexity:
   poc_phases: thin_allowed  # Very thin, almost functions
   production_phases: n/a  # This is throwaway code
+
+# NEW: TDD strategy
+tdd_strategy:
+  choice: no_tdd  # Skip tests entirely for speed
+  layers_tested_first: n/a
+  test_structure: n/a
+  phase_integration: p6_tests_after  # Maybe add smoke tests at end
 
 mandatory_patterns:
   - immutable_dataclasses: optional  # Speed over safety
@@ -830,6 +1050,13 @@ controllers_vs_mappers:
 use_case_complexity:
   poc_phases: rich_required  # Always have business logic in use cases
   production_phases: rich_required  # Maintain richness
+
+# NEW: TDD strategy
+tdd_strategy:
+  choice: full_outside_in  # Enterprise-grade TDD from day 1
+  layers_tested_first: controllers_then_use_cases  # Complete coverage
+  test_structure: fakes_for_use_cases  # Proper fakes, mocks only for controllers
+  phase_integration: p1_scenarios  # Write test scenarios with stakeholders in P1
 
 mandatory_patterns:
   - immutable_dataclasses: mandatory  # All domain objects immutable
