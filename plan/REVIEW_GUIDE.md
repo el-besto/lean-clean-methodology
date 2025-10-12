@@ -50,8 +50,11 @@ This guide helps you systematically review the proposed structures and patterns 
 
 ### Core Analysis Documents
 1. **`plan/CRITICAL_INSIGHTS.md`** ⚠️ **READ FIRST** - Controller vs Mapper distinction, progressive architecture
-2. **`plan/STRUCTURE.md`** - Comprehensive analysis of 3 reference projects with proposed baseline structure
-3. **`plan/PYTHON_PATTERNS.md`** - Python-specific idioms and patterns from the style guide
+2. **`plan/TDD_STAKEHOLDER_ACCELERATION_INSIGHTS.md`** ⚠️ **CRITICAL FOR ENTERPRISE** - How TDD reduces delivery from 2-4 weeks to 1 week
+3. **`plan/STRUCTURE.md`** - Comprehensive analysis of 3 reference projects with proposed baseline structure
+4. **`plan/PYTHON_PATTERNS.md`** - Python-specific idioms and patterns from the style guide
+5. **`plan/TDD_INTEGRATION_PLAN.md`** - Roadmap for weaving TDD into methodology phases
+6. **`plan/TDD_ENTERPRISE_POC.md`** - Original TDD framework and patterns
 
 ### Reference Implementations
 - **`calibration-service`** - Production-grade CA (true controllers, rich use cases, DTOs)
@@ -344,7 +347,29 @@ class AddCalibrationUseCase:
 
 **Question:** Should we use Test-Driven Development for this PoC?
 
-⚠️ **Read `plan/TDD_ENTERPRISE_POC.md` for complete framework**
+⚠️ **CRITICAL DECISION** - This can reduce enterprise PoC delivery from 2-4 weeks to 1 week
+
+**Read these documents:**
+- **`plan/TDD_STAKEHOLDER_ACCELERATION_INSIGHTS.md`** - Complete analysis of how TDD accelerates stakeholder alignment
+- **`plan/TDD_INTEGRATION_PLAN.md`** - How to weave TDD into each methodology phase
+- **`plan/TDD_ENTERPRISE_POC.md`** - Original framework and patterns
+
+### The Paradigm Shift: Tests as Stakeholder Communication
+
+**Old Paradigm:** TDD is about catching bugs
+**New Paradigm:** TDD is about **stakeholder alignment through executable specifications**
+
+**Why this matters for enterprise PoCs:**
+- Stakeholders co-author tests in 1-hour workshop → executable requirements (no misinterpretation)
+- Implement with fakes first → prove concept without paying for OpenAI/S3 ($0 API costs during development)
+- Get approval before expensive work → zero rework from misalignment
+- Parallel development → teams work on agreed interfaces independently
+- Tests = documentation → governance approval is faster
+
+**Typical Results:**
+- **Timeline:** 1 week (TDD) vs 2-4 weeks (traditional with rewrites)
+- **Cost Savings:** 90% (develop with fakes, only test real adapters at end)
+- **Rework:** 0 cycles (stakeholders approve tests upfront)
 
 ### The TDD Advantage
 
@@ -353,6 +378,7 @@ class AddCalibrationUseCase:
 2. **Implementing with fakes first** - No expensive external dependencies until spec is locked
 3. **Parallel team development** - Agree on interfaces, teams implement independently
 4. **Faster alignment** - 1-week delivery vs 2-3 weeks with rewrites
+5. **Delayed expensive implementation** - Build with fakes, swap to real adapters last
 
 ### Decision Matrix
 
@@ -1077,6 +1103,61 @@ observability_approach: always_included  # OpenTelemetry from day 1
 
 ---
 
+### For Enterprise PoCs with Multiple Stakeholders (NEW - TDD FOCUS)
+```yaml
+base_structure: full_ca  # Need controllers for TDD specification layer
+layer_naming: 5_layer_entities  # Classic CA with interface_adapters/
+
+# CRITICAL: Controllers required for TDD
+controllers_vs_mappers:
+  choice: always_controllers  # TDD needs controller API for stakeholder tests
+  terminology: controllers  # Use Uncle Bob's terminology
+
+use_case_complexity:
+  poc_phases: rich_required  # Business logic in use cases (testable before adapters)
+  production_phases: rich_required  # Maintain richness
+
+# TDD IS THE KEY DIFFERENTIATOR
+tdd_strategy:
+  choice: full_outside_in  # GAME CHANGER for enterprise PoCs
+  layers_tested_first: controllers_then_use_cases  # Stakeholder workshop → controller tests → use case tests
+  test_structure: fakes_for_use_cases  # Develop with $0 API costs
+  phase_integration: p1_scenarios  # Write test scenarios with stakeholders in P1
+
+mandatory_patterns:
+  - immutable_dataclasses: mandatory
+  - typed_dict_payloads: recommended
+  - singledispatch_normalization: optional
+  - attribute_flattening: recommended
+  - error_taxonomy: mandatory
+  - lru_cached_settings: mandatory
+  - dto_domain_separation: mandatory  # CRITICAL for TDD (Pydantic at edges, dataclasses in domain)
+  - protocol_rich_typing: mandatory  # CRITICAL for TDD (enable fakes)
+
+example_complexity: complete  # Full docstrings for clarity
+testing_detail: comprehensive  # Full test suite is the deliverable
+observability_approach: progressive  # Add later, focus on tests first
+```
+
+**Why TDD for Enterprise:**
+- **50-75% faster delivery:** 1 week (TDD) vs 2-4 weeks (traditional with rewrites)
+- **Zero rework:** Stakeholders approve tests upfront → build exactly what was specified
+- **$0 development costs:** Build with fakes (InMemoryRepository, FakeImageGen), only test real adapters at end
+- **Parallel development:** Teams implement adapters independently after interface agreed
+- **Governance friendly:** Tests = executable documentation for approval processes
+
+**Workflow:**
+1. **Day 1:** Stakeholder workshop (3 hours) → Write controller tests together → Sign-off
+2. **Day 2:** Implement controllers + use cases with fakes (tests pass!) → Demo to stakeholders
+3. **Days 3-4:** Teams implement real adapters in parallel (OpenAI, S3, Weaviate)
+4. **Day 5:** Integration + final demo (tests still pass)
+
+**Rationale:** When you need stakeholder sign-off, have expensive dependencies (OpenAI, databases), or multiple teams working in parallel, TDD transforms the PoC process from "build and hope" to "specify then build."
+
+**See:** `plan/TDD_STAKEHOLDER_ACCELERATION_INSIGHTS.md` for complete case study
+
+---
+
 ## Next Actions Checklist
 
 After completing this review:
@@ -1104,6 +1185,6 @@ As you review, keep asking:
 
 ---
 
-**Last Updated:** 2025-10-11
-**Status:** Review Guide
+**Last Updated:** 2025-10-12
+**Status:** Review Guide (Updated with TDD Enterprise Acceleration)
 **Next Review:** After implementing decisions in a real PoC
