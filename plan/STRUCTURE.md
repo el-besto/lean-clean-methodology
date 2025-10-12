@@ -94,6 +94,7 @@ layers depend only on layers **below them**, but not above.
 - Strong exception handling strategy
 
 **Structure:**
+
 ```text
 src/
 ├── config/                  # Singleton configuration
@@ -141,6 +142,7 @@ src/
 - Exception handling at each layer with custom exceptions
 
 **Testing Strategy:**
+
 ```text
 tests/
 ├── unit/                    # Pure logic testing
@@ -164,6 +166,7 @@ tests/
 - Vector store and blob storage adapters
 
 **Structure:**
+
 ```text
 src/
 ├── domain/                  # Core business models
@@ -232,6 +235,7 @@ generate_creatives_for_brief(
 - Focuses on essential elements only
 
 **Structure:**
+
 ```text
 app/
 ├── cli.py                   # Entry point (argparse)
@@ -577,6 +581,7 @@ if __name__ == "__main__":
 ### 1. Ports & Adapters (Hexagonal Architecture)
 
 **Use Protocols for Ports:**
+
 ```python
 # application/ports/storage.py
 from typing import Protocol
@@ -587,6 +592,7 @@ class BlobStorePort(Protocol):
 ```
 
 **Implement Adapters:**
+
 ```python
 # infrastructure/adapters/storage/s3_storage.py
 import boto3
@@ -604,6 +610,7 @@ class S3BlobStore:
 ### 2. Dependency Injection at Entry Point
 
 **Wire at driver level:**
+
 ```python
 # drivers/cli/__main__.py
 def build_dependencies():
@@ -633,6 +640,7 @@ def run(brief: str):
 ### 3. Exception Translation
 
 **Convert library exceptions to domain exceptions:**
+
 ```python
 # infrastructure/adapters/generation/openai_image_gen.py
 from openai import OpenAIError
@@ -651,6 +659,7 @@ class OpenAIImageGen:
 ### 4. Configuration Management
 
 **Centralize configuration:**
+
 ```python
 # infrastructure/config/settings.py
 from pydantic_settings import BaseSettings
@@ -684,6 +693,7 @@ def get_settings() -> Settings:
 ### 5. Observability Integration
 
 **Instrument use cases with telemetry:**
+
 ```python
 # application/use_cases/generate_creatives.py
 from application.ports.telemetry import TelemetryPort
@@ -719,6 +729,7 @@ def generate_creatives(
 ### Unit Tests (Fast, Isolated)
 
 **Test domain logic:**
+
 ```python
 # tests/unit/domain/test_models.py
 from domain.models import Brief
@@ -732,6 +743,7 @@ def test_brief_validation_requires_products():
 ```
 
 **Test use cases with mocks:**
+
 ```python
 # tests/unit/application/test_generate_creatives.py
 from unittest.mock import Mock
@@ -753,6 +765,7 @@ def test_generate_creatives_calls_image_gen():
 ### Integration Tests (Cross-Layer)
 
 **Test adapter implementations:**
+
 ```python
 # tests/integration/infrastructure/test_openai_adapter.py
 import pytest
@@ -771,6 +784,7 @@ def test_openai_generates_image():
 ### E2E Tests (Full System)
 
 **Test CLI workflows:**
+
 ```python
 # tests/e2e/test_cli_workflow.py
 import subprocess
@@ -835,6 +849,7 @@ def test_cli_run_command_generates_assets(tmp_path):
 ## Migration Path: From Steel Thread to Full CA
 
 ### Phase 1: Minimal Steel Thread (P3-P4)
+
 ```text
 app/
 ├── cli.py
@@ -848,6 +863,7 @@ app/
 ```
 
 ### Phase 2: Add Ports & Infrastructure (P5)
+
 ```text
 app/
 ├── cli.py
@@ -863,6 +879,7 @@ app/
 ```
 
 ### Phase 3: Add Multiple Drivers (P6)
+
 ```text
 app/
 ├── domain/
@@ -875,6 +892,7 @@ app/
 ```
 
 ### Phase 4: Add Interface Adapters (P6+)
+
 ```text
 app/
 ├── domain/

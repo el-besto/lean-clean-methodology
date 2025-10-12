@@ -80,7 +80,9 @@ This guide helps you systematically review the proposed structures and patterns 
 - [ ] Note which patterns you're already using vs. new to you
 
 #### Step 3: Identify Your Context
+
 Answer these questions:
+
 - What type of PoCs will you typically build? (AI-focused, data pipelines, APIs, etc.)
 - What's your typical team size? (solo, 2-3, 4+)
 - What's your typical PoC timeline? (2 days, 1 week, 2 weeks, 1 month)
@@ -122,6 +124,7 @@ Learning curve for new devs       |     5        |      4       |    2
 ```
 
 **Your scores:**
+
 ```
 Criteria                           | Steel Thread | Pragmatic CA | Full CA
 -----------------------------------|--------------|--------------|--------
@@ -136,6 +139,7 @@ Learning curve for new devs       |      ?       |      ?       |    ?
 ```
 
 **Decision:**
+
 - [ ] Use Steel Thread as default, document migration to Pragmatic CA
 - [ ] Use Pragmatic CA as default, document Steel Thread as faster option
 - [ ] Provide decision tree based on PoC phase/complexity
@@ -160,29 +164,34 @@ Learning curve for new devs       |      ?       |      ?       |    ?
 ### Considerations
 
 **Option A (5-layer with entities/):**
+
 - ✅ Aligns with classic Clean Architecture terminology
 - ✅ Clear separation of entities from application logic
 - ❌ "entities" less intuitive than "domain" for Python devs
 - ❌ Extra layer may feel heavy for small PoCs
 
 **Option B (4-layer with domain/):**
+
 - ✅ "domain" more familiar to Python/DDD community
 - ✅ Simpler structure, fewer directories
 - ✅ Controllers can live in drivers/ for simple cases
 - ❌ Less explicit about where controllers/presenters go
 
 **Option C (flexible 4-5 layer):**
+
 - ✅ Accommodates both simple and complex PoCs
 - ✅ Start with 4 layers, add `interface_adapters/` when needed
 - ❌ Requires clear guidance on when to add 5th layer
 
 **Decision:**
+
 - [ ] Use Option A: 5-layer with `entities/` (classic CA)
 - [ ] Use Option B: 4-layer with `domain/` (pragmatic)
 - [ ] Use Option C: Start with 4-layer, add 5th when needed
 - [ ] Other: _________________
 
 **If Option B or C, where do controllers/presenters live initially?**
+
 - [ ] In `drivers/` (co-located with framework code)
 - [ ] In `application/` (as part of use case coordination)
 - [ ] Create `interface_adapters/` from the start
@@ -199,6 +208,7 @@ Learning curve for new devs       |      ?       |      ?       |    ?
 ### The Distinction
 
 **Uncle Bob's "Controllers"** (calibration-service pattern):
+
 ```python
 # interface_adapters/controllers/add_calibration_controller.py
 class AddCalibrationController:
@@ -217,6 +227,7 @@ class AddCalibrationController:
 - Coordinates use cases and presenters
 
 **PoC "Mappers/Handlers"** (creative-ai-poc pattern):
+
 ```python
 # drivers/cli.py
 @app.command()
@@ -245,18 +256,21 @@ def run(brief_path: str):
 ### Options
 
 **Option A: Always Use True Controllers**
+
 - Start with `interface_adapters/controllers/` from day 1
 - All examples show orchestration pattern
 - Pros: Aligned with Uncle Bob, scales well
 - Cons: Slower initial development
 
 **Option B: Never Use Controllers (PoC Pattern)**
+
 - Direct driver → use case wiring
 - Call them "handlers" or "routers"
 - Pros: Fast development, less boilerplate
 - Cons: Hard to add orchestration later
 
 **Option C: Progressive Controllers (RECOMMENDED)**
+
 - **Phase 3-4:** No controllers, direct wiring
 - **Phase 5-6:** Optional controllers for complex cases
 - **Phase 7+:** Add controllers when migrating to production
@@ -264,6 +278,7 @@ def run(brief_path: str):
 - Cons: Requires clear guidance on when to add
 
 **Option D: Dual Patterns**
+
 - Document both patterns side-by-side
 - "PoC Pattern" vs "Production Pattern"
 - Clear criteria for choosing
@@ -281,6 +296,7 @@ If NOT using true orchestration controllers, what should we call the boundary la
 - [ ] **Keep "Controllers"** but clarify they're simplified
 
 **Decision:**
+
 - [ ] Option A: Always use true controllers
 - [ ] Option B: Never use controllers (PoC pattern only)
 - [ ] Option C: Progressive controllers (start without, add when needed)
@@ -299,6 +315,7 @@ If NOT using true orchestration controllers, what should we call the boundary la
 ### The Distinction
 
 **Thin Use Case** (PoC pattern):
+
 ```python
 class GenerateCreativesUseCase:
     def execute(self, brief: Brief) -> List[Asset]:
@@ -310,6 +327,7 @@ class GenerateCreativesUseCase:
 - Business logic in adapters
 
 **Rich Use Case** (Uncle Bob pattern):
+
 ```python
 class AddCalibrationUseCase:
     async def __call__(self, input: AddCalibrationInput) -> AddCalibrationOutput:
@@ -330,11 +348,13 @@ class AddCalibrationUseCase:
 ### Decision
 
 **For PoC phases (P3-P6):**
+
 - [ ] Allow thin use cases (focus on speed)
 - [ ] Require rich use cases (learn CA properly)
 - [ ] Mixed: thin for simple operations, rich for complex
 
 **For Production phases (P7+):**
+
 - [ ] Require rich use cases
 - [ ] Allow thin if truly simple CRUD
 - [ ] Case-by-case basis
@@ -350,6 +370,7 @@ class AddCalibrationUseCase:
 ⚠️ **CRITICAL DECISION** - This can reduce enterprise PoC delivery from 2-4 weeks to 1 week
 
 **Read these documents:**
+
 - **`plan/TDD_STAKEHOLDER_ACCELERATION_INSIGHTS.md`** - Complete analysis of how TDD accelerates stakeholder alignment
 - **`plan/TDD_INTEGRATION_PLAN.md`** - How to weave TDD into each methodology phase
 - **`plan/TDD_ENTERPRISE_POC.md`** - Original framework and patterns
@@ -360,6 +381,7 @@ class AddCalibrationUseCase:
 **New Paradigm:** TDD is about **stakeholder alignment through executable specifications**
 
 **Why this matters for enterprise PoCs:**
+
 - Stakeholders co-author tests in 1-hour workshop → executable requirements (no misinterpretation)
 - Implement with fakes first → prove concept without paying for OpenAI/S3 ($0 API costs during development)
 - Get approval before expensive work → zero rework from misalignment
@@ -367,6 +389,7 @@ class AddCalibrationUseCase:
 - Tests = documentation → governance approval is faster
 
 **Typical Results:**
+
 - **Timeline:** 1 week (TDD) vs 2-4 weeks (traditional with rewrites)
 - **Cost Savings:** 90% (develop with fakes, only test real adapters at end)
 - **Rework:** 0 cycles (stakeholders approve tests upfront)
@@ -374,6 +397,7 @@ class AddCalibrationUseCase:
 ### The TDD Advantage
 
 **Outside-In TDD enables:**
+
 1. **Writing tests with stakeholders** - Executable specifications, not vague requirements
 2. **Implementing with fakes first** - No expensive external dependencies until spec is locked
 3. **Parallel team development** - Agree on interfaces, teams implement independently
@@ -396,6 +420,7 @@ class AddCalibrationUseCase:
 ### TDD Workflow Options
 
 **Option A: Full Outside-In TDD**
+
 - Write controller tests with stakeholders (1-hour workshop)
 - Write use case tests with domain experts
 - Implement with fakes (no external deps)
@@ -404,6 +429,7 @@ class AddCalibrationUseCase:
 - **Best for:** Enterprise PoCs, multiple stakeholders
 
 **Option B: Light TDD**
+
 - Write use case tests only
 - Skip controller tests
 - Implement directly with real adapters
@@ -411,12 +437,14 @@ class AddCalibrationUseCase:
 - **Best for:** Solo dev, clear requirements
 
 **Option C: No TDD**
+
 - Write code first
 - Add tests after (if at all)
 - **Timeline:** Variable (fast initially, but rewrites add time)
 - **Best for:** Exploratory spikes, throwaway code
 
 **Option D: TDD for Critical Paths Only**
+
 - Identify 2-3 most complex/risky features
 - Use TDD only for those
 - Direct implementation for simple features
@@ -426,6 +454,7 @@ class AddCalibrationUseCase:
 ### Test Structure Requirements (If using TDD)
 
 **Must have:**
+
 ```python
 # 1. Protocol ports (enable faking)
 class ImageGenPort(Protocol):
@@ -442,6 +471,10 @@ def create_calibration(**overrides) -> Calibration:
     return Calibration(**(defaults | overrides))
 
 # 4. Clear test organization
+
+```
+
+```text
 tests/
 ├── unit/
 │   ├── controllers/  # Mock use cases
@@ -454,6 +487,7 @@ tests/
 ### Example: Stakeholder Workshop Output
 
 **1-hour workshop produces:**
+
 ```python
 # tests/unit/controllers/test_creative_controller.py
 
@@ -486,6 +520,7 @@ async def test_rejects_invalid_aspect_ratio():
 ### Architectural Impact
 
 **If using TDD (especially Outside-In):**
+
 - ✅ **MUST use controllers** - Tests define controller API
 - ✅ **MUST use rich use cases** - Business logic tested before adapters
 - ✅ **MUST use protocol ports** - Enable faking
@@ -493,6 +528,7 @@ async def test_rejects_invalid_aspect_ratio():
 - ✅ **SHOULD use entity factories** - Reusable test data builders
 
 **If NOT using TDD:**
+
 - Can skip controllers (direct driver → use case)
 - Can use thin use cases (delegate to adapters)
 - Can use concrete classes (no need for protocols)
@@ -500,18 +536,22 @@ async def test_rejects_invalid_aspect_ratio():
 ### Integration with Methodology Phases
 
 **P1: Decomposition**
+
 - [ ] **With TDD:** Write test scenarios in Given/When/Then format
 - [ ] **Without TDD:** Write acceptance criteria as prose
 
 **P3: Steel Thread**
+
 - [ ] **With TDD:** Write controller tests, implement with fakes (all tests pass)
 - [ ] **Without TDD:** Direct implementation, maybe smoke tests
 
 **P5: Implementation Planning**
+
 - [ ] **With TDD:** Test scenarios become implementation specs
 - [ ] **Without TDD:** YAML specs become implementation guide
 
 **P6: Execution**
+
 - [ ] **With TDD:** Red → Green → Refactor cycle
 - [ ] **Without TDD:** Implement → Test → Debug cycle
 
@@ -540,22 +580,26 @@ async def test_rejects_invalid_aspect_ratio():
 ### Decision
 
 **Primary decision:**
+
 - [ ] **Full Outside-In TDD** (Workshop → Tests → Fakes → Implementation)
 - [ ] **Light TDD** (Use case tests only)
 - [ ] **No TDD** (Direct implementation, maybe tests after)
 - [ ] **Selective TDD** (Critical paths only)
 
 **If using TDD, which layers get tests first?**
+
 - [ ] Controllers (with stakeholders) → Use Cases → Adapters
 - [ ] Use Cases (with domain experts) → Adapters
 - [ ] All layers simultaneously (if team has TDD experience)
 
 **Test structure:**
+
 - [ ] Use fakes (InMemoryRepository) for use case tests
 - [ ] Use mocks (AsyncMock) for controller tests
 - [ ] Create entity factories in tests/utils/
 
 **Integration with phases:**
+
 - [ ] P1: Write test scenarios
 - [ ] P3: Implement with fakes (red → green)
 - [ ] P6: Implement real adapters (refactor)
@@ -581,6 +625,7 @@ class Brief:
 ```
 
 **Rating:**
+
 - [ ] **Mandatory** - All examples should use this
 - [ ] **Recommended** - Include in docs as best practice
 - [ ] **Optional** - Mention but don't require
@@ -600,6 +645,7 @@ def build_payload(model: str, msgs: list[dict], params: InvokeParams) -> dict:
 ```
 
 **Rating:**
+
 - [ ] **Mandatory** - All adapter payload building should use this
 - [ ] **Recommended** - Include in adapter examples
 - [ ] **Optional** - Mention as advanced pattern
@@ -620,6 +666,7 @@ def _(resp: OpenAIResponse) -> DomainResult:
 ```
 
 **Rating:**
+
 - [ ] **Mandatory** - Required for multi-provider adapters
 - [ ] **Recommended** - Show as pattern for normalization
 - [ ] **Optional** - Mention as alternative to if/elif
@@ -639,6 +686,7 @@ for key, value in (*span_kind_attrs(), *brief_attrs(brief)):
 ```
 
 **Rating:**
+
 - [ ] **Mandatory** - All telemetry should use generators
 - [ ] **Recommended** - Include in observability examples
 - [ ] **Optional** - Show as advanced pattern
@@ -663,6 +711,7 @@ except ValidationError as e:
 ```
 
 **Rating:**
+
 - [ ] **Mandatory** - Required error handling pattern
 - [ ] **Recommended** - Include in all examples
 - [ ] **Optional** - Show for complex PoCs
@@ -682,6 +731,7 @@ def get_settings() -> Settings:
 ```
 
 **Rating:**
+
 - [ ] **Mandatory** - All config loading should use this
 - [ ] **Recommended** - Include in config examples
 - [ ] **Optional** - Show as optimization
@@ -707,6 +757,7 @@ class Brief:  # Pure dataclass in domain
 ```
 
 **Rating:**
+
 - [ ] **Mandatory** - Always separate DTOs from domain
 - [ ] **Recommended** - Include in examples with FastAPI
 - [ ] **Optional** - Show for complex validation scenarios
@@ -724,6 +775,7 @@ class VectorStorePort(Protocol):
 ```
 
 **Rating:**
+
 - [ ] **Mandatory** - All ports must use Protocol with rich types
 - [ ] **Recommended** - Include in all port examples
 - [ ] **Optional** - Mention as best practice
@@ -740,6 +792,7 @@ class VectorStorePort(Protocol):
 ### Options
 
 **Option A: Minimal (conceptual)**
+
 ```python
 # Just show the signature
 class ImageGenPort(Protocol):
@@ -747,6 +800,7 @@ class ImageGenPort(Protocol):
 ```
 
 **Option B: Basic (with docstrings)**
+
 ```python
 class ImageGenPort(Protocol):
     """Port for image generation services."""
@@ -756,6 +810,7 @@ class ImageGenPort(Protocol):
 ```
 
 **Option C: Complete (production-ready)**
+
 ```python
 class ImageGenPort(Protocol):
     """Port for image generation services.
@@ -780,6 +835,7 @@ class ImageGenPort(Protocol):
 ```
 
 **Decision:**
+
 - [ ] Option A: Keep examples minimal and conceptual
 - [ ] Option B: Add basic docstrings for clarity
 - [ ] Option C: Show production-ready examples
@@ -809,6 +865,7 @@ class ImageGenPort(Protocol):
 - [ ] Add testing decision tree (what to unit vs integration test)
 
 **Decision:**
+
 - [ ] Keep current level (examples only)
 - [ ] Add moderate detail (fixtures, conftest patterns)
 - [ ] Add comprehensive testing guide (separate doc)
@@ -825,21 +882,25 @@ class ImageGenPort(Protocol):
 ### Options
 
 **Option A: Core Feature (always included)**
+
 - Observability patterns in baseline structure
 - All examples show telemetry
 - Phase 6+ requires observability
 
 **Option B: Optional Add-on (Phase 8 focus)**
+
 - Steel thread has no observability
 - Add observability in Phase 8
 - Examples show with/without telemetry
 
 **Option C: Pragmatic Middle Ground**
+
 - Basic logging from the start
 - Structured telemetry in Phase 6+
 - OpenTelemetry/Phoenix in Phase 8
 
 **Decision:**
+
 - [ ] Option A: Always include observability
 - [ ] Option B: Optional, Phase 8 focus
 - [ ] Option C: Progressive observability
@@ -928,27 +989,31 @@ decisions:
 Based on your decisions, choose an approach:
 
 ### Approach A: Single Recommended Structure
+
 - Create one definitive structure recommendation
 - Document as "the way" to structure PoCs
 - Pros: Clear, opinionated, easy to follow
 - Cons: May not fit all use cases
 
 ### Approach B: Tiered Recommendations
+
 - Provide 2-3 structures for different scenarios
 - Decision tree to help choose
 - Pros: Flexible, accommodates different needs
 - Cons: More complex, requires judgment
 
 ### Approach C: Progressive Revelation
+
 - Start simple, evolve through phases
 - Steel thread → Pragmatic CA → Full CA
 - Pros: Matches methodology phases, gradual learning
 - Cons: Requires refactoring between phases
 
 **Recommended approach:**
+
 - [ ] Approach A: Single structure
 - [ ] Approach B: Tiered (2-3 options)
-- [ ] Approach C: Progressive (evolve through phases)
+- [x] Approach C: Progressive (evolve through phases)
 - [ ] Hybrid: _________________
 
 ---
@@ -986,6 +1051,7 @@ Based on your decisions, choose an approach:
 If you're short on time, use these heuristics:
 
 ### For AI/LLM-Focused PoCs (typical case - RECOMMENDED DEFAULT)
+
 ```yaml
 base_structure: progressive  # Start simple, evolve to pragmatic/full CA
 layer_naming: 4_layer_domain  # domain/, application/, infrastructure/, drivers/
@@ -1024,6 +1090,7 @@ observability_approach: progressive  # Logging → structured → OpenTelemetry
 **Rationale:** Balances speed (thin use cases, no controllers initially) with structure (ports/adapters, immutable domain). Matches methodology phases - evolve complexity as PoC matures.
 
 ### For Quick Prototyping (2-3 days)
+
 ```yaml
 base_structure: steel_thread  # Minimal - app/core, app/adapters, cli.py
 layer_naming: 4_layer_domain  # Simplified naming
@@ -1064,6 +1131,7 @@ observability_approach: optional_phase8  # Skip unless critical
 ---
 
 ### For Production-Grade from Start
+
 ```yaml
 base_structure: full_ca  # 5-layer with entities/, application/, interface_adapters/, infrastructure/, drivers/
 layer_naming: 5_layer_entities  # Classic CA terminology
@@ -1078,6 +1146,8 @@ use_case_complexity:
   production_phases: rich_required  # Maintain richness
 
 # NEW: TDD strategy
+
+
 tdd_strategy:
   choice: full_outside_in  # Enterprise-grade TDD from day 1
   layers_tested_first: controllers_then_use_cases  # Complete coverage
@@ -1104,6 +1174,7 @@ observability_approach: always_included  # OpenTelemetry from day 1
 ---
 
 ### For Enterprise PoCs with Multiple Stakeholders (NEW - TDD FOCUS)
+
 ```yaml
 base_structure: full_ca  # Need controllers for TDD specification layer
 layer_naming: 5_layer_entities  # Classic CA with interface_adapters/
@@ -1140,6 +1211,7 @@ observability_approach: progressive  # Add later, focus on tests first
 ```
 
 **Why TDD for Enterprise:**
+
 - **50-75% faster delivery:** 1 week (TDD) vs 2-4 weeks (traditional with rewrites)
 - **Zero rework:** Stakeholders approve tests upfront → build exactly what was specified
 - **$0 development costs:** Build with fakes (InMemoryRepository, FakeImageGen), only test real adapters at end
@@ -1147,6 +1219,7 @@ observability_approach: progressive  # Add later, focus on tests first
 - **Governance friendly:** Tests = executable documentation for approval processes
 
 **Workflow:**
+
 1. **Day 1:** Stakeholder workshop (3 hours) → Write controller tests together → Sign-off
 2. **Day 2:** Implement controllers + use cases with fakes (tests pass!) → Demo to stakeholders
 3. **Days 3-4:** Teams implement real adapters in parallel (OpenAI, S3, Weaviate)

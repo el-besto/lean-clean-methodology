@@ -13,6 +13,7 @@ The CLEAN_ARCHITECTURE_ANALYSIS from the lean-clean-code project reveals a **fun
 - Controllers sit in the **Interface Adapters** layer
 
 **calibration-service Implementation** ✅ Aligned with Uncle Bob:
+
 ```python
 # interface_adapters/controllers/calibrations/add_calibration_controller.py
 class AddCalibrationController:
@@ -45,6 +46,7 @@ class AddCalibrationController:
 ```
 
 **Key responsibilities:**
+
 1. DTO conversion (framework → domain)
 2. **Orchestration** of use case(s)
 3. Error handling and logging
@@ -53,6 +55,7 @@ class AddCalibrationController:
 ---
 
 **creative-ai-poc / lean-clean-core-skeleton Implementation** ⚠️ Simplified:
+
 ```python
 # drivers/cli.py
 @app.command()
@@ -73,6 +76,7 @@ def run(brief: str, out: str = "./out"):
 ```
 
 **Key difference:**
+
 - No separate Controller class
 - No orchestration layer
 - Direct wiring of dependencies in driver
@@ -92,6 +96,7 @@ def run(brief: str, out: str = "./out"):
 - Need for authorization/cross-cutting concerns
 
 **Structure:**
+
 ```
 src/
 ├── entities/                    # Domain layer
@@ -111,6 +116,7 @@ src/
 ```
 
 **Trade-offs:**
+
 - ✅ True separation of concerns
 - ✅ Scales to complexity
 - ✅ Clear orchestration point
@@ -129,6 +135,7 @@ src/
 - Minimal cross-cutting concerns
 
 **Structure:**
+
 ```
 src/
 ├── domain/                      # Domain layer
@@ -143,6 +150,7 @@ src/
 ```
 
 **Trade-offs:**
+
 - ✅ Fast to implement
 - ✅ Less boilerplate
 - ✅ Good for PoCs
@@ -156,6 +164,7 @@ src/
 **Start simple, evolve when needed:**
 
 **Phase 3-4 (Steel Thread):**
+
 ```
 app/
 ├── domain/models.py
@@ -168,6 +177,7 @@ app/
 - Focus on proving concept
 
 **Phase 5-6 (Pragmatic CA):**
+
 ```
 src/
 ├── domain/
@@ -184,6 +194,7 @@ src/
 - Direct driver → use case
 
 **Phase 7+ (Full CA) - When scaling up:**
+
 ```
 src/
 ├── domain/
@@ -207,6 +218,7 @@ src/
 ## Key Insight: Use Cases in PoC vs Production
 
 ### PoC Use Case (Thin - OK for speed)
+
 ```python
 # application/use_cases/generate_creatives.py
 def generate_creatives(brief: Brief, image_gen: ImageGenPort, ...) -> List[Asset]:
@@ -227,6 +239,7 @@ def generate_creatives(brief: Brief, image_gen: ImageGenPort, ...) -> List[Asset
 ---
 
 ### Production Use Case (Has Logic - Uncle Bob style)
+
 ```python
 # application/use_cases/calibrations/add_calibration.py
 class AddCalibrationUseCase:
@@ -292,15 +305,9 @@ class AddCalibrationUseCase:
 
 To avoid confusion between "Uncle Bob Controllers" and "PoC Mappers":
 
-### Option A: Strict CA Terminology
-```
-interface_adapters/
-├── controllers/           # Orchestration (when needed)
-├── mappers/              # Simple DTO conversion
-└── presenters/           # Response formatting
-```
 
 ### Option B: Pragmatic Naming (RECOMMENDED)
+
 ```
 # For PoCs:
 drivers/
@@ -315,6 +322,7 @@ interface_adapters/
 ```
 
 ### Option C: Explicit Layers
+
 ```
 interface_adapters/
 ├── orchestrators/        # Rename "controllers" to be explicit
@@ -340,6 +348,7 @@ Include examples of:
 - **Rich use case** (CA style) with note "Recommended for production"
 
 ### 4. Add Decision Tree
+
 ```
 Need auth/complex orchestration?
   ├─ Yes → Add controllers in interface_adapters/
@@ -359,6 +368,7 @@ The controller distinction affects several patterns:
 ### Pattern: Error Handling
 
 **With Controllers (orchestration layer):**
+
 ```python
 # interface_adapters/controllers/creative_controller.py
 class CreativeController:
@@ -376,6 +386,7 @@ class CreativeController:
 ```
 
 **Without Controllers (direct pattern):**
+
 ```python
 # drivers/api/routers/creative_router.py
 @router.post("/generate")
@@ -391,6 +402,8 @@ async def generate(request: CreativeRequest):
 ---
 
 ## TDD Revelation: Controllers as Specification Layer
+
+We could rename “controller” to orchestrator still to talk about its role in the business process
 
 ### Critical Discovery (from user feedback)
 
@@ -423,7 +436,14 @@ async def test_generate_creatives_for_summer_campaign():
     # Assertions stakeholders agreed to:
     assert len(response.assets) == 4  # 2 products × 2 aspects
     assert all(asset.image_url for asset in response.assets)
+    
+    
 ```
+This example needs a realistic set of all stakeholders having a discrete step, like branding checks for marketing and word obscenity ck for legal, capture events for product management and A\b experiments (telemetry for campaign effectiveness, conversion, for performance (latency), costs for devops etc. we should define different desirements for each of the identified stakeholders. Then come back to flesh out the example as this is really the differentiator of this approach for enterprise poc usage.
+
+We need to go “outside in” for all of these groups needs. How can we handle this? For example the events emitted may be at different layers of codebase for marketing events to track usage/conversion, vs ai model token consumption which is per model in the adapters layer.
+
+Do we need a higher order than “orchestrator” to write code with? Or something to group\wrap use cases like “Feature”? What learnings can we take from DDD, and Testing frameworks or methodologies that are more BDD in nature? How does XRay Enterprise handle this? Not coin code but in test report outputs? Have I heard these called Specs? Cucumber BDD?
 
 **Then implement to make tests pass.** No expensive adapters until spec is locked.
 
