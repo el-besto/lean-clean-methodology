@@ -390,33 +390,102 @@ async def generate(request: CreativeRequest):
 
 ---
 
+## TDD Revelation: Controllers as Specification Layer
+
+### Critical Discovery (from user feedback)
+
+**The controllers pattern enables Outside-In TDD for enterprise PoCs:**
+
+1. **Write controller tests with stakeholders** → Executable specifications
+2. **Write use case tests with domain experts** → Business rules documented
+3. **Implement with fakes** → Test without expensive external dependencies
+4. **Implement real adapters** → Parallel development possible
+
+**Key insight:** You can define the ENTIRE system behavior with tests BEFORE writing expensive adapter code (OpenAI, S3, databases, etc.). This dramatically accelerates enterprise PoC delivery.
+
+### Example: Stakeholder Workshop Pattern
+
+```python
+# tests/unit/controllers/test_creative_controller.py
+# Written WITH stakeholders in 1-hour workshop
+
+async def test_generate_creatives_for_summer_campaign():
+    """Marketing team: Generate Instagram and Facebook ads for summer sale."""
+    # Stakeholders define the expected behavior
+    request = GenerateRequest(
+        campaign_message="50% Off All Summer Gear",
+        products=["sunglasses", "sandals"],
+        aspects=["1:1", "9:16"]  # Instagram post, Story
+    )
+
+    response = await controller.generate(request)
+
+    # Assertions stakeholders agreed to:
+    assert len(response.assets) == 4  # 2 products × 2 aspects
+    assert all(asset.image_url for asset in response.assets)
+```
+
+**Then implement to make tests pass.** No expensive adapters until spec is locked.
+
+### Updated Decision: When to Use Controllers
+
+| Scenario | Use Controllers? | TDD Approach | Rationale |
+|----------|----------------|--------------|-----------|
+| **Multiple stakeholders need alignment** | ✅ YES | Specification-First TDD | Tests = executable requirements |
+| **Enterprise approval process** | ✅ YES | Outside-In TDD | Tests = documentation for governance |
+| **Complex business rules** | ✅ YES | Business-First TDD | Use case tests capture domain knowledge |
+| **Expensive external dependencies** | ✅ YES | Fake-First TDD | Test without API costs |
+| **Parallel team development** | ✅ YES | Interface-First TDD | Agree on contracts, implement independently |
+| **Solo dev, 2-3 day spike** | ❌ NO | No TDD | Too much overhead for exploration |
+| **Unclear requirements** | ❌ NO | Exploratory spike | Discover requirements first |
+
+### The Game-Changer
+
+**Traditional enterprise PoC:**
+- Write requirements → Build → Stakeholder demo → "That's not what we meant" → Rebuild
+- **Timeline:** 2-3 weeks with multiple rewrites
+
+**TDD-driven enterprise PoC:**
+- Stakeholder workshop → Write test specs → Get sign-off → Implement → Tests pass → Done
+- **Timeline:** 1 week with no rewrites
+
+**Why it works:** Stakeholders sign off on TESTS (which they can read), not vague requirements documents.
+
+---
+
 ## Final Recommendation
 
 **For the lean-clean-methodology:**
 
 1. **Default to Progressive Architecture** - Start simple, add complexity when needed
 
-2. **Be Explicit About Trade-offs**:
-   - "PoC pattern (fast)" vs "Production pattern (robust)"
+2. **Add TDD Decision Point**:
+   - **Enterprise PoCs:** Use controllers + Outside-In TDD
+   - **Rapid prototypes:** Skip controllers, direct implementation
+
+3. **Be Explicit About Trade-offs**:
+   - "PoC pattern (fast)" vs "Enterprise pattern (aligned)" vs "Production pattern (robust)"
    - Show when each is appropriate
 
-3. **Rename Ambiguous Terms**:
+4. **Rename Ambiguous Terms**:
    - Don't call simple mappers "controllers"
    - Use "handlers", "routers", or "mappers" for PoC pattern
    - Reserve "controllers" for orchestration layer
 
-4. **Provide Migration Path**:
+5. **Provide Migration Path**:
    - Clear steps to go from PoC → Production
    - When to add controllers
    - When to enrich use cases
+   - **NEW:** When to use TDD workflow
 
-5. **Update CLAUDE.md**:
+6. **Update CLAUDE.md**:
    - Clarify that proposed structure is "PoC-optimized CA"
    - Link to full CA pattern for production
+   - **NEW:** Add TDD workflow for enterprise PoCs
    - Decision criteria for choosing pattern
 
 ---
 
-**Status:** Critical architectural decision identified
-**Impact:** High - affects all structure recommendations
-**Action Required:** Update STRUCTURE.md, PYTHON_PATTERNS.md, and REVIEW_GUIDE.md
+**Status:** Critical architectural decision identified + TDD acceleration pattern documented
+**Impact:** CRITICAL - Changes enterprise PoC delivery approach
+**Action Required:** Update STRUCTURE.md, PYTHON_PATTERNS.md, REVIEW_GUIDE.md, and integrate TDD_ENTERPRISE_POC.md
