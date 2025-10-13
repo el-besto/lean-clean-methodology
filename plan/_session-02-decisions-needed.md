@@ -1,8 +1,10 @@
 # Session 02: Framework Decisions Needed
 
-**Status:** 🚧 Awaiting stakeholder input
+**Status:** ✅ 7 of 12 Resolved | 🚧 5 Awaiting Discussion
 
-This document captures the key decisions I made unilaterally that need your approval/revision.
+This document captures the key architectural decisions for Framework folder structures.
+
+**Update:** After reviewing CLEAN_ARCHITECTURE_ANALYSIS.md, identified 5 additional critical decisions about drivers, gateways, DTOs, and ports that were missing from initial framework definition.
 
 ---
 
@@ -102,11 +104,19 @@ How deep should the folder structure go?
   - Pro: Maximum organization
   - Con: Deep nesting, violates "don't create overly abstract structures" anti-pattern
 
-**Your decision:** [AWAITING INPUT]
+**Your decision:** ✅ **All three** (progressive refinement)
 
 **Rationale:**
+- This isn't a choice—it's the evolution path
+- Steel Thread uses flat (Option A)
+- Pragmatic CA uses moderate (Option B)
+- Full CA uses deep (Option C)
+- Structure depth scales with PoC complexity
+- Maintains consistency: same components at each level, just more organization
 
 **Impact:** MEDIUM - Affects import paths, navigation
+
+**Status:** ✅ RESOLVED - Framework document already implements progressive depth
 
 ---
 
@@ -140,11 +150,17 @@ Should we have this much in one document?
   - Pro: Incremental, get feedback faster
   - Con: Missing the full picture
 
-**Your decision:** [AWAITING INPUT]
+**Your decision:** ✅ **Option A: Keep comprehensive**
 
 **Rationale:**
+- Evolution path is the key insight—splitting would obscure it
+- Side-by-side comparison shows progressive refinement clearly
+- Complete reference enables informed PoC type selection
+- Single source of truth for Framework (Component B)
 
 **Impact:** LOW - Organizational preference
+
+**Status:** ✅ RESOLVED - Keep all three PoC types in one document
 
 ---
 
@@ -172,11 +188,18 @@ Is this the right example scenario?
   - Pro: Domain-agnostic
   - Con: Less engaging, harder to visualize
 
-**Your decision:** [AWAITING INPUT]
+**Your decision:** ✅ **Option A: Keep Localized Campaign**
 
 **Rationale:**
+- Matches Session 0 context (AI/Gen-AI enterprise PoCs)
+- Demonstrates multi-stakeholder requirements clearly (Creative, Ad Ops, IT, Legal)
+- Complex enough to show orchestration, use cases, adapters working together
+- Realistic: actual enterprise use case, not toy example
+- AI-generated images show adapter pattern clearly (fake vs OpenAI vs Firefly)
 
 **Impact:** MEDIUM - Affects code examples throughout
+
+**Status:** ✅ RESOLVED - Use Localized Campaign Generation throughout
 
 ---
 
@@ -225,11 +248,18 @@ How detailed should the code examples be?
   - Pro: Can copy-paste and run
   - Con: Very long, distracts from architecture
 
-**Your decision:** [AWAITING INPUT]
+**Your decision:** ✅ **Option B: Detailed but incomplete**
 
 **Rationale:**
+- Balances clarity with brevity (shows pattern without overwhelming detail)
+- Realistic: developers see actual Python syntax, type hints, async patterns
+- Educational: focuses on architecture decisions, not implementation minutiae
+- Framework document is about structure—full implementations come in Session 03 (Code Paradigms)
+- Developers can extrapolate from detailed examples to their own implementations
 
 **Impact:** MEDIUM - Affects how developers will use the framework
+
+**Status:** ✅ RESOLVED - Use detailed but incomplete code examples
 
 ---
 
@@ -267,11 +297,19 @@ How should we define interfaces?
   - Pro: Developers choose
   - Con: Inconsistent
 
-**Your decision:** [AWAITING INPUT]
+**Your decision:** ✅ **Option A: Protocol**
 
 **Rationale:**
+- More Pythonic (structural subtyping, duck typing)
+- No inheritance required—adapters implement interface implicitly
+- Cleaner for fakes—`FakeImageGenerator` doesn't need `IImageGenerator` base class
+- Modern Python best practice (Protocol introduced in Python 3.8+)
+- Aligns with Dependency Inversion Principle without coupling through inheritance
+- Consistency: use one pattern throughout methodology
 
 **Impact:** LOW - Pattern preference
+
+**Status:** ✅ RESOLVED - Use Protocol for interface definitions
 
 ---
 
@@ -305,11 +343,21 @@ Is this test structure correct?
 - [ ] **Option C: Different organization**
   - Your suggestion: [YOUR INPUT]
 
-**Your decision:** [AWAITING INPUT]
+**Your decision:** ✅ **Option A: Keep as-is**
 
 **Rationale:**
+- Three test layers align with Outside-In TDD workflow:
+  1. **Acceptance**: Stakeholder contracts with fakes (fast, always run)
+  2. **Unit**: Isolated component tests (fast, always run)
+  3. **Integration**: Real adapter tests (slow, nightly/pre-deploy)
+- Test structure mirrors app structure—easy to find tests for components
+- `acceptance/features/` uses stakeholder language ("feature")
+- `unit/orchestrators/` uses implementation language ("orchestrator")
+- Consistent across all three PoC types (same philosophy, different depth)
 
 **Impact:** MEDIUM - Affects test organization
+
+**Status:** ✅ RESOLVED - Use acceptance/unit/integration test layers
 
 ---
 
@@ -345,26 +393,289 @@ Is this the right location for fakes?
 
 ---
 
+## Decision 9: Drivers Layer - Does It Exist?
+
+**What I did:**
+- No `drivers/` folder - Framework entry points (`server.py`, `cli.py`) at project root
+- FastAPI routers would be inline or in top-level `routers/`
+
+**Context from CLEAN_ARCHITECTURE_ANALYSIS:**
+- **Calibration-service**: Has `drivers/rest/` with routers, schemas, dependencies, exception handlers
+- **Lean-clean**: Has `drivers/rest/controllers/` with thin mappers
+- **nikolovlazar diagram**: Shows "Frameworks & Drivers" as outermost layer
+
+**Question for you:**
+Should we have an explicit `drivers/` layer?
+
+- [ ] **Option A: No drivers/ folder** (what I did)
+  ```
+  project/
+  ├─ server.py          # FastAPI entry point
+  ├─ cli.py             # Typer CLI entry point
+  ├─ app/
+  │  ├─ interface_adapters/orchestrators/
+  ```
+  - Pro: Simpler, fewer folders
+  - Con: Entry points mixed with app code, unclear layer boundary
+
+- [ ] **Option B: drivers/rest/ with routers** (calibration-service pattern)
+  ```
+  project/
+  ├─ app/
+  │  ├─ interface_adapters/orchestrators/
+  ├─ drivers/
+  │  └─ rest/
+  │     ├─ routers/           # FastAPI routes
+  │     ├─ schemas/           # Pydantic models
+  │     ├─ dependencies.py    # DI wiring
+  │     └─ exception_handlers.py
+  ```
+  - Pro: Clear layer boundary, framework concerns isolated
+  - Con: More nesting
+
+- [ ] **Option C: drivers/ calls use cases directly** (lean-clean pattern)
+  ```
+  project/
+  ├─ drivers/
+  │  └─ rest/
+  │     └─ controllers/       # Thin mappers, call use cases
+  ```
+  - Pro: Skip orchestration for simple PoCs
+  - Con: Violates CA (should call orchestrators, not use cases)
+
+**Your decision:** [AWAITING INPUT]
+
+**Rationale:**
+
+**Impact:** HIGH - Affects project structure and entry point organization
+
+---
+
+## Decision 10: Gateways vs Repositories/Services Terminology
+
+**What I did:**
+- Used `adapters/` as generic term for all external integrations
+- `adapters/imagegen/`, `adapters/storage/`, `adapters/events/`
+
+**Context from CLEAN_ARCHITECTURE_ANALYSIS:**
+- **Calibration-service**: Distinguishes `repositories/` (persistence) from `services/` (external APIs)
+- **Lean-clean**: Uses `gateways/` for all vendor integrations
+- **Uncle Bob CA**: Uses "Gateways" in original diagram
+
+**Question for you:**
+What terminology should we use for external integrations?
+
+- [ ] **Option A: adapters/** (what I did - generic)
+  ```
+  app/adapters/
+  ├─ imagegen/
+  ├─ storage/
+  └─ events/
+  ```
+  - Pro: Generic, covers all cases
+  - Con: Doesn't distinguish persistence from external services
+
+- [ ] **Option B: gateways/** (lean-clean, matches CA diagram)
+  ```
+  app/interface_adapters/gateways/
+  ├─ openai_gateway.py
+  ├─ s3_gateway.py
+  └─ amplitude_gateway.py
+  ```
+  - Pro: Matches Uncle Bob's terminology, clear vendor integrations
+  - Con: Doesn't distinguish repositories
+
+- [ ] **Option C: repositories/ + services/** (calibration-service)
+  ```
+  app/adapters/
+  ├─ repositories/        # Persistence (DB)
+  │  └─ campaign_repo.py
+  └─ services/            # External APIs
+     ├─ openai_service.py
+     └─ s3_service.py
+  ```
+  - Pro: Clear distinction between persistence and external services
+  - Con: More folders
+
+- [ ] **Option D: Infrastructure layer separate** (synthesis proposal)
+  ```
+  app/
+  ├─ interface_adapters/gateways/  # External service clients
+  └─ infrastructure/               # ORM, framework-specific
+     ├─ orm_models/
+     └─ repositories/
+  ```
+  - Pro: Separates framework concerns from business adapters
+  - Con: Most complex
+
+**Your decision:** [AWAITING INPUT]
+
+**Rationale:**
+
+**Impact:** MEDIUM - Affects adapter organization and terminology
+
+---
+
+## Decision 11: DTO Layer Strategy
+
+**What I did:**
+- Minimal DTOs: Request/Response at orchestrator level
+- Use cases receive domain commands, return domain outputs
+- Example: `LocalizedCampaignRequest` → `GenerateCampaignCommand`
+
+**Context from CLEAN_ARCHITECTURE_ANALYSIS:**
+- **Calibration-service**: Separate Input/Output DTOs per use case (`AddCalibrationInput`, `AddCalibrationOutput`)
+- **Lean-clean**: Uses domain Commands/Results at boundaries
+- **CA principle**: DTOs at boundaries prevent domain leakage
+
+**Question for you:**
+How comprehensive should the DTO layer be?
+
+- [ ] **Option A: Minimal DTOs** (what I did)
+  ```python
+  # Orchestrator level
+  @dataclass
+  class LocalizedCampaignRequest:  # From API
+      global_message: str
+      markets: list[str]
+
+  # Use case level
+  @dataclass
+  class GenerateCampaignCommand:   # Domain object
+      message: str
+      markets: list[str]
+  ```
+  - Pro: Less boilerplate, faster development
+  - Con: Domain objects leak to boundaries
+
+- [ ] **Option B: Comprehensive DTOs** (calibration-service)
+  ```python
+  # Use case folder: use_cases/generate_campaign/dtos.py
+  @dataclass
+  class GenerateCampaignInput:     # Use case input DTO
+      message: str
+      markets: list[str]
+
+  @dataclass
+  class GenerateCampaignOutput:    # Use case output DTO
+      campaign_id: str
+      creative_sets: dict
+  ```
+  - Pro: Clear boundaries, prevents domain leakage
+  - Con: More conversion logic
+
+- [ ] **Option C: Commands/Results as domain objects** (lean-clean)
+  ```python
+  # Domain commands used directly
+  SendMessageCmd = tuple[Messages, LlmParams]
+  LlmResult = tuple[str, Usage]
+  ```
+  - Pro: Minimal, leverages type system
+  - Con: Less explicit, harder to extend
+
+**Your decision:** [AWAITING INPUT]
+
+**Rationale:**
+
+**Impact:** MEDIUM - Affects use case interfaces and conversion logic
+
+---
+
+## Decision 12: Ports Location and Naming
+
+**What I did:**
+- Ports in `core/interfaces/`
+- Named as interfaces: `IImageGenerator`, `IStorageAdapter`
+
+**Context from CLEAN_ARCHITECTURE_ANALYSIS:**
+- **Calibration-service**: `application/repositories/` (ABC) and `application/services/`
+- **Lean-clean**: `application/ports/` (Protocol)
+- **nikolovlazar**: Shows interfaces in Application layer
+
+**Question for you:**
+Where should ports/interfaces live and how should they be named?
+
+- [ ] **Option A: core/interfaces/** (what I did - nikolovlazar)
+  ```
+  app/core/
+  ├─ entities/
+  ├─ use_cases/
+  └─ interfaces/
+     ├─ image_generator.py    # IImageGenerator
+     └─ storage.py            # IStorageAdapter
+  ```
+  - Pro: Follows nikolovlazar pattern, clear "interfaces" folder
+  - Con: Doesn't distinguish repositories from services
+
+- [ ] **Option B: application/ports/** (lean-clean)
+  ```
+  app/application/
+  ├─ use_cases/
+  └─ ports/
+     ├─ llm_port.py
+     └─ storage_port.py
+  ```
+  - Pro: Matches Ports & Adapters terminology
+  - Con: "ports" less familiar than "interfaces"
+
+- [ ] **Option C: application/repositories/ + services/** (calibration-service)
+  ```
+  app/application/
+  ├─ use_cases/
+  ├─ repositories/
+  │  └─ calibration_repository.py
+  └─ services/
+     └─ external_api_service.py
+  ```
+  - Pro: Distinguishes persistence from external services
+  - Con: More folders, assumes repository pattern
+
+**Your decision:** [AWAITING INPUT]
+
+**Rationale:**
+
+**Impact:** MEDIUM - Affects interface organization
+
+---
+
 ## Summary of Decisions
 
 | # | Decision | Priority | Status |
 |---|----------|----------|--------|
-| 1 | Controller vs Orchestrator | ⚠️ CRITICAL | 🚧 Awaiting |
-| 2 | Folder depth | MEDIUM | 🚧 Awaiting |
-| 3 | Document scope | LOW | 🚧 Awaiting |
-| 4 | Example scenario | MEDIUM | 🚧 Awaiting |
-| 5 | Code detail level | MEDIUM | 🚧 Awaiting |
-| 6 | Interface style | LOW | 🚧 Awaiting |
-| 7 | Test structure | MEDIUM | 🚧 Awaiting |
-| 8 | Fakes location | MEDIUM | 🚧 Awaiting |
+| 1 | Controller vs Orchestrator | ⚠️ CRITICAL | ✅ RESOLVED (Orchestrator) |
+| 2 | Folder depth | MEDIUM | ✅ RESOLVED (Progressive: flat→moderate→deep) |
+| 3 | Document scope | LOW | ✅ RESOLVED (Keep comprehensive) |
+| 4 | Example scenario | MEDIUM | ✅ RESOLVED (Localized Campaign) |
+| 5 | Code detail level | MEDIUM | ✅ RESOLVED (Detailed but incomplete) |
+| 6 | Interface style | LOW | ✅ RESOLVED (Protocol) |
+| 7 | Test structure | MEDIUM | ✅ RESOLVED (acceptance/unit/integration) |
+| 8 | Fakes location | MEDIUM | 🚧 AWAITING |
+| 9 | Drivers layer | HIGH | 🚧 AWAITING |
+| 10 | Gateways vs Repos/Services | MEDIUM | 🚧 AWAITING |
+| 11 | DTO layer strategy | MEDIUM | 🚧 AWAITING |
+| 12 | Ports location/naming | MEDIUM | 🚧 AWAITING |
 
 ---
 
 ## Next Steps
 
-Once you've made decisions:
-1. I'll revise `_session-02-framework-folder-structures.md` based on your choices
-2. We'll review the updated document together
-3. Commit the revised version
+**Completed:**
+- ✅ Resolved Decisions 1-7 collaboratively
+- ✅ Reviewed CLEAN_ARCHITECTURE_ANALYSIS.md
+- ✅ Identified 5 additional architectural decisions (8-12)
+- ✅ Updated this decisions document with missing decisions
 
-**Ready to discuss these decisions?** Let's start with Decision 1 (Controller vs Orchestrator) since it's the most critical.
+**Awaiting Your Input (5 decisions):**
+1. **Decision 8: Fakes Location** - adapters/ vs tests/ vs separate fakes/
+2. **Decision 9: Drivers Layer** ⚠️ HIGH PRIORITY - Does drivers/ exist? What calls orchestrators?
+3. **Decision 10: Gateways vs Repos/Services** - Terminology and organization
+4. **Decision 11: DTO Layer Strategy** - Minimal vs Comprehensive DTOs
+5. **Decision 12: Ports Location/Naming** - core/interfaces/ vs application/ports/ vs repositories/services/
+
+**After Decisions:**
+1. Update framework document with resolved folder structures
+2. Ensure consistency across all three PoC types
+3. Update Session 02 summary
+4. Commit all Session 02 work
+
+**Status:** 7 of 12 decisions resolved | 5 awaiting collaborative review
