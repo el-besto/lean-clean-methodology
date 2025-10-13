@@ -119,7 +119,12 @@ The repository uses a clear distinction between finalized and working documents:
 - Experimental ideas and explorations
 - Decision documents being developed
 - Templates for Human-in-the-Loop workflows
-- Examples: `_session-*.md`, decision logs, framework explorations
+- Structure:
+  - `plan/sessions/` - Session documentation files (`_session-*.md`)
+  - `plan/drafts/` - Draft analysis and planning documents
+  - `plan/templates/` - HITL and session templates
+  - `plan/wip/` - Work in progress
+  - `plan/archive/` - Historical content
 
 **When to reference which:**
 - Start methodology tasks by reading `/docs/` to understand finalized principles
@@ -143,46 +148,75 @@ The methodology follows an 8-phase approach (P0-P8) for turning rough requiremen
 - **P7: Reflection & Knowledge Capture** - Document learnings
 - **P8: Agentic System Design** - Extend with monitoring, validation, and alerts
 
-### Proposed App Structure (NOT FINALIZED - being worked out through PoC implementation)
+### Framework Structure (Finalized - Session 02)
 
-Following nikolovlazar's modern Clean Architecture pattern with explicit Infrastructure layer:
+The methodology supports three PoC types with progressive evolution:
+
+**For complete folder structures, code examples, and migration paths, see:**
+- [`/docs/framework-folder-structures.md`](docs/framework-folder-structures.md) - Authoritative framework structures for all 3 PoC types
+- [`/docs/REFERENCE-IMPLEMENTATIONS.md`](docs/REFERENCE-IMPLEMENTATIONS.md) - Analysis of reference implementations
+
+**Quick Reference - Pragmatic CA Structure:**
 
 ```
-app/
-├─ core/                    # Domain + Application layers
-│  ├─ entities/             # Domain models (Entities)
-│  ├─ use_cases/            # Application business rules (Use Cases)
-│  └─ interfaces/           # Infrastructure interfaces (defined by app, implemented by infra)
-├─ adapters/                # Infrastructure layer (implements core/interfaces)
-│  ├─ storage/              # Storage implementations (local, S3, etc.)
-│  ├─ imagegen/             # Image generation clients (Firefly, DALL-E)
-│  ├─ vector/               # Vector DB adapters (Weaviate)
-│  ├─ db/                   # Database repositories (Postgres)
-│  └─ compose.py            # Image composition utilities
-├─ interface_adapters/      # Controllers, Presenters, CLI handlers
-│  ├─ controllers/          # API/CLI request handlers
-│  └─ presenters/           # Response formatters
-├─ utils/                   # Cross-cutting concerns
-│  ├─ observability.py      # Phoenix/Arize telemetry
-│  ├─ manifest.py           # Manifest generation
-│  └─ brief_loader.py       # YAML loading utilities
-├─ server.py                # FastAPI (Frameworks & Drivers layer)
-├─ cli.py                   # Typer CLI (Frameworks & Drivers layer)
-├─ models.py                # SQLAlchemy models
-└─ db.py                    # DB session utilities
-tools/
-├─ agent_watcher.py         # Automation watcher
-├─ init_db.py               # Create tables
-└─ validate.py              # Schema validation CLI
+campaign-generator/
+├─ app/
+│  ├─ entities/                        # Domain models
+│  │  └─ campaign.py
+│  ├─ use_cases/                       # Business logic
+│  │  └─ generate_campaign_uc.py
+│  ├─ interface_adapters/              # Orchestrators & Presenters
+│  │  ├─ orchestrators/                # Business workflow coordinators
+│  │  │  └─ campaign_orchestrator.py
+│  │  └─ presenters/                   # Response formatters
+│  │     └─ campaign_presenter.py
+│  ├─ adapters/                        # External services (OpenAI, S3)
+│  │  ├─ imagegen/
+│  │  │  ├─ protocol.py
+│  │  │  ├─ fake.py                    # Fake for testing
+│  │  │  └─ openai.py
+│  │  └─ storage/
+│  │     ├─ protocol.py
+│  │     ├─ fake.py
+│  │     └─ s3.py
+│  └─ infrastructure/                  # Persistence (Postgres, MongoDB)
+│     └─ repositories/
+│        └─ campaign/
+│           ├─ protocol.py
+│           ├─ in_memory.py            # In-memory for testing
+│           └─ postgres.py
+│
+├─ drivers/                            # Entry points (CLI + UI always)
+│  ├─ cli/
+│  │  └─ commands.py
+│  ├─ rest/                            # When enterprise integration needed
+│  │  ├─ main.py
+│  │  └─ schemas/
+│  └─ ui/
+│     └─ streamlit/
+│        └─ app.py
+│
+├─ tests/                              # Three-layer test structure
+│  ├─ acceptance/                      # Stakeholder contracts (always fakes)
+│  ├─ unit/                            # Isolated logic tests
+│  └─ integration/                     # Real service tests
+│
+├─ tools/                              # Development utilities
+│  ├─ validate.py
+│  └─ init_db.py
+│
+├─ pyproject.toml
+├─ Makefile
+└─ docker-compose.yaml
 ```
 
-**Key Pattern - Infrastructure Interfaces**:
-- `app/core/interfaces/` defines contracts (e.g., `IStorageAdapter`, `IImageGenerator`)
-- `app/adapters/` provides concrete implementations
-- Use Cases depend on interfaces, not implementations (Dependency Inversion)
-- Achieved through Dependency Injection at runtime
-
-**Note:** The actual project structure will be determined through ongoing PoC implementation work. The above is a proposed structure based on Clean Architecture principles (see `images/ca/clean-architecture-diagram-nikolovlazar.jpg`) and may evolve.
+**Key Patterns - Finalized in Session 02:**
+- **Orchestrators not Controllers** - Stakeholder-friendly terminology (Decision 1)
+- **Drivers layer** - CLI + UI always from day 1 (Decision 9: Enterprise PoC Reality)
+- **Fakes in production code** - Two types: fake adapters + in-memory repositories (Decision 8)
+- **Infrastructure split** - Separate `adapters/` (external services) and `infrastructure/` (persistence) (Decision 10)
+- **Outside-In TDD** - Acceptance tests with stakeholders → fakes → real adapters (Decision 7)
+- **Progressive Evolution** - Steel Thread → Pragmatic CA → Full CA with additive changes (Decision 12)
 
 ## Key Principles
 
@@ -208,16 +242,13 @@ The methodology uses specific syntax for agent compatibility:
 
 ### Finalized Documents (`/docs/`)
 - `lean-clean-axioms.md` - Core architectural principles and foundational decisions
+- `framework-folder-structures.md` - Authoritative framework structures for all 3 PoC types (Steel Thread, Pragmatic CA, Full CA)
+- `REFERENCE-IMPLEMENTATIONS.md` - Analysis of reference implementations with Session 02 alignment notes
 
 ### Methodology Core
 - `README.md` - Complete v2.2 methodology documentation with all 8 phases
 - `Lean-Clean-PoC-Playbook-v2-template.md` - Template for creating project-specific playbooks
 - `lean-clean-methodology-v1.csv` & `lean-clean-methodology-v2.csv` - Phase tables
-
-### How-To Guides
-- `_howto/NOTES_HowToUse.md` - Repo bootstrap and app skeleton setup
-- `_howto/NOTES_HowToUse_dayOf.md` - Day-of-demo workflow
-- `_howto/NOTES.md` - Tips, tricks, and bundle explanations
 
 ### Visual Documentation
 - `images/IMAGE_ANALYSIS.md` - Comprehensive analysis of all visual assets
@@ -232,7 +263,7 @@ The methodology uses specific syntax for agent compatibility:
 - **P7** (Reflection): Use Martin's CA for stakeholder communication
 - **P8** (Agentic): Infrastructure layer pattern enables observability and monitoring hooks
 
-## Typical Development Workflow (PROPOSED - being validated through PoC)
+## Typical Development Workflow
 
 When implementing a PoC using this methodology:
 
@@ -286,7 +317,7 @@ make api           # start FastAPI server
 
 **Note:** These workflows are proposed patterns documented in the methodology. Actual implementation commands will be finalized through PoC development.
 
-## Technology Stack (PROPOSED - subject to change based on PoC learnings)
+## Technology Stack
 
 ### Core
 - **Language**: Python (uv for dependency management)
@@ -310,11 +341,11 @@ make api           # start FastAPI server
 
 **Note:** Technology choices documented in the methodology are recommendations. Actual stack decisions will be made based on specific PoC requirements and learnings.
 
-## Important Patterns (from methodology - implementation TBD)
+## Important Patterns
 
-### Clean Architecture Layers (Proposed)
+### Clean Architecture Layers
 
-Following the **nikolovlazar modern pattern** (see `images/ca/`), the methodology emphasizes:
+Following the **nikolovlazar modern pattern** (see `images/ca/`), the methodology emphasizes (finalized in Session 02):
 
 **Layer Hierarchy** (bottom to top):
 1. **Entities** (`app/core/entities/`): Domain models, business objects, errors
@@ -322,7 +353,7 @@ Following the **nikolovlazar modern pattern** (see `images/ca/`), the methodolog
    - Use Cases implementing business rules
    - Infrastructure Interfaces defining contracts for external dependencies
 3. **Infrastructure** (`app/adapters/`): Concrete implementations of interfaces (repositories, external service clients)
-4. **Interface Adapters** (`app/interface_adapters/`): Controllers, Presenters, CLI handlers
+4. **Interface Adapters** (`app/interface_adapters/`): Orchestrators, Presenters, CLI handlers
 5. **Frameworks & Drivers**: FastAPI, Typer CLI, Streamlit UI (entry points)
 
 **Dependency Rule**:
@@ -357,7 +388,7 @@ use_case:
 
 See `images/acceptance-criteria/given-when-then-acceptance-criteria.webp` for detailed examples.
 
-### Adapter Pattern for Substitution (Proposed)
+### Adapter Pattern for Substitution
 
 All external dependencies should be behind adapters implementing core interfaces:
 
