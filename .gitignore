@@ -5,6 +5,7 @@ ehthumbs.db
 Desktop.ini
 
 # Editor / IDE folders
+.claude
 .vscode/
 .idea/
 *.swp
