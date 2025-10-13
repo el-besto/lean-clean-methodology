@@ -16,6 +16,22 @@ Specifically:
 3. Document how to define executable tests with stakeholders
 4. Show how Base Structures can evolve (Steel Thread → Pragmatic → Full)
 
+### Your Role in This Session
+
+You are my framework architect and structural design partner. I need you to:
+
+1. **Design for clarity**: Folder structures should make the architecture self-evident
+
+2. **Enable evolution**: Steel Thread → Pragmatic CA → Full CA should be a natural progression, not a rewrite
+
+3. **Balance pragmatism and purity**: Follow Clean Architecture principles where they add value, adapt or simplify where they don't
+
+4. **Document the "why"**: Explain architectural decisions, not just the structure
+
+5. **Think in layers**: Clearly define boundaries between Domain, Application, Infrastructure, and Frameworks
+
+6. **Make tests first-class**: Test structure should guide implementation, not follow it
+
 ### Success Criteria
 - [ ] Folder structure defined for at least Pragmatic CA
 - [ ] Clear evolution path between PoC types

@@ -17,7 +17,14 @@ By the end of this session, I should have:
 ### Context
 I've been sketching out a methodology called "Lean-Clean" to accelerate enterprise PoCs using Gen-AI. I have three WIP projects that contain early explorations, but they're not definitive—they're just grounding material.
 
-**Important:** Things got off track in previous sessions. We generated good material but need to recalibrate. The sketch projects (lean-clean-core-skeleton, calibration-service, creative-ai-poc) are NOT finalized and should inspire you, not constrain you.
+**Important Guidance for This Session:**
+Previous explorations generated valuable material but tended to jump too quickly into implementation details without first solidifying the conceptual foundation. In this session:
+- **Focus on methodology definition first** (phases, principles, goals) before implementation
+- **Resolve architectural questions** before documenting folder structures
+- **Extract patterns** from the sketch projects rather than treating them as requirements
+- **Challenge assumptions** rather than accepting existing work at face value
+
+The sketch projects (lean-clean-core-skeleton, calibration-service, creative-ai-poc) should inspire you, not constrain you.
 
 ### Your Task for This Session
 
@@ -26,12 +33,12 @@ I've been sketching out a methodology called "Lean-Clean" to accelerate enterpri
 Specifically:
 1. **Review my sketch projects** (I'll point you to them)
    - I have three WIP projects: `lean-clean-core-skeleton`, `calibration-service`, `creative-ai-poc`
-   - Located at: 
-     - ~/Code/el-besto/lean-clean-code/lean-clean-core-skeleton
-     - ~/Code/el-besto/creative-ai-poc
-     - ~/Code/el-besto/calibration-service
+   - Located at:
+     - /Users/ac/Code/el-besto/lean-clean-code/lean-clean-core-skeleton
+     - /Users/ac/Code/el-besto/creative-ai-poc
+     - /Users/ac/Code/el-besto/calibration-service
    - Extract what's working, identify conflicts
-   - Prior analysis was completed here: ~/Code/el-besto/lean-clean-code/CLEAN_ARCHITECTURE_ANALYSIS.md
+   - Prior analysis is available at: /Users/ac/Code/el-besto/lean-clean-code/CLEAN_ARCHITECTURE_ANALYSIS.md
 
 2. **Review my existing phase definitions**
    - located in README.lean-clean.md for steps 3 and 4. For step 4, I dont believe we will need to redefine much if anything.
