@@ -134,7 +134,7 @@ After this reconciliation:
 
 **Must NOT:**
 - Lose valuable reference implementation insights
-- Create redundancy with `_session-02-framework-folder-structures.md`
+- Create redundancy with `sessions/_session-02-framework-folder-structures.md`
 - Introduce new terminology conflicts
 - Remove content without considering preservation alternatives
 
@@ -301,13 +301,13 @@ After reconciliation, we need to decide:
 
 ### Candidates for `/docs/` (Finalized)
 - Updated STRUCTURE.md (or renamed version)
-- `_session-02-framework-folder-structures.md` (rename without underscore?)
+- `sessions/_session-02-framework-folder-structures.md` (rename without underscore?)
 - Anything else ready for "finalized" status?
 
 ### Keep in `/plan/` (Working Documents)
-- Session-specific decision documents (`_session-02-decisions-needed.md`, etc.)
-- Context preservation files (`_session-02-all-decisions-resolved.md`)
-- Summaries (`_session-02-summary*.md`)
+- Session-specific decision documents (`sessions/_session-02-decisions-needed.md`, etc.)
+- Context preservation files (`sessions/_session-02-all-decisions-resolved.md`)
+- Summaries (`sessions/_session-02-summary*.md`)
 - Or should some move to `/docs/` as permanent record?
 
 ### Archive or Remove

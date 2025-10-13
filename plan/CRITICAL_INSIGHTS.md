@@ -5,7 +5,7 @@
 > This document was created before Session 01 architectural decisions (2025-10-13).
 >
 > **Session 01 now authoritatively defines:**
-> - **Feature/Controller concept** → See `/plan/_session-01-architectural-decisions.md` Q4
+> - **Feature/Controller concept** → See `/plan/sessions/_session-01-architectural-decisions.md` Q4
 > - **When to add controllers** → See Session 01 Q4 (Feature maps to Controller)
 > - **Progressive architecture** → See Session 01 Q5 (evolution paths)
 > - **TDD approach** → Session 01 uses pytest with BDD docstrings (Q3)

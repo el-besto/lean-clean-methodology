@@ -88,7 +88,7 @@ Open `plan/_my-task-hitl-prompt.md` and fill in:
 # Examples:
 #   plan/_framework-structure-hitl-prompt.md
 #   plan/_terminology-choices-hitl-prompt.md
-#   plan/_session-03-code-paradigms-hitl-prompt.md
+#   plan/sessions/_session-03-code-paradigms-hitl-prompt.md
 ```
 
 **1.2 Fill in required sections:**
@@ -290,7 +290,7 @@ Claude should:
 **Pattern:** `plan/_[task-name]-hitl-prompt.md`
 
 **Examples:**
-- `plan/_session-02-framework-hitl-prompt.md`
+- `plan/sessions/_session-02-framework-hitl-prompt.md`
 - `plan/_ports-adapters-terminology-hitl-prompt.md`
 - `plan/_test-structure-decisions-hitl-prompt.md`
 
@@ -305,7 +305,7 @@ Claude should:
 **Pattern:** `plan/_[matching-task-name]-decisions-needed.md`
 
 **Examples:**
-- `plan/_session-02-framework-decisions-needed.md` (matches `_session-02-framework-hitl-prompt.md`)
+- `plan/sessions/_session-02-framework-decisions-needed.md` (matches `_session-02-framework-hitl-prompt.md`)
 - `plan/_ports-adapters-terminology-decisions-needed.md`
 - `plan/_test-structure-decisions-decisions-needed.md`
 
@@ -451,7 +451,7 @@ See /plan/templates/hitl-decision-template.README.md for the process.
 **Outcome:**
 - 7 decisions resolved collaboratively
 - 5 awaiting discussion
-- Decisions document: `/plan/_session-02-decisions-needed.md`
+- Decisions document: `/plan/sessions/_session-02-decisions-needed.md`
 - Zero rework because decisions were explicit
 
 **Key lesson:** Upfront decision discovery prevents implicit choices and rework

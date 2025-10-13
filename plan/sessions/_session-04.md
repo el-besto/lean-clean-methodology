@@ -1,9 +1,9 @@
 ## Claude Instructions - Session 4: Programmatic Application & Tooling
 
 **⚠️ NOTE: This session has been split into focused sub-sessions for better execution:**
-- **Session 4a** (`_session-04a.md`): Review Guide, Agent Playbooks, and Prompt Templates
-- **Session 4b** (`_session-04b.md`): Project Scaffolding & Templates
-- **Session 4c** (`_session-04c.md`): Artifact Generation & Integration
+- **Session 4a** (`sessions/_session-04a.md`): Review Guide, Agent Playbooks, and Prompt Templates
+- **Session 4b** (`sessions/_session-04b.md`): Project Scaffolding & Templates
+- **Session 4c** (`sessions/_session-04c.md`): Artifact Generation & Integration
 
 **Use the split sessions for actual work.** This file is kept for reference.
 

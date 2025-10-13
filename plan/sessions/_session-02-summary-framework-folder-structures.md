@@ -6,7 +6,7 @@
 **Methodology:** Human-in-the-Loop Collaborative Decision-Making
 
 **Document Evolution:**
-- **Previous:** `_session-02-summary.md` (initial high-level summary)
+- **Previous:** `sessions/_session-02-summary.md` (initial high-level summary)
 - **Current:** This document (detailed framework-specific summary with all 12 decisions)
 - **Reconciliation:** ✅ COMPLETE - STRUCTURE.md reconciled, renamed to `/docs/REFERENCE-IMPLEMENTATIONS.md`
 
@@ -119,33 +119,33 @@ Full CA:         app/infrastructure/external/...    # REWORK: moved again
 ## Documents Created
 
 ### Context Preservation Files
-1. **`_session-02-all-decisions-resolved.md`** (600+ lines)
+1. **`sessions/_session-02-all-decisions-resolved.md`** (600+ lines)
    - Complete folder structures for all 3 PoC types
    - All 12 decision resolutions with rationale
    - Migration paths with bash scripts
    - Key insights and integration points
 
-2. **`_session-02-decision-9-resolution.md`** (460+ lines)
+2. **`sessions/_session-02-decision-9-resolution.md`** (460+ lines)
    - Complete drivers layer analysis
    - CLI + UI + FastAPI structures
    - DI evolution strategy
    - Context preservation for Decision 9
 
-3. **`_session-02-COMPLETE.md`** (270+ lines)
+3. **`sessions/_session-02-COMPLETE.md`** (270+ lines)
    - Session completion tracking
    - Achievements and metrics
    - Next steps roadmap
 
-4. **`_session-02-resume-prompt-understanding.md`** (270+ lines)
+4. **`sessions/_session-02-resume-prompt-understanding.md`** (270+ lines)
    - Claude's understanding of task context
    - Constraints and evaluation criteria
    - Critical architectural patterns
 
-5. **`_session-02-summary.md`** (initial summary)
+5. **`sessions/_session-02-summary.md`** (initial summary)
    - High-level session summary
    - Key insights and examples
 
-6. **`_session-02-summary-framework-folder-structures.md`** (this file)
+6. **`sessions/_session-02-summary-framework-folder-structures.md`** (this file)
    - Detailed framework-specific summary
    - All 12 decisions integrated
 
@@ -258,7 +258,7 @@ Full CA:         app/infrastructure/external/...    # REWORK: moved again
 
 **Estimated Effort:** 2-4 weeks
 
-**Bash scripts provided in:** `_session-02-all-decisions-resolved.md`
+**Bash scripts provided in:** `sessions/_session-02-all-decisions-resolved.md`
 
 ---
 
@@ -325,15 +325,15 @@ Full CA:         app/infrastructure/external/...    # REWORK: moved again
 ## References
 
 ### Session 02 Documents (in reading order)
-1. `_session-02-resume-prompt.md` - Task context and scope
-2. `_session-02-resume-prompt-understanding.md` - Claude's understanding
-3. `_session-02-decisions-needed.md` - All 12 decisions with resolutions
-4. `_session-02-decision-9-resolution.md` - Drivers layer deep dive
-5. `_session-02-all-decisions-resolved.md` - Complete decision context (600+ lines)
-6. `_session-02-framework-folder-structures.md` - Framework implementation (1,740 lines)
-7. `_session-02-COMPLETE.md` - Completion tracking
-8. `_session-02-summary.md` - Initial high-level summary
-9. `_session-02-summary-framework-folder-structures.md` - This document (detailed summary)
+1. `sessions/_session-02-resume-prompt.md` - Task context and scope
+2. `sessions/_session-02-resume-prompt-understanding.md` - Claude's understanding
+3. `sessions/_session-02-decisions-needed.md` - All 12 decisions with resolutions
+4. `sessions/_session-02-decision-9-resolution.md` - Drivers layer deep dive
+5. `sessions/_session-02-all-decisions-resolved.md` - Complete decision context (600+ lines)
+6. `sessions/_session-02-framework-folder-structures.md` - Framework implementation (1,740 lines)
+7. `sessions/_session-02-COMPLETE.md` - Completion tracking
+8. `sessions/_session-02-summary.md` - Initial high-level summary
+9. `sessions/_session-02-summary-framework-folder-structures.md` - This document (detailed summary)
 
 ### Finalized Documents
 - `/docs/lean-clean-axioms.md` - Core principles (updated)
@@ -383,7 +383,7 @@ Full CA:         app/infrastructure/external/...    # REWORK: moved again
 ## Document Evolution Notes
 
 **Why Two Summaries?**
-- `_session-02-summary.md` - Created early, focused on high-level insights and key examples
+- `sessions/_session-02-summary.md` - Created early, focused on high-level insights and key examples
 - This document - Created at session end, comprehensive with all 12 decisions integrated
 - Both preserved to show evolution of thinking during Session 02
 
@@ -395,4 +395,4 @@ Read both summaries to understand the progression:
 
 ---
 
-*This summary is designed to be read independently or as part of Session 02 documentation. For complete context, see `_session-02-all-decisions-resolved.md`.*
+*This summary is designed to be read independently or as part of Session 02 documentation. For complete context, see `sessions/_session-02-all-decisions-resolved.md`.*

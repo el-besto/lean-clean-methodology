@@ -5,7 +5,7 @@
 > This document was created on 2025-10-12, before Session 01 architectural decisions (2025-10-13).
 >
 > **Session 01 now authoritatively defines:**
-> - **PoC types** → See `/plan/_session-01-architectural-decisions.md` Q1 (Steel Thread, Pragmatic CA, Full CA)
+> - **PoC types** → See `/plan/sessions/_session-01-architectural-decisions.md` Q1 (Steel Thread, Pragmatic CA, Full CA)
 > - **pytest approach** → See Session 01 Q3 (pytest with BDD docstrings, not Gherkin)
 > - **Phase structure** → See `README.md` (refined with PoC type evolution)
 >

@@ -79,23 +79,23 @@ Enterprise PoCs: **CLI + UI from day 1**
 ## Documents Created/Updated
 
 ### Created:
-1. **`_session-02-all-decisions-resolved.md`** (600+ lines)
+1. **`sessions/_session-02-all-decisions-resolved.md`** (600+ lines)
    - Complete folder structures for all 3 PoC types
    - All 12 decision resolutions with rationale
    - Migration paths with bash scripts
    - Key insights and integration points
 
-2. **`_session-02-decision-9-resolution.md`** (460+ lines)
+2. **`sessions/_session-02-decision-9-resolution.md`** (460+ lines)
    - Complete drivers layer analysis
    - CLI + UI + FastAPI structures
    - DI evolution strategy
    - Context preservation for Decision 9
 
-3. **`_session-02-COMPLETE.md`** (this file)
+3. **`sessions/_session-02-COMPLETE.md`** (this file)
    - Session completion summary
 
 ### Updated:
-1. **`_session-02-decisions-needed.md`**
+1. **`sessions/_session-02-decisions-needed.md`**
    - Status: ALL 12 DECISIONS RESOLVED
    - Comprehensive resolutions for Decisions 8-12
    - Ready for implementation phase
@@ -104,7 +104,7 @@ Enterprise PoCs: **CLI + UI from day 1**
    - Axiom 3: Two types of fakes
    - Axiom 5: DTO naming and locations
 
-3. **`_session-02-resume-prompt-understanding.md`**
+3. **`sessions/_session-02-resume-prompt-understanding.md`**
    - Updated with all resolved decisions
 
 4. **`/lean-clean-blog/drafts/_wip-lean-clean-the-secret-sauce.md`**
@@ -155,7 +155,7 @@ Full CA:         app/infrastructure/external/...    # REWORK: moved again
 
 ## Complete Folder Structures Reference
 
-**See:** `_session-02-all-decisions-resolved.md`
+**See:** `sessions/_session-02-all-decisions-resolved.md`
 
 Contains complete, copy-paste ready structures for:
 - Steel Thread (1-2 days)
@@ -169,17 +169,17 @@ Plus migration paths with bash scripts.
 ## Next Steps (Implementation Phase)
 
 ### 1. Update Framework Document ⏳
-**File:** `_session-02-framework-folder-structures.md`
+**File:** `sessions/_session-02-framework-folder-structures.md`
 
 **Updates needed:**
 - Incorporate all 12 resolved decisions
 - Update Steel Thread section with drivers/ folder
 - Update Pragmatic CA with co-located ports + minimal DTOs
 - Update Full CA with extracted ports + use case DTOs
-- Add migration paths (already scripted in `_session-02-all-decisions-resolved.md`)
+- Add migration paths (already scripted in `sessions/_session-02-all-decisions-resolved.md`)
 - Ensure code examples match resolved patterns
 
-**Reference:** Use `_session-02-all-decisions-resolved.md` as source of truth
+**Reference:** Use `sessions/_session-02-all-decisions-resolved.md` as source of truth
 
 ### 2. Verify Consistency ⏳
 - [x] Axioms document (already updated)
@@ -189,7 +189,7 @@ Plus migration paths with bash scripts.
 - [ ] Code examples match patterns
 
 ### 3. Create Final Session Summary ⏳
-**File:** `_session-02-summary.md`
+**File:** `sessions/_session-02-summary.md`
 
 **Contents:**
 - What was accomplished

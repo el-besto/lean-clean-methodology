@@ -5,7 +5,7 @@
 > This document was created on 2025-10-12, before Session 01 architectural decisions (2025-10-13).
 >
 > **Session 01 now authoritatively defines:**
-> - **pytest vs Gherkin** → See `/plan/_session-01-architectural-decisions.md` Q3 (pytest with BDD docstrings)
+> - **pytest vs Gherkin** → See `/plan/sessions/_session-01-architectural-decisions.md` Q3 (pytest with BDD docstrings)
 > - **Feature/Controller concept** → See Session 01 Q4 (Feature maps to Controller)
 > - **TDD approach integration** → Deferred to future session
 >

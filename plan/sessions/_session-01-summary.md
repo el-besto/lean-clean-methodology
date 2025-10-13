@@ -61,7 +61,7 @@ Architectural decisions document explicitly calls out Session 02 work:
 
 | Criterion | Status | Evidence |
 |-----------|--------|----------|
-| Divergent questions answered with rationale | ✅ Complete | `_session-01-architectural-decisions.md` |
+| Divergent questions answered with rationale | ✅ Complete | `sessions/_session-01-architectural-decisions.md` |
 | Methodology phases defined and documented | ✅ Complete | `README.md` (refined) |
 | Foundation for Framework definition | ✅ Complete | Session 02 scope defined |
 
