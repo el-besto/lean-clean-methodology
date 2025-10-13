@@ -95,7 +95,6 @@ The methodology uses specific syntax for agent compatibility:
 - `_howto/NOTES_HowToUse.md` - Repo bootstrap and app skeleton setup
 - `_howto/NOTES_HowToUse_dayOf.md` - Day-of-demo workflow
 - `_howto/NOTES.md` - Tips, tricks, and bundle explanations
-- `_howto/cursor/suggested_artifacts.md` - Cursor IDE setup guide with `.cursorrules` and task prompts
 
 ### Visual Documentation
 - `images/IMAGE_ANALYSIS.md` - Comprehensive analysis of all visual assets
@@ -265,15 +264,6 @@ class S3StorageAdapter(IStorageAdapter):
 - Easy substitution for testing (use LocalStorage in tests, S3 in production)
 - Technology-agnostic Use Cases
 - Supports Phase 8 observability (wrap adapters with telemetry)
-
-## Working with Cursor IDE
-
-When using Cursor for development:
-
-1. Create `.cursorrules` at repo root with constraints and scope
-2. Use task prompt templates from `_howto/cursor/suggested_artifacts.md`
-3. Implement one epic/task at a time in small slices
-4. Keep MCP policy constraints for filesystem, shell, and HTTP access
 
 ## Validation and CI
 
