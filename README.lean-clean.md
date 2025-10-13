@@ -32,26 +32,89 @@ The goal is to turn *rough requirements* into an **implemented, testable PoC** w
 
 ## 🏗️ Framework Structure
 
-**Note:** The methodology supports three PoC types—**Steel Thread** (1-2 days, minimal layers), **Pragmatic CA** (3-5 days, controllers + presenters), and **Full CA** (production-ready, comprehensive layers). Structure below represents Pragmatic CA. See Session 01 architectural decisions for progression paths.
+**Note:** The methodology supports three PoC types—**Steel Thread** (1-2 days, minimal layers), **Pragmatic CA** (3-5 days, orchestrators + presenters), and **Full CA** (production-ready, comprehensive layers). Structure below represents Pragmatic CA.
+
+**For complete folder structures, code examples, and evolution paths, see:**
+- [`/docs/framework-folder-structures.md`](docs/framework-folder-structures.md) - Authoritative framework structures for all 3 PoC types
+- [`/docs/REFERENCE-IMPLEMENTATIONS.md`](docs/REFERENCE-IMPLEMENTATIONS.md) - Analysis of reference implementations
+
+### Pragmatic CA Structure (Clean Architecture)
 
 ```
-app/
-├─ core/          # Domain models & use cases
-├─ adapters/      # Infrastructure: storage, imagegen, vector, db
-├─ utils/         # Helpers: observability, manifest, brief loader
-├─ server.py      # FastAPI (optional micro-API)
-├─ models.py      # SQLAlchemy models (Run, Approval, Alert)
-└─ db.py          # DB session utilities (Postgres)
-tools/
-├─ agent_watcher.py   # Experimental automation watcher
-├─ init_db.py         # Create tables
-└─ validate.py        # Schema validation CLI
-streamlit_app.py      # Simple UI dashboard for approvals and status
-docker-compose.yaml   # Full stack (poc-app, api, streamlit, weaviate, phoenix, postgres)
-Makefile              # Developer commands (up, down, test, db-init, watch)
-pyproject.toml        # uv-managed dependencies
-tests/                # pytest suite
+campaign-generator/
+├─ app/
+│  ├─ entities/                        # Domain models
+│  │  └─ campaign.py
+│  ├─ use_cases/                       # Business logic
+│  │  └─ generate_campaign_uc.py
+│  ├─ interface_adapters/              # Orchestrators & Presenters
+│  │  ├─ orchestrators/
+│  │  │  └─ campaign_orchestrator.py
+│  │  └─ presenters/
+│  │     └─ campaign_presenter.py
+│  ├─ adapters/                        # External services (OpenAI, S3)
+│  │  ├─ imagegen/
+│  │  │  ├─ protocol.py
+│  │  │  ├─ fake.py
+│  │  │  └─ openai.py
+│  │  └─ storage/
+│  │     ├─ protocol.py
+│  │     ├─ fake.py
+│  │     └─ s3.py
+│  └─ infrastructure/                  # Persistence (Postgres, MongoDB)
+│     └─ repositories/
+│        └─ campaign/
+│           ├─ protocol.py
+│           ├─ in_memory.py
+│           └─ postgres.py
+│
+├─ drivers/                            # Entry points (CLI + UI always)
+│  ├─ cli/
+│  │  └─ commands.py
+│  ├─ rest/                            # When enterprise integration needed
+│  │  ├─ main.py
+│  │  └─ schemas/
+│  └─ ui/
+│     └─ streamlit/
+│        └─ app.py
+│
+├─ tests/                              # Three-layer test structure
+│  ├─ acceptance/                      # Stakeholder contracts (always fakes)
+│  ├─ unit/                            # Isolated logic tests
+│  └─ integration/                     # Real service tests
+│
+├─ tools/                              # Development utilities
+│  ├─ validate.py
+│  └─ init_db.py
+│
+├─ pyproject.toml
+├─ Makefile
+└─ docker-compose.yaml
 ```
+
+### Phase 8 Extensions (Agentic + Observability)
+
+When implementing Phase 8 (Agentic System Design), extend the structure:
+
+```
+tools/
+├─ agent_watcher.py              # Automation watcher
+├─ validate.py
+└─ init_db.py
+
+drivers/
+└─ observability/                # Observability adapters
+   ├─ phoenix.py
+   └─ arize.py
+
+docker-compose.yaml              # Full stack (app, phoenix, weaviate, postgres)
+```
+
+**Key Patterns:**
+- **Drivers layer** - CLI + UI always (Enterprise PoC Reality)
+- **Fakes in production code** - `adapters/*/fake.py` and `infrastructure/repositories/*/in_memory.py`
+- **Orchestrators not Controllers** - Stakeholder-friendly terminology
+- **Outside-In TDD** - Acceptance tests with stakeholders → fakes → real adapters
 
 ---
 
@@ -177,6 +240,17 @@ tests/                # pytest suite
 - Define interface boundaries (ports/adapters)
 - Plan code skeletons aligned to selected PoC type's layering strategy
 
+**PoC Type Selection:**
+
+| PoC Type | Timeline | Use Case | Evolution Trigger |
+|----------|----------|----------|-------------------|
+| **Steel Thread** | 1-2 days | Technical feasibility spike | Stakeholders approved, need production path |
+| **Pragmatic CA** | 3-5 days | Multi-stakeholder workshop output | Scaling to multi-team or complex domain |
+| **Full CA** | Production | Production-grade system | Already in production |
+
+**For detailed folder structures and migration paths, see:**
+- [`/docs/framework-folder-structures.md`](docs/framework-folder-structures.md) - Complete structures for all 3 types
+
 **Outputs:**
 
 - **PoC type decision** with rationale (speed vs. rigor trade-off)
@@ -192,15 +266,25 @@ tests/                # pytest suite
 
 **Activities:**
 
-- Build incrementally following steel thread 
-- Test against success metrics 
-- Capture learnings, blockers, architectural insights 
+- Build incrementally following steel thread
+- Test against success metrics
+- Capture learnings, blockers, architectural insights
 - Iterate or pivot
+
+**Testing Approach:**
+
+For enterprise PoCs with multiple stakeholders, use **Outside-In TDD**:
+1. Write acceptance tests with stakeholders (executable specifications)
+2. Implement with fakes (fast feedback, no API costs)
+3. Implement real adapters (parallel development)
+
+**For complete Outside-In workflow and examples, see:**
+- [`/docs/framework-folder-structures.md` Section 2](docs/framework-folder-structures.md#2-complete-feature-example-localized-campaign-generation) - Complete feature example with acceptance tests
 
 **Outputs:**
 
-- Working PoC 
-- Validation report (what worked, what didn’t)
+- Working PoC
+- Validation report (what worked, what didn't)
 - Recommendations for next iteration or production hardening
 
 ### Phase 7: Reflection & Knowledge Capture
@@ -215,6 +299,18 @@ tests/                # pytest suite
 - Update reusable templates, boilerplates, and playbooks
 - Conduct a retrospective ("what would we do differently?")
 - **Decide evolution path:** Stay at current PoC type, evolve to next level, or retire
+
+**Evolution Decision Criteria:**
+
+**Steel Thread → Pragmatic CA:** When stakeholders approved and need production readiness
+**Pragmatic CA → Full CA:** When scaling to multi-team, production load, or complex domain
+
+**For migration checklists and bash commands, see:**
+- [`/docs/framework-folder-structures.md` Section 5](docs/framework-folder-structures.md#5-evolution-path-how-poc-types-relate) - Complete migration paths
+
+**Typical Evolution Time:**
+- Steel Thread → Pragmatic CA: 1-2 days
+- Pragmatic CA → Full CA: 2-4 weeks
 
 **Outputs:**
 
