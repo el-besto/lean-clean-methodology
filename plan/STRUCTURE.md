@@ -1,5 +1,16 @@
 # PoC Project Structure Analysis & Recommendations
 
+> **⚠️ SUPERSEDED BY SESSION 01**
+>
+> This document was created on 2025-10-11, before Session 01 architectural decisions (2025-10-13).
+>
+> **Session 01 now authoritatively defines:**
+> - **PoC types** (Steel Thread, Pragmatic CA, Full CA) → See `/plan/_session-01-architectural-decisions.md` Q1
+> - **Evolution paths** between PoC types → See Session 01 Q5
+> - **Cross-cutting concerns placement** → See Session 01 Q2
+>
+> This file remains for detailed reference implementation analysis (calibration-service, creative-ai-poc, lean-clean-core-skeleton) but **defer to Session 01 for architectural decisions.**
+
 ## Executive Summary
 
 This document synthesizes findings from three reference implementations to define a baseline PoC skeleton for the Lean-Clean Methodology. The analysis examines:

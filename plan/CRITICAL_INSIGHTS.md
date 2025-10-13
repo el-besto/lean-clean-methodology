@@ -1,5 +1,17 @@
 # Critical Insights: Controller vs Mapper Distinction
 
+> **⚠️ SUPERSEDED BY SESSION 01**
+>
+> This document was created before Session 01 architectural decisions (2025-10-13).
+>
+> **Session 01 now authoritatively defines:**
+> - **Feature/Controller concept** → See `/plan/_session-01-architectural-decisions.md` Q4
+> - **When to add controllers** → See Session 01 Q4 (Feature maps to Controller)
+> - **Progressive architecture** → See Session 01 Q5 (evolution paths)
+> - **TDD approach** → Session 01 uses pytest with BDD docstrings (Q3)
+>
+> This file remains for detailed controller analysis and TDD patterns but **defer to Session 01 for architectural decisions.**
+
 ## Discovery
 
 The CLEAN_ARCHITECTURE_ANALYSIS from the lean-clean-code project reveals a **fundamental architectural decision** that impacts our structure recommendations:
