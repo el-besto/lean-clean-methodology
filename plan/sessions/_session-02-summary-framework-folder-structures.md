@@ -8,7 +8,7 @@
 **Document Evolution:**
 - **Previous:** `sessions/_session-02-summary.md` (initial high-level summary)
 - **Current:** This document (detailed framework-specific summary with all 12 decisions)
-- **Reconciliation:** ✅ COMPLETE - STRUCTURE.md reconciled, renamed to `/docs/REFERENCE-IMPLEMENTATIONS.md`
+- **Reconciliation:** ✅ COMPLETE - STRUCTURE.md reconciled, renamed to `/docs/references/implementations.md`
 
 ---
 
@@ -289,7 +289,7 @@ Full CA:         app/infrastructure/external/...    # REWORK: moved again
 **Status:** COMPLETE (2025-10-13)
 
 **Outcome:**
-- STRUCTURE.md renamed to `/docs/REFERENCE-IMPLEMENTATIONS.md`
+- STRUCTURE.md renamed to `/docs/references/implementations.md`
 - All terminology updated to Session 02 standards (entities/, orchestrators/)
 - Framework document finalized at `/docs/framework-folder-structures.md`
 - Cross-references properly wired between documents
@@ -338,7 +338,7 @@ Full CA:         app/infrastructure/external/...    # REWORK: moved again
 ### Finalized Documents
 - `/docs/lean-clean-axioms.md` - Core principles (updated)
 - `/docs/framework-folder-structures.md` - Authoritative framework structures (moved from plan/)
-- `/docs/REFERENCE-IMPLEMENTATIONS.md` - Reference implementation analysis (renamed from STRUCTURE.md)
+- `/docs/references/implementations.md` - Reference implementation analysis (renamed from STRUCTURE.md)
 - `/lean-clean-blog/drafts/_wip-lean-clean-the-secret-sauce.md` - Stakeholder communication (updated)
 
 ### Visual References
@@ -391,7 +391,7 @@ Full CA:         app/infrastructure/external/...    # REWORK: moved again
 Read both summaries to understand the progression:
 1. Initial summary captured early insights (Feature = Controller pattern, nikolovlazar foundation)
 2. Final summary captures complete architectural decisions and patterns
-3. ✅ Reconciliation complete - See `/docs/REFERENCE-IMPLEMENTATIONS.md` and `/docs/framework-folder-structures.md`
+3. ✅ Reconciliation complete - See `/docs/references/implementations.md` and `/docs/framework-folder-structures.md`
 
 ---
 

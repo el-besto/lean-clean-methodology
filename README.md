@@ -1,3 +1,23 @@
+```
+┌─────────────────────────────┐
+│   LEAN-CLEAN METHODOLOGY    │
+├─────────────────────────────┤
+│  Workshop → Tests → Code    │
+└─────────────────────────────┘
+```
+
+```
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃  LEAN-CLEAN METHODOLOGY                ┃
+┃  ────────────────────────              ┃
+┃  Write Tests WITH Stakeholders         ┃
+┃  Validate BEFORE Building              ┃
+┃  Evolve WITHOUT Rewrites               ┃
+┃                                         ┃
+┃  $200 • 5 Days • Production Ready      ┃
+┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
+```
+
 # Lean-Clean Methodology
 _A pragmatic framework for designing, prototyping, and operationalizing AI-driven systems._
 
@@ -36,7 +56,7 @@ The goal is to turn *rough requirements* into an **implemented, testable PoC** w
 
 **For complete folder structures, code examples, and evolution paths, see:**
 - [`/docs/framework-folder-structures.md`](docs/framework-folder-structures.md) - Authoritative framework structures for all 3 PoC types
-- [`/docs/REFERENCE-IMPLEMENTATIONS.md`](docs/REFERENCE-IMPLEMENTATIONS.md) - Analysis of reference implementations
+- [`/docs/references/implementations.md`](docs/references/implementations.md) - Analysis of reference implementations
 
 ### Pragmatic CA Structure (Clean Architecture)
 

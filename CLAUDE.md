@@ -194,7 +194,7 @@ The methodology supports three PoC types with progressive evolution:
 **For complete folder structures, code examples, and migration paths, see:**
 
 - [`/docs/framework-folder-structures.md`](docs/framework-folder-structures.md) - Authoritative framework structures for all 3 PoC types
-- [`/docs/REFERENCE-IMPLEMENTATIONS.md`](docs/REFERENCE-IMPLEMENTATIONS.md) - Analysis of reference implementations
+- [`/docs/references/implementations.md`](docs/references/implementations.md) - Analysis of reference implementations
 
 **Quick Reference - Pragmatic CA Structure:**
 
@@ -285,7 +285,7 @@ The methodology uses specific syntax for agent compatibility:
 
 - `lean-clean-axioms.md` - Core architectural principles and foundational decisions
 - `framework-folder-structures.md` - Authoritative framework structures for all 3 PoC types (Steel Thread, Pragmatic CA, Full CA)
-- `REFERENCE-IMPLEMENTATIONS.md` - Analysis of reference implementations with Session 02 alignment notes
+- `references/implementations.md` - Analysis of reference implementations with Session 02 alignment notes
 
 ### Methodology Core
 

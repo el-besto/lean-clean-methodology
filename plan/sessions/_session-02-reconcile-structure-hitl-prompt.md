@@ -261,7 +261,7 @@ Consider these approaches (will need decisions for each section):
 - Extract reference implementation analysis to separate doc
 - Update recommendations to match Session 02
 - Create clear document boundaries (what STRUCTURE.md covers vs framework doc)
-- Possible rename: `REFERENCE-IMPLEMENTATIONS.md`?
+- Possible rename: `references/implementations.md`?
 
 ### Option D: Hybrid Approach
 - Preserve reference implementation analysis
