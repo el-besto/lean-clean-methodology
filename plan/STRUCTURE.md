@@ -9,7 +9,7 @@
 > - **Evolution paths** between PoC types → See Session 01 Q5
 > - **Cross-cutting concerns placement** → See Session 01 Q2
 >
-> This file remains for detailed reference implementation analysis (calibration-service, creative-ai-poc, lean-clean-core-skeleton) but **defer to Session 01 for architectural decisions.**
+> This file remains for detailed reference implementation analysis (calibration-service, creative-ai-poc, lean-clean-core-skeleton) but **defer to Session 01, and 02 for architectural decisions.**
 
 ## Executive Summary
 
