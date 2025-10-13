@@ -8,6 +8,103 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 **Current Status:** Living documentation repository (no implementation code yet)
 
+## 🚨 Default Working Mode: Human-in-the-Loop Collaboration
+
+**CRITICAL:** This repository requires a different working mode than typical code repositories.
+
+### This is a Living Methodology Repository
+
+Unlike code repositories where Claude can make autonomous implementation decisions, this repository is about **defining the methodology itself**. Most work involves architectural decisions, framework design, terminology choices, and pattern definitions that require **intimate human collaboration**.
+
+### Default Mode: Collaborative Decision-Making
+
+**When working in this repository, you MUST:**
+
+1. ❌ **DO NOT make unilateral decisions** about:
+   - Architecture patterns and folder structures
+   - Naming conventions and terminology
+   - Framework definitions and layer responsibilities
+   - Design patterns and paradigm choices
+   - Any work where "there are multiple ways to do this"
+
+2. ✅ **DO follow this process:**
+   - **Identify ALL decisions upfront** before creating any documents or code
+   - **Present options with trade-offs** for each decision
+   - **Wait for explicit approval** before proceeding with implementation
+   - **Document the rationale** for each choice after it's made
+
+3. ✅ **DO use the Human-in-the-Loop template:**
+   - Template location: `/plan/templates/hitl-decision-template.md`
+   - Copy and customize the template for each major task
+   - Follow the Decision Discovery → Present Options → Get Approval → Implement workflow
+
+### Why This Mode is Critical
+
+**Living methodology work is different from code implementation:**
+
+- **Code repos:** "How to implement X?" (often one clear best practice)
+- **This repo:** "Should we use pattern X or Y?" (multiple valid approaches, trade-offs matter)
+
+**Mistakes are expensive here:**
+- Unilateral architectural choices require rework across multiple documents
+- Terminology decisions affect consistency throughout the methodology
+- Pattern choices impact downstream framework definitions
+
+**Example from Session 02:**
+- Claude created framework with implicit choices about drivers/, gateways/, DTOs
+- Required discovering 5 additional decisions after initial work
+- Needed rework and split across multiple sessions
+- Could have been avoided with upfront decision discovery
+
+### When Autonomous Work is Appropriate
+
+You CAN work autonomously for:
+- ✅ Simple documentation formatting fixes
+- ✅ Typo corrections and grammar improvements
+- ✅ Adding examples to already-defined patterns
+- ✅ Updating cross-references between documents
+- ✅ Implementing already-decided designs
+
+You CANNOT work autonomously for:
+- ❌ Defining new architectural patterns
+- ❌ Creating framework folder structures
+- ❌ Choosing terminology or naming conventions
+- ❌ Resolving conflicts between design approaches
+- ❌ Making strategic methodology decisions
+
+### How to Start Tasks in This Repo
+
+**Template for Starting Work:**
+
+```markdown
+# Task: [Your Task Name]
+
+## Decision-Making Mode: Human-in-the-Loop ⚠️
+
+[Copy from /plan/templates/hitl-decision-template.md]
+
+## Your First Task: Decision Discovery
+
+Before writing ANY code or creating ANY documents:
+1. Analyze the task requirements thoroughly
+2. Identify ALL architectural decisions that need to be made
+3. Research relevant context (read analysis docs, axioms, prior decisions)
+4. Create a decisions document listing every choice point
+5. Present the decisions document to me for review
+```
+
+**See `/plan/templates/hitl-decision-template.md` for the complete template.**
+
+### Session Continuity
+
+When resuming work across sessions:
+- Reference `/plan/templates/session-starter-template.md` (if it exists)
+- Load relevant decisions documents from previous sessions
+- Review axioms and prior architectural decisions
+- Confirm understanding before proceeding
+
+---
+
 ## Core Architecture Philosophy
 
 The methodology follows an 8-phase approach (P0-P8) for turning rough requirements into implemented, testable PoCs:
