@@ -1,6 +1,6 @@
 # Session 02: Framework Decisions Needed
 
-**Status:** ✅ 7 of 12 Resolved | 🚧 5 Awaiting Discussion
+**Status:** ✅ **ALL 12 DECISIONS RESOLVED**
 
 This document captures the key architectural decisions for Framework folder structures.
 
@@ -385,11 +385,43 @@ Is this the right location for fakes?
   - Pro: Clear boundary
   - Con: Extra top-level folder
 
-**Your decision:** [AWAITING INPUT]
+**Your decision:** ✅ **Option A: In `adapters/`** (with important caveat)
 
 **Rationale:**
 
-**Impact:** MEDIUM - Philosophical question about fakes
+**Alignment with Axiom 3:**
+- Axiom 3 is non-negotiable: "Fakes are production code" in `adapters/`
+- Supports workshop workflow: stakeholders demo with fakes before real APIs
+- Philosophy: Fakes ARE implementations (not test doubles)
+
+**Progressive Evolution:**
+- Steel Thread → Pragmatic CA: Nest into subfolders (minimal import changes)
+- Pragmatic CA → Full CA: Rename files within same location
+- No layer changes = no rework
+
+**Important Caveat - Two Types of "Fakes":**
+
+1. **Fake Adapters** (External Services) → `app/adapters/`
+   - `FakeImageGenerator` - simulates OpenAI API
+   - `FakeStorageAdapter` - simulates S3 API
+   - `FakeEventTracker` - simulates analytics API
+   - Location: `app/adapters/` per Axiom 3
+
+2. **In-Memory Repositories** (Persistence) → `app/infrastructure/repositories/`
+   - `InMemoryCalibrationRepository` - simulates database storage
+   - `InMemoryCampaignRepository` - simulates database storage
+   - Location: `app/infrastructure/repositories/` per calibration-service pattern
+   - See Decision 10 for full infrastructure layer organization
+
+**Key Distinction:**
+- Adapters = external service integrations (OpenAI, S3, Amplitude)
+- Repositories = persistence layer (Postgres, MongoDB, In-Memory)
+- Both are "fakes" conceptually, but live in different layers
+
+**Connection to Decision 10:**
+This decision primarily addresses fake **adapters** for external services. Decision 10 will determine the full infrastructure layer structure including where in-memory repositories live.
+
+**Impact:** MEDIUM - Philosophical question about fakes, affects test imports and mental model
 
 ---
 
@@ -404,10 +436,16 @@ Is this the right location for fakes?
 - **Lean-clean**: Has `drivers/rest/controllers/` with thin mappers
 - **nikolovlazar diagram**: Shows "Frameworks & Drivers" as outermost layer
 
+**Critical Enterprise PoC Reality:**
+From workshop context: Tests and code written WITH stakeholders in 90-minute workshops. Stakeholders need:
+- **Visual feedback** (Streamlit UI) - Creative Lead sees campaign images
+- **Automation** (CLI) - Reproducible runs, CI/CD integration
+- **Integration** (FastAPI) - When connecting to enterprise systems
+
 **Question for you:**
 Should we have an explicit `drivers/` layer?
 
-- [ ] **Option A: No drivers/ folder** (what I did)
+- [ ] **Option A: No drivers/ folder**
   ```
   project/
   ├─ server.py          # FastAPI entry point
@@ -417,6 +455,7 @@ Should we have an explicit `drivers/` layer?
   ```
   - Pro: Simpler, fewer folders
   - Con: Entry points mixed with app code, unclear layer boundary
+  - ❌ **Rejected:** Even Steel Thread needs CLI + UI = multiple entry points
 
 - [ ] **Option B: drivers/rest/ with routers** (calibration-service pattern)
   ```
@@ -432,6 +471,7 @@ Should we have an explicit `drivers/` layer?
   ```
   - Pro: Clear layer boundary, framework concerns isolated
   - Con: More nesting
+  - ⚠️ **Incomplete:** Missing CLI and UI drivers
 
 - [ ] **Option C: drivers/ calls use cases directly** (lean-clean pattern)
   ```
@@ -442,12 +482,410 @@ Should we have an explicit `drivers/` layer?
   ```
   - Pro: Skip orchestration for simple PoCs
   - Con: Violates CA (should call orchestrators, not use cases)
+  - ❌ **Rejected:** Conflicts with Axiom 2 (Orchestrator-Centric)
 
-**Your decision:** [AWAITING INPUT]
+**Your decision:** ✅ **Progressive Evolution with Enterprise Reality** (new option)
 
 **Rationale:**
 
-**Impact:** HIGH - Affects project structure and entry point organization
+**Enterprise PoC Reality:**
+- ✅ **CLI ALWAYS** - Automation, reproducibility, CI/CD
+- ✅ **UI ALWAYS** - Stakeholder demos (Creative Lead, Ad Ops, Legal)
+- ⚠️ **FastAPI WHEN NEEDED** - Enterprise integrations, webhooks, external access
+
+**Progressive Evolution Approach:**
+
+### **Steel Thread (1-2 days): Minimal drivers/ with CLI + UI**
+
+```
+project/
+├─ app/
+│  ├─ entities/
+│  │  └─ campaign.py                  # Domain model
+│  ├─ use_cases/
+│  │  └─ generate_campaign_uc.py      # Business logic
+│  └─ adapters/
+│     ├─ imagegen/
+│     │  ├─ protocol.py               # IImageGenerator interface
+│     │  ├─ fake.py                   # Fast fake for workshops
+│     │  └─ openai.py                 # Real implementation
+│     └─ storage/
+│        ├─ protocol.py               # IStorageAdapter interface
+│        ├─ fake.py                   # In-memory
+│        └─ local.py                  # Filesystem
+│
+├─ drivers/                            # ← YES, even Steel Thread
+│  ├─ cli.py                           # Automation, reproducibility
+│  └─ ui/
+│     └─ streamlit_app.py              # Stakeholder visual demos
+│
+└─ .streamlit/
+   └─ config.toml                      # Streamlit configuration
+```
+
+**Why drivers/ from the start:**
+- ✅ CLI + UI = 2 entry points → folder organization warranted
+- ✅ Stakeholders need visual feedback (not just CLI logs)
+- ✅ Clear mental model: "drivers call use cases"
+- ✅ No refactoring when adding FastAPI later
+
+**Example: CLI (Direct DI):**
+```python
+# drivers/cli.py
+import typer
+from app.use_cases.generate_campaign_uc import GenerateCampaignUseCase
+from app.adapters.imagegen.fake import FakeImageGenerator  # Fast for demos
+
+app = typer.Typer()
+
+@app.command()
+def run(brief_path: str):
+    uc = GenerateCampaignUseCase(
+        image_gen=FakeImageGenerator(),  # Fake for speed
+        storage=LocalStorage()
+    )
+    result = uc.execute(load_brief(brief_path))
+    typer.echo(f"✓ Generated {len(result.campaigns)} campaigns")
+```
+
+**Example: Streamlit UI (Stakeholder Demo):**
+```python
+# drivers/ui/streamlit_app.py
+import streamlit as st
+from app.use_cases.generate_campaign_uc import GenerateCampaignUseCase
+from app.adapters.imagegen.fake import FakeImageGenerator
+
+st.title("🎨 Localized Campaign Generator")
+
+# Creative Lead inputs
+brand_colors = st.color_picker("Primary Brand Color", "#FF6B35")
+tone = st.selectbox("Tone", ["energetic", "premium", "playful"])
+
+if st.button("Generate Summer Sale Campaign"):
+    uc = GenerateCampaignUseCase(
+        image_gen=FakeImageGenerator(),  # Fast for workshop
+        storage=LocalStorage()
+    )
+
+    with st.spinner("Generating campaigns..."):
+        result = uc.execute(sample_brief)
+
+    # Show to Creative Lead
+    for campaign in result.campaigns:
+        st.image(campaign.image_url)
+        st.caption(f"Market: {campaign.market}")
+```
+
+---
+
+### **Pragmatic CA (3-5 days): Organized drivers/ with orchestrators**
+
+```
+project/
+├─ app/
+│  ├─ entities/                        # Domain models
+│  ├─ use_cases/                       # Business logic
+│  ├─ interface_adapters/
+│  │  ├─ orchestrators/
+│  │  │  └─ campaign_orchestrator.py  # Coordinates use cases
+│  │  └─ presenters/
+│  │     └─ campaign_presenter.py     # Format outputs
+│  ├─ adapters/                        # External services
+│  │  ├─ imagegen/
+│  │  ├─ storage/
+│  │  └─ events/
+│  └─ infrastructure/                  # Persistence (if needed)
+│     └─ repositories/
+│        └─ campaign/
+│
+├─ drivers/
+│  ├─ cli/
+│  │  ├─ __main__.py                   # Entry point: python -m drivers.cli
+│  │  ├─ commands.py                   # Typer commands organized
+│  │  └─ dependencies.py               # DI container for CLI
+│  │
+│  ├─ rest/                             # ← Added when integrating with enterprise
+│  │  ├─ main.py                       # FastAPI app
+│  │  ├─ routers/
+│  │  │  └─ campaigns.py               # Campaign endpoints
+│  │  ├─ schemas/                      # Pydantic request/response
+│  │  │  ├─ campaign_request.py
+│  │  │  └─ campaign_response.py
+│  │  └─ dependencies.py               # FastAPI DI
+│  │
+│  └─ ui/
+│     └─ streamlit/
+│        ├─ app.py                     # Main Streamlit entry
+│        ├─ pages/                     # Multi-page app
+│        │  ├─ 1_generate.py          # Creative Lead: Generate campaigns
+│        │  └─ 2_approve.py           # Legal: Approve content
+│        └─ dependencies.py            # Streamlit DI
+│
+└─ .streamlit/
+   └─ config.toml
+```
+
+**When to add FastAPI:**
+- ✅ Integration with enterprise DAM system
+- ✅ External stakeholders need API access
+- ✅ Webhook receivers for approval workflows
+- ✅ Async job processing
+
+**Example: FastAPI router calling orchestrator:**
+```python
+# drivers/rest/routers/campaigns.py
+from fastapi import APIRouter, Depends
+from drivers.rest.schemas.campaign_request import CampaignRequest
+from drivers.rest.dependencies import get_orchestrator
+
+router = APIRouter()
+
+@router.post("/campaigns")
+async def create_campaign(
+    request: CampaignRequest,
+    orchestrator = Depends(get_orchestrator)  # Calls orchestrator, not use case
+):
+    result = await orchestrator.generate(request)
+    return {"campaign_id": result.id, "status": "processing"}
+```
+
+**Example: Streamlit multi-page for workshops:**
+```python
+# drivers/ui/streamlit/pages/1_generate.py
+import streamlit as st
+from drivers.ui.streamlit.dependencies import get_orchestrator
+
+st.title("🎨 Generate Campaigns")
+
+# Creative Lead inputs
+brand_colors = st.color_picker("Primary Brand Color")
+tone = st.selectbox("Tone", ["energetic", "premium", "playful"])
+
+if st.button("Generate"):
+    orchestrator = get_orchestrator()
+
+    # Show progress to stakeholders
+    with st.status("Generating campaigns...") as status:
+        st.write("🎨 Generating images...")
+        st.write("✅ 5 markets created")
+
+        result = orchestrator.generate(request)
+        status.update(label="Complete!", state="complete")
+
+    # Creative Lead reviews
+    st.subheader("Review Campaigns")
+    for campaign in result.campaigns:
+        col1, col2 = st.columns(2)
+        with col1:
+            st.image(campaign.image)
+        with col2:
+            st.write(f"**Market:** {campaign.market}")
+            st.button("✓ Approve", key=campaign.id)  # Legal reviews
+```
+
+---
+
+### **Full CA (Production): Complete drivers/ layer**
+
+```
+drivers/
+├─ cli/
+│  ├─ __main__.py                      # Entry point
+│  ├─ commands/                        # Organized commands
+│  │  ├─ generate.py                   # Campaign generation
+│  │  ├─ validate.py                   # Brief validation
+│  │  └─ approve.py                    # Approval workflow
+│  ├─ formatters/                      # Output formatters
+│  │  ├─ table.py                      # Rich table output
+│  │  └─ json.py                       # JSON output
+│  └─ dependencies.py                  # DI container
+│
+├─ rest/
+│  ├─ main.py                          # FastAPI app
+│  ├─ routers/
+│  │  ├─ campaigns.py                  # Campaign endpoints
+│  │  ├─ approvals.py                  # Approval endpoints
+│  │  └─ webhooks.py                   # External webhooks
+│  ├─ schemas/                         # Pydantic models
+│  ├─ middleware/                      # Cross-cutting concerns
+│  │  ├─ auth.py                       # Enterprise SSO
+│  │  ├─ logging.py                    # Request logging
+│  │  └─ telemetry.py                  # Phoenix/Arize instrumentation
+│  ├─ exception_handlers.py            # Error handling
+│  └─ dependencies.py                  # FastAPI DI
+│
+├─ ui/
+│  └─ streamlit/
+│     ├─ app.py                        # Main entry
+│     ├─ pages/                        # Multi-stakeholder pages
+│     │  ├─ 1_generate.py             # Creative Lead: Generate
+│     │  ├─ 2_approve.py              # Legal: Approve
+│     │  ├─ 3_monitor.py              # IT: Dashboard
+│     │  └─ 4_compliance.py           # Legal: Compliance review
+│     ├─ components/                   # Reusable UI components
+│     │  ├─ campaign_card.py
+│     │  └─ approval_widget.py
+│     └─ dependencies.py               # Streamlit DI
+│
+└─ graphql/                             # Optional: If enterprise needs GraphQL
+   ├─ schema.py
+   ├─ resolvers/
+   └─ main.py
+```
+
+---
+
+### **Migration Path**
+
+**Steel Thread → Pragmatic CA:**
+
+When: Stakeholder feedback needs more structure, or integrating with other systems
+
+Changes:
+1. Add orchestrators (`app/interface_adapters/orchestrators/`)
+2. Organize CLI into commands (`drivers/cli/commands/`)
+3. Add FastAPI if needed (`drivers/rest/`)
+4. Expand Streamlit to multi-page (`drivers/ui/streamlit/pages/`)
+5. Add DI containers (`dependencies.py` in each driver)
+
+Migration Steps:
+```bash
+# 1. Create orchestrator layer
+mkdir -p app/interface_adapters/orchestrators
+
+# 2. Organize CLI
+mkdir drivers/cli/commands
+mv drivers/cli.py drivers/cli/__main__.py
+
+# 3. Add FastAPI (if needed)
+mkdir -p drivers/rest/{routers,schemas}
+
+# 4. Expand Streamlit
+mkdir drivers/ui/streamlit/pages
+mv drivers/ui/streamlit_app.py drivers/ui/streamlit/app.py
+```
+
+**No file moves between layers** - just organizational nesting.
+
+---
+
+**Pragmatic CA → Full CA:**
+
+When: Production deployment, enterprise security requirements, complex workflows
+
+Changes:
+1. Add middleware (`drivers/rest/middleware/`)
+2. Add exception handlers (`drivers/rest/exception_handlers.py`)
+3. Expand CLI with formatters (`drivers/cli/formatters/`)
+4. Add Streamlit components (`drivers/ui/streamlit/components/`)
+5. Add additional driver types (GraphQL) if needed
+
+Migration Steps:
+```bash
+# 1. Add middleware
+mkdir drivers/rest/middleware
+
+# 2. Add CLI formatters
+mkdir drivers/cli/formatters
+
+# 3. Add Streamlit components
+mkdir drivers/ui/streamlit/components
+
+# 4. Add additional drivers (if needed)
+mkdir drivers/graphql
+```
+
+---
+
+### **Dependency Injection Strategy**
+
+**Steel Thread: Direct Instantiation**
+```python
+# drivers/cli.py
+uc = GenerateCampaignUseCase(
+    image_gen=FakeImageGenerator(),
+    storage=LocalStorage()
+)
+```
+
+**Pragmatic CA: Dependencies Module**
+```python
+# drivers/cli/dependencies.py
+def build_orchestrator() -> CampaignOrchestrator:
+    config = load_config()
+
+    # Adapters (fake or real based on config)
+    image_gen = (
+        FakeImageGenerator() if config.use_fakes
+        else OpenAIImageGenerator()
+    )
+
+    # Use Cases
+    generate_uc = GenerateCampaignUseCase(image_gen=image_gen)
+
+    # Orchestrator
+    return CampaignOrchestrator(generate_uc=generate_uc)
+
+# drivers/cli/commands.py
+@app.command()
+def run(brief: str):
+    orchestrator = build_orchestrator()
+    result = orchestrator.generate(...)
+```
+
+**Full CA: Dependency Injection Container**
+```python
+# drivers/rest/dependencies.py
+from dependency_injector import containers, providers
+
+class Container(containers.DeclarativeContainer):
+    config = providers.Configuration()
+
+    # Adapters
+    image_gen = providers.Singleton(
+        OpenAIImageGenerator,
+        api_key=config.openai_api_key
+    )
+
+    # Use Cases
+    generate_uc = providers.Factory(
+        GenerateCampaignUseCase,
+        image_gen=image_gen
+    )
+
+    # Orchestrators
+    campaign_orchestrator = providers.Factory(
+        CampaignOrchestrator,
+        generate_uc=generate_uc
+    )
+```
+
+---
+
+**Why This Works:**
+
+✅ **Progressive Evolution:**
+- Steel Thread: `drivers/` with CLI + UI (flat)
+- Pragmatic CA: `drivers/cli/`, `drivers/rest/`, `drivers/ui/` (organized)
+- Full CA: Complete drivers with middleware, components (production-ready)
+
+✅ **Stakeholder Workshop Clarity:**
+- CLI for reproducibility ("run this command to regenerate")
+- Streamlit UI for visual feedback (Creative Lead sees images)
+- FastAPI when needed (integration with enterprise systems)
+
+✅ **Consistency with Axioms:**
+- Axiom 2 (Orchestrator-Centric): All drivers call orchestrators from Pragmatic CA+
+- Drivers are outermost layer (matches Clean Architecture)
+
+✅ **Pragmatic vs. Dogmatic:**
+- Recognizes enterprise reality: PoCs need UI from day 1
+- FastAPI optional until needed (not every PoC needs REST API)
+- Streamlit chosen for speed (not React/Vue complexity)
+
+**Impact:** HIGH - Affects project structure, entry point organization, DI strategy, AND aligns with multi-stakeholder workshop reality
+
+**Status:** ✅ RESOLVED - Progressive evolution with drivers/ from Steel Thread (CLI + UI always), FastAPI added in Pragmatic CA when integrating with enterprise systems
 
 ---
 
@@ -508,11 +946,147 @@ What terminology should we use for external integrations?
   - Pro: Separates framework concerns from business adapters
   - Con: Most complex
 
-**Your decision:** [AWAITING INPUT]
+**Your decision:** ✅ **Option B: Split `adapters/` + `infrastructure/repositories/`** (with evolution refinement pending)
 
 **Rationale:**
 
-**Impact:** MEDIUM - Affects adapter organization and terminology
+**Current Recommendation - Complete Layer Structure:**
+
+```
+app/
+├─ entities/                         # Domain models, value objects
+│
+├─ application/                      # Business logic + Ports (interfaces)
+│  ├─ use_cases/
+│  ├─ ports/                         # ALL INTERFACES (connects to Decision 12)
+│  │  ├─ repositories/               # Persistence contracts
+│  │  │  ├─ campaign_repository.py  # ICampaignRepository protocol
+│  │  │  └─ creative_repository.py  # ICreativeRepository protocol
+│  │  └─ services/                   # External service contracts
+│  │     ├─ image_generator.py      # IImageGenerator protocol
+│  │     ├─ storage_adapter.py      # IStorageAdapter protocol
+│  │     ├─ crm_client.py           # ICrmClient protocol (internal service)
+│  │     └─ analytics_client.py     # IAnalyticsClient protocol (third-party)
+│  └─ dtos/                          # (Decision 11)
+│
+├─ interface_adapters/               # Boundary translation
+│  ├─ orchestrators/                 # Coordinate use cases
+│  └─ presenters/                    # Format outputs + telemetry
+│
+├─ adapters/                         # External service IMPLEMENTATIONS
+│  ├─ imagegen/                      # Implements ports/services/image_generator
+│  │  ├─ fake_imagegen.py           # Fake (Decision 8)
+│  │  ├─ openai_imagegen.py         # Third-party
+│  │  └─ firefly_imagegen.py        # Third-party
+│  ├─ crm/                           # Implements ports/services/crm_client
+│  │  ├─ fake_salesforce.py
+│  │  └─ salesforce_client.py       # Internal enterprise service
+│  └─ analytics/
+│     ├─ fake_warehouse.py
+│     └─ snowflake_client.py        # Internal data warehouse
+│
+└─ infrastructure/                   # Persistence IMPLEMENTATIONS
+   ├─ orm_models/                    # SQLAlchemy models (separate from domain)
+   └─ repositories/                  # Implements ports/repositories/*
+      ├─ campaign/
+      │  ├─ in_memory_repository.py # In-memory fake (Decision 8)
+      │  ├─ postgres_repository.py  # Relational
+      │  └─ mongodb_repository.py   # Document
+      └─ creative/
+         ├─ in_memory_repository.py
+         └─ postgres_repository.py
+```
+
+**Why This Structure:**
+
+1. **Enterprise Complexity**: Multi-agent RAG system with 5+ data stores, multiple internal/third-party services
+2. **Clear Architectural Distinction**: External services (adapters/) vs persistence (infrastructure/)
+3. **Proven Pattern**: Matches calibration-service battle-tested structure
+4. **Scales Progressively**: Steel Thread starts simple, adds layers as needed
+5. **No Internal vs Third-Party Distinction**: Both are external to app, implement same ports
+6. **In-Memory Repos with Real Repos**: Consistent location in infrastructure/repositories/
+7. **Dependency Flow**: Use cases → ports (interfaces) → implementations (adapters/infrastructure)
+
+**Connecting Decisions:**
+- **Decision 8**: Fake adapters in adapters/, in-memory repos in infrastructure/repositories/
+- **Decision 12**: Ports live in application/ports/ split into repositories/ and services/
+
+**Refined Decision: Two-Step Evolution Approach**
+
+**Steel Thread (1-2 days): Co-Located, Minimal**
+
+```
+app/
+├─ entities/
+│  └─ campaign.py                    # Domain model
+├─ use_cases/
+│  └─ generate_campaign_uc.py        # Business logic
+└─ adapters/
+   ├─ imagegen/
+   │  ├─ protocol.py                 # ← IImageGenerator CO-LOCATED
+   │  ├─ fake.py
+   │  └─ openai.py
+   └─ storage/
+      ├─ protocol.py                 # ← IStorageAdapter CO-LOCATED
+      ├─ fake.py
+      └─ s3.py
+```
+
+**Pragmatic CA (3-5 days): Co-Located, Organized**
+
+```
+app/
+├─ entities/
+│  ├─ campaign.py
+│  └─ creative.py
+├─ use_cases/
+│  ├─ generate_campaign_uc.py
+│  └─ validate_brand_uc.py
+├─ interface_adapters/
+│  ├─ orchestrators/
+│  │  └─ campaign_orchestrator.py
+│  └─ presenters/
+│     └─ campaign_presenter.py
+├─ adapters/                         # External services
+│  ├─ imagegen/
+│  │  ├─ protocol.py                 # ← Still co-located
+│  │  ├─ fake.py
+│  │  ├─ openai.py
+│  │  └─ firefly.py
+│  ├─ storage/
+│  │  ├─ protocol.py
+│  │  ├─ fake.py
+│  │  └─ s3.py
+│  └─ events/
+│     ├─ protocol.py
+│     ├─ fake.py
+│     └─ amplitude.py
+└─ infrastructure/                   # Persistence (added when needed)
+   └─ repositories/
+      └─ campaign/
+         ├─ protocol.py              # ← ICampaignRepository CO-LOCATED
+         ├─ in_memory.py
+         └─ postgres.py
+```
+
+**Full CA (Production): Ports extracted to application/ layer**
+- `application/ports/services/image_generator.py` ← All service contracts
+- `application/ports/repositories/campaign_repository.py` ← All repository contracts
+- **Rationale:** Complexity justifies clean boundaries, enterprise aggregates need clear contracts
+
+**Migration Path (Pragmatic CA → Full CA):**
+1. Create `application/ports/` structure
+2. Move all `protocol.py` files to `application/ports/services/` or `application/ports/repositories/`
+3. Update imports (automated find-replace)
+4. Move `use_cases/` under `application/`
+5. Tests catch broken imports
+
+**Trade-off Accepted:**
+- ✅ Early-stage simplicity (80% of PoCs benefit)
+- ❌ One-time migration cost (but scripted and straightforward)
+- ✅ Clean architecture at scale (20% that reach Full CA)
+
+**Impact:** HIGH - Affects all external integration organization, persistence layer structure, port definitions, AND Decision 12 (ports location varies by PoC type)
 
 ---
 
@@ -573,11 +1147,299 @@ How comprehensive should the DTO layer be?
   - Pro: Minimal, leverages type system
   - Con: Less explicit, harder to extend
 
-**Your decision:** [AWAITING INPUT]
+**Your decision:** ✅ **Option A: Minimal DTOs with Progressive Evolution**
 
 **Rationale:**
 
-**Impact:** MEDIUM - Affects use case interfaces and conversion logic
+**Progressive DTO Evolution Pattern:**
+
+### **Steel Thread (1-2 days): No DTOs**
+
+```
+app/
+├─ entities/
+│  └─ campaign.py                  # Domain models
+├─ use_cases/
+│  └─ generate_campaign_uc.py      # ← Accepts/returns domain objects
+└─ adapters/
+   └─ imagegen/
+      ├─ protocol.py               # Uses domain objects
+      ├─ fake.py
+      └─ openai.py
+```
+
+**Code example:**
+```python
+# drivers/cli.py - No DTOs
+from app.entities.campaign import Campaign
+
+@app.command()
+def run(brief_path: str):
+    uc = GenerateCampaignUseCase(...)
+    campaigns: list[Campaign] = uc.execute(brief_data)  # ← Domain object
+    typer.echo(f"✓ Generated {len(campaigns)} campaigns")
+```
+
+**Key:** Zero DTO files - domain objects cross all boundaries.
+
+---
+
+### **Pragmatic CA (3-5 days): DTOs at Driver Boundaries Only**
+
+```
+app/
+├─ entities/                        # Domain models
+│  ├─ campaign.py
+│  └─ brand_guidelines.py
+├─ use_cases/                       # ← Still use domain objects
+│  ├─ generate_campaign_uc.py      # Accepts CampaignBrief (domain)
+│  └─ validate_brand_uc.py
+├─ interface_adapters/
+│  ├─ orchestrators/
+│  │  └─ campaign_orchestrator.py  # ← Converts driver DTOs → domain
+│  └─ presenters/
+│     └─ campaign_presenter.py
+├─ adapters/
+└─ infrastructure/
+
+drivers/
+├─ cli/
+│  ├─ __main__.py                   # ← Uses domain objects directly
+│  ├─ commands.py
+│  └─ dependencies.py
+├─ rest/                             # When integrating with enterprise
+│  ├─ main.py
+│  ├─ routers/
+│  │  └─ campaigns.py               # ← Uses schemas (DTOs)
+│  ├─ schemas/                      # ← DTOs HERE (Pydantic)
+│  │  ├─ campaign_request.py       # CampaignRequest(BaseModel)
+│  │  └─ campaign_response.py      # CampaignResponse(BaseModel)
+│  └─ dependencies.py
+└─ ui/
+   └─ streamlit/
+      ├─ app.py                     # ← Uses domain objects directly
+      └─ dependencies.py
+```
+
+**DTO Locations:**
+- ✅ `drivers/rest/schemas/` - FastAPI Pydantic DTOs (API boundary)
+- ❌ No use case DTOs - use cases accept/return domain objects
+- ✅ Orchestrators convert: Pydantic DTO → domain object → use case
+
+**Code example:**
+```python
+# drivers/rest/schemas/campaign_request.py (API DTO)
+class CampaignRequest(BaseModel):  # ← Pydantic DTO for validation
+    global_message: str
+    markets: list[str]
+    brand_colors: list[str]
+
+# drivers/rest/routers/campaigns.py
+@router.post("/campaigns")
+async def create_campaign(
+    request: CampaignRequest,  # ← DTO at API boundary
+    orchestrator = Depends(get_orchestrator)
+):
+    result = orchestrator.generate(request)  # ← Orchestrator handles conversion
+    return {"campaign_id": result.id}
+
+# app/interface_adapters/orchestrators/campaign_orchestrator.py
+class CampaignOrchestrator:
+    async def generate(self, request: CampaignRequest) -> dict:
+        # Convert DTO → domain object
+        brief = CampaignBrief(
+            message=request.global_message,
+            markets=request.markets,
+            brand=BrandGuidelines(colors=request.brand_colors)
+        )
+
+        # Call use case with domain object
+        campaigns = await self.generate_uc.execute(brief)  # ← Domain object
+
+        return {"campaigns": campaigns}
+
+# app/use_cases/generate_campaign_uc.py
+class GenerateCampaignUseCase:
+    async def execute(self, brief: CampaignBrief) -> list[Campaign]:  # ← Domain objects
+        # Business logic
+        return campaigns
+```
+
+---
+
+### **Full CA (Production): Use Case DTOs Added**
+
+```
+app/
+├─ entities/                        # Domain models
+├─ application/
+│  ├─ use_cases/
+│  │  ├─ generate_campaign/
+│  │  │  ├─ use_case.py           # ← Uses DTOs now
+│  │  │  └─ dtos.py               # ← Use case DTOs
+│  │  │     # GenerateCampaignInput
+│  │  │     # GenerateCampaignOutput
+│  │  └─ validate_brand/
+│  │     ├─ use_case.py
+│  │     └─ dtos.py
+│  └─ ports/                       # Ports extracted (Decision 10)
+│     ├─ services/
+│     └─ repositories/
+├─ interface_adapters/
+│  ├─ orchestrators/
+│  │  └─ campaign_orchestrator.py  # ← Converts driver DTOs → use case DTOs
+│  └─ presenters/
+├─ adapters/
+└─ infrastructure/
+
+drivers/
+├─ cli/
+├─ rest/
+│  ├─ routers/
+│  ├─ schemas/                      # ← API DTOs (Pydantic)
+│  │  ├─ campaign_request.py
+│  │  └─ campaign_response.py
+│  └─ dependencies.py
+└─ ui/
+```
+
+**DTO Locations:**
+- ✅ `drivers/rest/schemas/` - API DTOs (Pydantic)
+- ✅ `app/application/use_cases/[name]/dtos.py` - Use case DTOs (dataclasses)
+- ✅ Orchestrators convert: API DTO → use case DTO → domain objects
+
+**Code example:**
+```python
+# drivers/rest/schemas/campaign_request.py (API DTO)
+class CampaignRequest(BaseModel):  # ← Pydantic for FastAPI
+    global_message: str
+    markets: list[str]
+
+# app/application/use_cases/generate_campaign/dtos.py (Use Case DTO)
+@dataclass
+class GenerateCampaignInput:  # ← Use case input DTO
+    message: str
+    markets: list[str]
+    brand_colors: list[str]
+
+@dataclass
+class GenerateCampaignOutput:  # ← Use case output DTO
+    campaign_id: str
+    campaigns: list[dict]
+    metadata: dict
+
+# drivers/rest/routers/campaigns.py
+@router.post("/campaigns")
+async def create_campaign(
+    request: CampaignRequest,  # ← API DTO
+    orchestrator = Depends(get_orchestrator)
+):
+    result = orchestrator.generate(request)
+    return result
+
+# app/interface_adapters/orchestrators/campaign_orchestrator.py
+class CampaignOrchestrator:
+    async def generate(self, api_request: CampaignRequest) -> dict:
+        # Convert API DTO → Use Case DTO
+        uc_input = GenerateCampaignInput(
+            message=api_request.global_message,
+            markets=api_request.markets,
+            brand_colors=["#FF6B35"]
+        )
+
+        # Call use case with Use Case DTO
+        uc_output = await self.generate_uc.execute(uc_input)  # ← Use case DTO
+
+        # Convert Use Case DTO → API response
+        return {
+            "campaign_id": uc_output.campaign_id,
+            "campaigns": uc_output.campaigns
+        }
+
+# app/application/use_cases/generate_campaign/use_case.py
+class GenerateCampaignUseCase:
+    async def execute(self, input: GenerateCampaignInput) -> GenerateCampaignOutput:
+        # Convert Use Case DTO → domain objects
+        brief = CampaignBrief(message=input.message, markets=input.markets)
+
+        # Business logic with domain objects
+        campaigns = await self.image_gen.generate(brief)
+
+        # Convert domain objects → Use Case DTO
+        return GenerateCampaignOutput(
+            campaign_id=generate_id(),
+            campaigns=[c.to_dict() for c in campaigns],
+            metadata={}
+        )
+```
+
+---
+
+### **Migration Path**
+
+**Steel Thread → Pragmatic CA (Add API DTOs):**
+
+When: Adding FastAPI for enterprise integration
+
+```bash
+# Create API DTOs folder
+mkdir -p drivers/rest/schemas
+
+# Create Pydantic schemas
+# drivers/rest/schemas/campaign_request.py
+# drivers/rest/schemas/campaign_response.py
+```
+
+**Pragmatic CA → Full CA (Add Use Case DTOs):**
+
+When: Multiple drivers need same use case, or domain evolving rapidly
+
+```bash
+# 1. Reorganize use cases
+mkdir -p app/application/use_cases/generate_campaign
+mv app/use_cases/generate_campaign_uc.py app/application/use_cases/generate_campaign/use_case.py
+
+# 2. Create use case DTOs
+# app/application/use_cases/generate_campaign/dtos.py
+
+# 3. Update orchestrators to convert API DTO → Use Case DTO
+
+# 4. Update use cases to accept Input DTO, return Output DTO
+```
+
+---
+
+### **Why This Works**
+
+✅ **Progressive Evolution:**
+- Steel Thread: Zero DTOs (domain objects everywhere)
+- Pragmatic CA: Minimal DTOs (driver boundaries only - `drivers/rest/schemas/`)
+- Full CA: Comprehensive DTOs (use case boundaries - `app/application/use_cases/[name]/dtos.py`)
+- Clear migration path, no rewrites
+
+✅ **Stakeholder Workshop Clarity:**
+- Domain objects richer than DTOs for test readability
+- Business language in domain models (`CampaignBrief`, `BrandGuidelines`)
+- Tests use domain objects directly (more expressive)
+
+✅ **Consistency with Decisions 9 & 10:**
+- **Decision 9:** `drivers/rest/schemas/` already established for Pydantic DTOs
+- **Decision 10:** Ports follow two-step evolution (co-located → extracted)
+- **Decision 11:** DTOs follow same pattern (none → minimal → comprehensive)
+
+✅ **Pragmatic vs. Dogmatic:**
+- 80% of PoCs don't need use case DTOs (Steel Thread/Pragmatic CA)
+- Add DTOs when boundaries justify cost (API validation, stability)
+- Avoids premature abstraction
+
+**Integration with Prior Decisions:**
+- **Decision 9 (Drivers):** `drivers/rest/schemas/` for API DTOs ← Decision 11 uses this location
+- **Decision 10 (Ports):** Two-step evolution (co-located → extracted) ← Same pattern for DTOs
+- **All three decisions** share progressive evolution philosophy
+
+**Impact:** MEDIUM - Affects use case interfaces, orchestrator conversion logic, and test patterns
+
+**Status:** ✅ RESOLVED - Minimal DTOs with progressive evolution (no DTOs → driver DTOs → use case DTOs)
 
 ---
 
@@ -630,11 +1492,225 @@ Where should ports/interfaces live and how should they be named?
   - Pro: Distinguishes persistence from external services
   - Con: More folders, assumes repository pattern
 
-**Your decision:** [AWAITING INPUT]
+**Your decision:** ✅ **Resolved by Decision 10's Two-Step Evolution**
 
 **Rationale:**
 
-**Impact:** MEDIUM - Affects interface organization
+Decision 10 already established the complete ports location and naming strategy through its two-step evolution approach.
+
+### **Steel Thread & Pragmatic CA: Co-Located Protocols**
+
+Ports (protocols) live **alongside implementations**:
+
+```
+app/
+├─ adapters/
+│  ├─ imagegen/
+│  │  ├─ protocol.py        # ← IImageGenerator (co-located)
+│  │  ├─ fake.py
+│  │  └─ openai.py
+│  └─ storage/
+│     ├─ protocol.py        # ← IStorageAdapter (co-located)
+│     ├─ fake.py
+│     └─ s3.py
+└─ infrastructure/
+   └─ repositories/
+      └─ campaign/
+         ├─ protocol.py      # ← ICampaignRepository (co-located)
+         ├─ in_memory.py
+         └─ postgres.py
+```
+
+**Why co-located:**
+- ✅ Simplicity: Port + implementations in one place
+- ✅ Fast discovery: Easy to find interface and implementations together
+- ✅ Minimal boilerplate: No separate folder structure needed
+- ✅ 80% of PoCs benefit from this simplicity
+
+---
+
+### **Full CA: Extracted to application/ports/**
+
+Ports extracted to **centralized location** split by type:
+
+```
+app/
+├─ entities/
+├─ application/
+│  ├─ use_cases/
+│  ├─ ports/                         # ← Ports extracted here
+│  │  ├─ services/                   # External service contracts
+│  │  │  ├─ image_generator.py      # IImageGenerator protocol
+│  │  │  ├─ storage_adapter.py      # IStorageAdapter protocol
+│  │  │  ├─ crm_client.py           # ICrmClient protocol
+│  │  │  └─ analytics_client.py     # IAnalyticsClient protocol
+│  │  └─ repositories/               # Persistence contracts
+│  │     ├─ campaign_repository.py  # ICampaignRepository protocol
+│  │     └─ creative_repository.py  # ICreativeRepository protocol
+│  └─ dtos/
+├─ interface_adapters/
+│  ├─ orchestrators/
+│  └─ presenters/
+├─ adapters/                         # Implements ports/services/*
+│  ├─ imagegen/
+│  │  ├─ fake.py
+│  │  ├─ openai.py
+│  │  └─ firefly.py
+│  ├─ crm/
+│  │  ├─ fake_salesforce.py
+│  │  └─ salesforce_client.py
+│  └─ analytics/
+│     ├─ fake_warehouse.py
+│     └─ snowflake_client.py
+└─ infrastructure/                   # Implements ports/repositories/*
+   ├─ orm_models/
+   └─ repositories/
+      ├─ campaign/
+      │  ├─ in_memory.py
+      │  ├─ postgres.py
+      │  └─ mongodb.py
+      └─ creative/
+         ├─ in_memory.py
+         └─ postgres.py
+```
+
+**Why extracted:**
+- ✅ Clean boundaries: Ports independent of implementations
+- ✅ Clear contracts: All interfaces in one location
+- ✅ Enterprise aggregates: Complex domains benefit from formalized contracts
+- ✅ Multi-implementation support: One port, many implementations (Postgres, MongoDB, In-Memory)
+
+---
+
+### **Naming Conventions**
+
+From Decision 6 (Protocol), we use **Protocol-based interfaces**:
+
+```python
+# app/adapters/imagegen/protocol.py (Steel Thread/Pragmatic CA - co-located)
+from typing import Protocol
+
+class IImageGenerator(Protocol):
+    """Interface for image generation services.
+
+    Implementations: FakeImageGenerator, OpenAIImageGenerator, FireflyImageGenerator
+    """
+    async def generate(self, prompt: str, size: str) -> bytes: ...
+```
+
+```python
+# app/application/ports/services/image_generator.py (Full CA - extracted)
+from typing import Protocol
+
+class IImageGenerator(Protocol):
+    """Port for image generation services.
+
+    Adapters: app/adapters/imagegen/
+    - fake.py: FakeImageGenerator
+    - openai.py: OpenAIImageGenerator
+    - firefly.py: FireflyImageGenerator
+    """
+    async def generate(self, prompt: str, size: str) -> bytes: ...
+```
+
+**Naming pattern:**
+- `I` prefix for interface/protocol (e.g., `IImageGenerator`, `ICampaignRepository`)
+- Protocol filename matches concept (e.g., `image_generator.py`, not `i_image_generator.py`)
+- Implementation filenames descriptive (e.g., `openai.py`, `postgres.py`)
+
+---
+
+### **Organization: Services vs Repositories**
+
+Split ports by **type of external dependency**:
+
+1. **`ports/services/`** - External service integrations
+   - Third-party APIs (OpenAI, Firefly)
+   - Internal enterprise services (CRM, data warehouse)
+   - Event tracking, storage, analytics
+
+2. **`ports/repositories/`** - Persistence layer
+   - Database access (Postgres, MongoDB)
+   - In-memory fakes for testing
+   - Cache layers
+
+This distinction clarifies **architectural boundaries** and matches **stakeholder mental models** (DevOps thinks "repositories" = persistence, "services" = external integrations).
+
+---
+
+### **Migration Path (Pragmatic CA → Full CA)**
+
+When: Complex domain with many implementations per port, or production deployment
+
+```bash
+# 1. Create ports structure
+mkdir -p app/application/ports/{services,repositories}
+
+# 2. Extract adapter ports
+mv app/adapters/imagegen/protocol.py app/application/ports/services/image_generator.py
+mv app/adapters/storage/protocol.py app/application/ports/services/storage_adapter.py
+mv app/adapters/events/protocol.py app/application/ports/services/analytics_client.py
+
+# 3. Extract repository ports
+mv app/infrastructure/repositories/campaign/protocol.py app/application/ports/repositories/campaign_repository.py
+
+# 4. Update imports (automated find-replace)
+# From: from app.adapters.imagegen.protocol import IImageGenerator
+# To:   from app.application.ports.services.image_generator import IImageGenerator
+
+# 5. Move use_cases under application/
+mkdir -p app/application/use_cases
+mv app/use_cases/* app/application/use_cases/
+
+# 6. Run tests (catch broken imports)
+pytest tests/acceptance/
+```
+
+---
+
+### **Why This Resolution Works**
+
+✅ **Consistency with Decision 6 (Protocol):**
+- Use Protocol for all interfaces (not ABC)
+- No inheritance required
+
+✅ **Consistency with Decision 10 (Two-Step Evolution):**
+- Co-located in early stages
+- Extracted when complexity justifies it
+- Same philosophy as DTOs (Decision 11)
+
+✅ **Consistency with Decision 8 (Fakes):**
+- Fake adapters in `adapters/` (Decision 8)
+- In-memory repos in `infrastructure/repositories/` (Decision 8)
+- Both implement ports/protocols
+
+✅ **Pragmatic vs. Dogmatic:**
+- Don't extract ports prematurely (Steel Thread/Pragmatic CA)
+- Extract when enterprise complexity demands it (Full CA)
+- Migration path clear and scripted
+
+---
+
+### **Terminology Summary**
+
+| Term | Meaning | Location (Full CA) |
+|------|---------|-------------------|
+| **Port** | Interface contract defined by application | `application/ports/` |
+| **Protocol** | Python typing.Protocol implementation | `protocol.py` files |
+| **Service** | External service integration port | `ports/services/` |
+| **Repository** | Persistence layer port | `ports/repositories/` |
+| **Adapter** | Concrete implementation of service port | `adapters/` |
+| **Infrastructure** | Concrete implementation of repository port | `infrastructure/repositories/` |
+
+**Example:**
+- **Port:** `IImageGenerator` in `application/ports/services/image_generator.py`
+- **Adapters:** `FakeImageGenerator`, `OpenAIImageGenerator`, `FireflyImageGenerator` in `adapters/imagegen/`
+
+---
+
+**Impact:** MEDIUM - Affects interface organization, import paths, and migration strategy (but already resolved by Decision 10)
+
+**Status:** ✅ RESOLVED - Two-step evolution: co-located ports (Steel Thread/Pragmatic CA) → extracted to `application/ports/` split into `services/` and `repositories/` (Full CA)
 
 ---
 
@@ -649,33 +1725,54 @@ Where should ports/interfaces live and how should they be named?
 | 5 | Code detail level | MEDIUM | ✅ RESOLVED (Detailed but incomplete) |
 | 6 | Interface style | LOW | ✅ RESOLVED (Protocol) |
 | 7 | Test structure | MEDIUM | ✅ RESOLVED (acceptance/unit/integration) |
-| 8 | Fakes location | MEDIUM | 🚧 AWAITING |
-| 9 | Drivers layer | HIGH | 🚧 AWAITING |
-| 10 | Gateways vs Repos/Services | MEDIUM | 🚧 AWAITING |
-| 11 | DTO layer strategy | MEDIUM | 🚧 AWAITING |
-| 12 | Ports location/naming | MEDIUM | 🚧 AWAITING |
+| 8 | Fakes location | MEDIUM | ✅ RESOLVED (In adapters/ with caveat) |
+| 9 | Drivers layer | HIGH | ✅ RESOLVED (Progressive: CLI+UI always, REST when needed) |
+| 10 | Gateways vs Repos/Services | HIGH | ✅ RESOLVED (adapters/ + infrastructure/, two-step evolution) |
+| 11 | DTO layer strategy | MEDIUM | ✅ RESOLVED (Minimal DTOs, progressive evolution) |
+| 12 | Ports location/naming | MEDIUM | ✅ RESOLVED (Co-located → extracted, Decision 10) |
 
 ---
 
 ## Next Steps
 
-**Completed:**
-- ✅ Resolved Decisions 1-7 collaboratively
-- ✅ Reviewed CLEAN_ARCHITECTURE_ANALYSIS.md
-- ✅ Identified 5 additional architectural decisions (8-12)
-- ✅ Updated this decisions document with missing decisions
+**✅ Session 02 Decision Phase - COMPLETE**
 
-**Awaiting Your Input (5 decisions):**
-1. **Decision 8: Fakes Location** - adapters/ vs tests/ vs separate fakes/
-2. **Decision 9: Drivers Layer** ⚠️ HIGH PRIORITY - Does drivers/ exist? What calls orchestrators?
-3. **Decision 10: Gateways vs Repos/Services** - Terminology and organization
-4. **Decision 11: DTO Layer Strategy** - Minimal vs Comprehensive DTOs
-5. **Decision 12: Ports Location/Naming** - core/interfaces/ vs application/ports/ vs repositories/services/
+All 12 architectural decisions have been collaboratively resolved:
 
-**After Decisions:**
-1. Update framework document with resolved folder structures
-2. Ensure consistency across all three PoC types
-3. Update Session 02 summary
-4. Commit all Session 02 work
+1. ✅ **Decision 1:** "Orchestrator" terminology (not "Controller")
+2. ✅ **Decision 2:** Progressive folder depth (flat → moderate → deep)
+3. ✅ **Decision 3:** Comprehensive single document (all three PoC types)
+4. ✅ **Decision 4:** Localized Campaign Generation example scenario
+5. ✅ **Decision 5:** Detailed but incomplete code examples
+6. ✅ **Decision 6:** Protocol-based interfaces (not ABC)
+7. ✅ **Decision 7:** Three-layer test structure (acceptance/unit/integration)
+8. ✅ **Decision 8:** Fakes in adapters/ (external) + infrastructure/repositories/ (persistence)
+9. ✅ **Decision 9:** drivers/ folder with CLI + UI always, FastAPI when needed
+10. ✅ **Decision 10:** adapters/ (external) + infrastructure/ (persistence), two-step port evolution
+11. ✅ **Decision 11:** Minimal DTOs with progressive evolution (no DTOs → driver DTOs → use case DTOs)
+12. ✅ **Decision 12:** Ports co-located (early) → extracted to application/ports/ (Full CA)
 
-**Status:** 7 of 12 decisions resolved | 5 awaiting collaborative review
+---
+
+**Ready for Implementation Phase:**
+
+1. **Update Framework Document** (`_session-02-framework-folder-structures.md`)
+   - Incorporate all 12 resolved decisions
+   - Ensure Steel Thread, Pragmatic CA, and Full CA are consistent
+   - Add migration paths for all evolution points
+
+2. **Update Session 02 Summary**
+   - Document all decisions and rationale
+   - Capture key insights (enterprise PoC reality, two-step evolution pattern)
+   - Create resolution context files as needed
+
+3. **Verify Documentation Consistency**
+   - Check axioms document (already updated)
+   - Check blog post (already updated)
+   - Ensure all examples match resolved patterns
+
+4. **Commit Session 02 Work**
+   - All decisions resolved and documented
+   - Framework ready for implementation examples
+
+**Status:** ✅ **ALL 12 DECISIONS RESOLVED** - Ready to update framework document

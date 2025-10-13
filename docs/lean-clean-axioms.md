@@ -69,26 +69,40 @@ class LocalizedCampaignController:
 
 ## Axiom 3: Fakes are Production Code, Not Test Doubles
 
-**Principle:** Fakes are **first-class implementations** living in `app/adapters/`, not `tests/`.
+**Principle:** Fakes are **first-class implementations** used in workshops, demos, local dev, and CI/CD. There are TWO types, each living with their real implementations.
 
 **Why:**
 
-- Enable Outside-In TDD: write tests before real adapters exist
+- Enable Outside-In TDD: write tests before real implementations exist
 - Used in workshops, local dev, CI/CD, stakeholder demos
 - Realistic behavior (deterministic, with latency simulation)
 - NOT mocks (no mocking frameworks, no magic)
 
+**The Two Types of Fakes:**
+
+### 1. Fake Adapters (External Services)
+- **Location:** `app/adapters/` alongside real service implementations
+- **Stakeholder audience:** Business stakeholders (Creative, Ad Ops, Legal)
+- **Purpose:** Simulate external APIs (OpenAI, DAM, analytics, CRM)
+- **Examples:** `fake_imagegen.py`, `fake_dam_integration.py`, `fake_event_tracker.py`
+
+### 2. In-Memory Repositories (Persistence)
+- **Location:** `app/infrastructure/repositories/` alongside real database implementations
+- **Stakeholder audience:** DevOps/IT stakeholders (database, infrastructure)
+- **Purpose:** Simulate data storage without real databases
+- **Examples:** `in_memory_campaign_repository.py`, `in_memory_creative_repository.py`
+
 **Implications:**
 
-- `app/adapters/imagegen/fake_imagegen.py` (production code)
-- Fakes implement the same interface as real adapters
-- Acceptance tests ALWAYS use fakes (fast, deterministic)
-- Integration tests use real adapters (verify contract correctness)
+- Fake adapters in `adapters/`, in-memory repos in `infrastructure/repositories/`
+- Both implement the same interfaces as real implementations (substitutable)
+- Acceptance tests ALWAYS use fakes (fast, deterministic, no external dependencies)
+- Integration tests use real implementations (verify contract correctness)
 
 **Example:**
 
 ```python
-# ✅ Good - fake in adapters/, realistic behavior
+# ✅ Good - fake adapter in adapters/, realistic behavior
 # app/adapters/imagegen/fake_imagegen.py
 class FakeImageGenerator:
     cost_per_image = 0.02  # Match real pricing
@@ -96,6 +110,16 @@ class FakeImageGenerator:
     async def generate(self, prompt: str, size: str) -> bytes:
         await asyncio.sleep(0.1)  # Simulate latency
         return self._create_deterministic_image(prompt)
+
+# ✅ Good - in-memory repository in infrastructure/, realistic behavior
+# app/infrastructure/repositories/campaign/in_memory_repository.py
+class InMemoryCampaignRepository:
+    _campaigns: dict[UUID, Campaign] = {}
+
+    async def save(self, campaign: Campaign) -> Campaign:
+        await asyncio.sleep(0.01)  # Simulate DB latency
+        self._campaigns[campaign.id] = campaign
+        return campaign
 
 # ❌ Bad - mock in tests/, unrealistic
 # tests/test_campaign.py
@@ -158,6 +182,20 @@ $ pytest tests/e2e/  # ✅ Full system, ~$2
 - Use BDD mindset: Given/When/Then docstrings, not technical specs
 - Test markers: `@pytest.mark.feature("localized_campaign_generation")`
 - Assertion messages: "Creative Lead requirement: All assets must be brand compliant"
+
+**DTO Naming & Location:**
+
+DTOs (Data Transfer Objects) use domain-friendly naming without "DTO" suffix:
+- ✅ `CampaignRequest` (not `CampaignDTO`)
+- ✅ `GenerateCampaignInput` (not `GenerateCampaignInputDTO`)
+
+DTO locations follow progressive evolution:
+
+- **Steel Thread:** No DTOs - domain objects everywhere
+- **Pragmatic CA:** API DTOs at `drivers/rest/schemas/` (Pydantic for FastAPI validation)
+- **Full CA:** Add use case DTOs at `app/application/use_cases/[name]/dtos.py`
+
+This balances stakeholder readability (domain names) with technical precision (DTOs protect boundaries).
 
 **Example:**
 
