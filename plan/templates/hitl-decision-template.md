@@ -83,30 +83,28 @@ These are mistakes that waste time and require rework:
 
 [Relevant background - what have we done before? What do docs say? What did analysis reveal?]
 
-**Options:**
+**Question for you:**
 
-### Option A: [Name]
+[Clear framing of what needs to be decided]
 
-[Description]
+- [ ] **Option A: [Name]** ([brief descriptor])
+  - [Brief description of this approach]
+  - ✅ Pro: [Benefit]
+  - ✅ Pro: [Benefit]
+  - ❌ Con: [Drawback]
+  - ❌ Con: [Drawback]
 
-- ✅ Pro: [Benefit]
-- ✅ Pro: [Benefit]
-- ❌ Con: [Drawback]
-- ❌ Con: [Drawback]
+- [ ] **Option B: [Name]** ([brief descriptor])
+  - [Brief description of this approach]
+  - ✅ Pro: [Benefit]
+  - ✅ Pro: [Benefit]
+  - ❌ Con: [Drawback]
+  - ❌ Con: [Drawback]
 
-### Option B: [Name]
-
-[Description]
-
-- ✅ Pro: [Benefit]
-- ❌ Con: [Drawback]
-
-### Option C: [Name]
-
-[Description]
-
-- ✅ Pro: [Benefit]
-- ❌ Con: [Drawback]
+- [ ] **Option C: [Name]** ([brief descriptor])
+  - [Brief description of this approach]
+  - ✅ Pro: [Benefit]
+  - ❌ Con: [Drawback]
 
 **My recommendation:** Option [A/B/C]
 
@@ -130,23 +128,6 @@ This mode is successful when:
 - ✅ I make informed decisions with your expert guidance
 - ✅ Implementation reflects MY choices, not your assumptions
 - ✅ Zero rework due to misaligned assumptions
-
-## When to Use This Template
-
-Use this template for:
-
-- Architecture and framework definitions
-- Folder structure and naming conventions
-- Design patterns and paradigm choices
-- Any work where "there are multiple ways to do this"
-- Strategic decisions that affect many downstream choices
-
-DON'T use this template for:
-
-- Simple bug fixes with one clear solution
-- Implementing already-decided designs
-- Straightforward documentation updates
-- Tasks where best practices are unambiguous
 
 ---
 
