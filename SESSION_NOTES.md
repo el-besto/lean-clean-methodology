@@ -213,7 +213,7 @@ lean-clean-methodology/
 │   ├── TDD_ENTERPRISE_POC.md                     ← EXISTING (original framework)
 │   ├── CRITICAL_INSIGHTS.md                      ← EXISTING (controller vs mapper)
 │   ├── PYTHON_PATTERNS.md                        ← EXISTING (Python idioms)
-│   └── STRUCTURE.md                              ← EXISTING (structure analysis)
+│   └── STRUCTURE.md                              ← HISTORICAL (renamed to /docs/REFERENCE-IMPLEMENTATIONS.md in Session 02)
 ├── SESSION_NOTES.md                              ← NEW (this file)
 └── README.lean-clean.md                          ← TO BE UPDATED (methodology phases)
 ```
@@ -320,7 +320,8 @@ Or:
 ### Related Documents
 - `plan/CRITICAL_INSIGHTS.md` - Controller vs Mapper distinction
 - `plan/TDD_ENTERPRISE_POC.md` - Original framework
-- `plan/STRUCTURE.md` - Structure analysis
+- `/docs/REFERENCE-IMPLEMENTATIONS.md` - Reference implementation analysis (formerly STRUCTURE.md)
+- `/docs/framework-folder-structures.md` - Authoritative framework structures (Session 02)
 - `plan/PYTHON_PATTERNS.md` - Python patterns
 
 ---
