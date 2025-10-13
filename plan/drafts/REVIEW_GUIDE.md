@@ -45,7 +45,7 @@ This guide provides a structured decision-making process for finalizing the PoC 
 
 ## ⚠️ CRITICAL: Read This First
 
-**Before reviewing structures, read `plan/CRITICAL_INSIGHTS.md`** - It identifies a fundamental architectural divergence between:
+**Before reviewing structures, read `plan/drafts/CRITICAL_INSIGHTS.md`** - It identifies a fundamental architectural divergence between:
 - **Uncle Bob's Clean Architecture** (controllers orchestrate, use cases have business logic)
 - **PoC-Optimized Architecture** (thin mappers, thin use cases, direct driver→use case calls)
 
@@ -60,12 +60,12 @@ This guide helps you systematically review the proposed structures and patterns 
 ## Documents to Review
 
 ### Core Analysis Documents
-1. **`plan/CRITICAL_INSIGHTS.md`** ⚠️ **READ FIRST** - Controller vs Mapper distinction, progressive architecture
-2. **`plan/TDD_STAKEHOLDER_ACCELERATION_INSIGHTS.md`** ⚠️ **CRITICAL FOR ENTERPRISE** - How TDD reduces delivery from 2-4 weeks to 1 week
+1. **`plan/drafts/CRITICAL_INSIGHTS.md`** ⚠️ **READ FIRST** - Controller vs Mapper distinction, progressive architecture
+2. **`plan/drafts/TDD_STAKEHOLDER_ACCELERATION_INSIGHTS.md`** ⚠️ **CRITICAL FOR ENTERPRISE** - How TDD reduces delivery from 2-4 weeks to 1 week
 3. **`plan/STRUCTURE.md`** - Comprehensive analysis of 3 reference projects with proposed baseline structure
-4. **`plan/PYTHON_PATTERNS.md`** - Python-specific idioms and patterns from the style guide
-5. **`plan/TDD_INTEGRATION_PLAN.md`** - Roadmap for weaving TDD into methodology phases
-6. **`plan/TDD_ENTERPRISE_POC.md`** - Original TDD framework and patterns
+4. **`plan/drafts/PYTHON_PATTERNS.md`** - Python-specific idioms and patterns from the style guide
+5. **`plan/drafts/TDD_INTEGRATION_PLAN.md`** - Roadmap for weaving TDD into methodology phases
+6. **`plan/drafts/TDD_ENTERPRISE_POC.md`** - Original TDD framework and patterns
 
 ### Reference Implementations
 - **`calibration-service`** - Production-grade CA (true controllers, rich use cases, DTOs)
@@ -382,9 +382,9 @@ class AddCalibrationUseCase:
 
 **Read these documents:**
 
-- **`plan/TDD_STAKEHOLDER_ACCELERATION_INSIGHTS.md`** - Complete analysis of how TDD accelerates stakeholder alignment
-- **`plan/TDD_INTEGRATION_PLAN.md`** - How to weave TDD into each methodology phase
-- **`plan/TDD_ENTERPRISE_POC.md`** - Original framework and patterns
+- **`plan/drafts/TDD_STAKEHOLDER_ACCELERATION_INSIGHTS.md`** - Complete analysis of how TDD accelerates stakeholder alignment
+- **`plan/drafts/TDD_INTEGRATION_PLAN.md`** - How to weave TDD into each methodology phase
+- **`plan/drafts/TDD_ENTERPRISE_POC.md`** - Original framework and patterns
 
 ### The Paradigm Shift: Tests as Stakeholder Communication
 
@@ -1052,8 +1052,8 @@ Based on your decisions, choose an approach:
 ### Content to Archive
 
 - [ ] Move `plan/STRUCTURE.md` → `docs/STRUCTURE_ANALYSIS.md` (reference)
-- [ ] Move `plan/PYTHON_PATTERNS.md` → `docs/PYTHON_PATTERNS.md` (reference)
-- [ ] Keep `plan/REVIEW_GUIDE.md` for next review cycle
+- [ ] Move `plan/drafts/PYTHON_PATTERNS.md` → `docs/PYTHON_PATTERNS.md` (reference)
+- [ ] Keep `plan/drafts/REVIEW_GUIDE.md` for next review cycle
 
 ---
 
@@ -1238,7 +1238,7 @@ observability_approach: progressive  # Add later, focus on tests first
 
 **Rationale:** When you need stakeholder sign-off, have expensive dependencies (OpenAI, databases), or multiple teams working in parallel, TDD transforms the PoC process from "build and hope" to "specify then build."
 
-**See:** `plan/TDD_STAKEHOLDER_ACCELERATION_INSIGHTS.md` for complete case study
+**See:** `plan/drafts/TDD_STAKEHOLDER_ACCELERATION_INSIGHTS.md` for complete case study
 
 ---
 

@@ -64,7 +64,7 @@ If using TDD, you'll follow this enhanced workflow:
 - **Without TDD:** 2-4 weeks (with multiple rebuild cycles)
 - **With TDD:** 1-2 weeks (single build cycle, no rework)
 
-**See:** `plan/TDD_STAKEHOLDER_ACCELERATION_INSIGHTS.md` for detailed analysis
+**See:** `plan/drafts/TDD_STAKEHOLDER_ACCELERATION_INSIGHTS.md` for detailed analysis
 
 ---
 ```
@@ -151,7 +151,7 @@ If using TDD, schedule a 1-3 hour workshop with stakeholders to:
 
 **Workshop Output:** Test scenario document (becomes test file skeletons in P3)
 
-**See:** `plan/TDD_STAKEHOLDER_ACCELERATION_INSIGHTS.md` section "Stakeholder Workshop Template"
+**See:** `plan/drafts/TDD_STAKEHOLDER_ACCELERATION_INSIGHTS.md` section "Stakeholder Workshop Template"
 ```
 
 #### 2. Update Outputs
@@ -211,7 +211,7 @@ class OpenAIImageGen:
 
 **Decision:** If using TDD, prefer **Full Clean Architecture** with controllers over simplified structure.
 
-**See:** `plan/CRITICAL_INSIGHTS.md` section "TDD Revelation: Controllers as Specification Layer"
+**See:** `plan/drafts/CRITICAL_INSIGHTS.md` section "TDD Revelation: Controllers as Specification Layer"
 ```
 
 ---
