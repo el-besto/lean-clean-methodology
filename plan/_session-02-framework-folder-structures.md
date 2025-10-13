@@ -22,7 +22,7 @@ This document defines **Component B (Framework)** of the Lean-Clean Methodology:
 | PoC Type | Timeline | Layers | Use Case | Evolution Trigger |
 |----------|----------|--------|----------|-------------------|
 | **Steel Thread** | 1-2 days | Minimal (use_cases + adapters + fakes) | Technical feasibility spike | Stakeholders approved, need production path |
-| **Pragmatic CA** | 3-5 days | Production-ready subset (+ controllers + presenters) | Multi-stakeholder workshop output | Scaling to multi-team or complex domain |
+| **Pragmatic CA** | 3-5 days | Production-ready subset (+ orchestrators + presenters) | Multi-stakeholder workshop output | Scaling to multi-team or complex domain |
 | **Full CA** | Production | Comprehensive (+ separate entities, DTOs, events, CQRS) | Production-grade system | Already in production |
 
 ---
@@ -64,8 +64,8 @@ campaign-generator/                    # Root project directory
 │  │     └─ fake_events.py             # FakeEventTracker (test double)
 │  │
 │  ├─ interface_adapters/              # ═══ INTERFACE ADAPTERS ═══
-│  │  ├─ controllers/                  # Orchestration layer (feature coordination)
-│  │  │  └─ campaign_controller.py     # LocalizedCampaignController
+│  │  ├─ orchestrators/                  # Orchestration layer (feature coordination)
+│  │  │  └─ campaign_orchestrator.py     # LocalizedCampaignOrchestrator
 │  │  └─ presenters/                   # Response formatting + cross-cutting concerns
 │  │     └─ campaign_presenter.py      # CampaignPresenter (to_response, attach_telemetry, emit_events)
 │  │
@@ -86,8 +86,8 @@ campaign-generator/                    # Root project directory
 │  │  ├─ use_cases/                    # Business logic tests
 │  │  │  ├─ test_generate_campaign.py
 │  │  │  └─ test_validate_brand.py
-│  │  ├─ controllers/                  # Orchestration tests (with fake use cases)
-│  │  │  └─ test_campaign_controller.py
+│  │  ├─ orchestrators/                  # Orchestration tests (with fake use cases)
+│  │  │  └─ test_campaign_orchestrator.py
 │  │  └─ entities/                     # Domain model tests
 │  │     └─ test_campaign.py
 │  └─ integration/                     # Layer 3: Real service tests
@@ -114,18 +114,18 @@ campaign-generator/                    # Root project directory
 | `core/use_cases/` | **Application** | Business logic, orchestrate entities, use interfaces | Entities, Interfaces |
 | `core/interfaces/` | **Application** | Infrastructure contracts (defined by app needs) | Entities |
 | `adapters/` | **Infrastructure** | Concrete implementations of interfaces | Interfaces, External services |
-| `interface_adapters/controllers/` | **Interface Adapters** | Feature orchestration (multi-use-case coordination) | Use Cases |
+| `interface_adapters/orchestrators/` | **Interface Adapters** | Feature orchestration (multi-use-case coordination) | Use Cases |
 | `interface_adapters/presenters/` | **Interface Adapters** | Response formatting, telemetry, events | Entities, Use Case outputs |
-| `server.py`, `cli.py`, `models.py` | **Frameworks & Drivers** | Entry points, ORM, external tools | Controllers, Presenters |
+| `server.py`, `cli.py`, `models.py` | **Frameworks & Drivers** | Entry points, ORM, external tools | Orchestrators, Presenters |
 
 **Dependency Rule:** All dependencies point inward (toward Entities). Outer layers never imported by inner layers.
 
 ### 1.3 Why This Structure?
 
-**Q: Why separate `controllers/` from `use_cases/`?**
-- Controllers orchestrate **multiple use cases** for a feature
+**Q: Why separate `orchestrators/` from `use_cases/`?**
+- Orchestrators orchestrate **multiple use cases** for a feature
 - Use cases implement **single business operations**
-- Example: `LocalizedCampaignController` coordinates `GenerateCampaignUseCase` + `ValidateBrandUseCase` + `EmitEventsUseCase`
+- Example: `LocalizedCampaignOrchestrator` coordinates `GenerateCampaignUseCase` + `ValidateBrandUseCase` + `EmitEventsUseCase`
 
 **Q: Why put telemetry/events in `presenters/`?**
 - Telemetry is "formatting domain data for observability systems" (presentation concern)
@@ -170,7 +170,7 @@ This test uses FAKES for all external dependencies to enable:
 """
 
 import pytest
-from app.interface_adapters.controllers.campaign_controller import LocalizedCampaignController
+from app.interface_adapters.orchestrators.campaign_orchestrator import LocalizedCampaignOrchestrator
 from app.core.use_cases.generate_campaign import GenerateCampaignUseCase
 from app.core.use_cases.validate_brand import ValidateBrandComplianceUseCase
 from app.core.use_cases.emit_events import EmitCampaignEventsUseCase
@@ -181,10 +181,10 @@ from app.adapters.events.fake_events import FakeEventTracker
 
 @pytest.mark.feature("localized_campaign_generation")
 class TestLocalizedCampaignFeature:
-    """Maps to: LocalizedCampaignController"""
+    """Maps to: LocalizedCampaignOrchestrator"""
 
     @pytest.fixture
-    def controller(self):
+    def orchestrator(self):
         """
         Wire up the full feature with FAKES.
 
@@ -206,14 +206,14 @@ class TestLocalizedCampaignFeature:
             event_tracker=event_tracker
         )
 
-        # Interface adapter layer (controller)
-        return LocalizedCampaignController(
+        # Interface adapter layer (orchestrator)
+        return LocalizedCampaignOrchestrator(
             generate_campaign_uc=generate_uc,
             validate_brand_uc=validate_uc,
             emit_events_uc=emit_events_uc
         )
 
-    async def test_generate_summer_sale_campaign_for_five_markets(self, controller):
+    async def test_generate_summer_sale_campaign_for_five_markets(self, orchestrator):
         """
         Given: Global summer sale campaign targeting EU and LATAM
         When: Generating localized variants for Instagram and Facebook
@@ -237,7 +237,7 @@ class TestLocalizedCampaignFeature:
         # ═══ ACT ═══
         import time
         start = time.time()
-        response = await controller.generate_campaign(request)
+        response = await orchestrator.generate_campaign(request)
         duration = time.time() - start
 
         # ═══ ASSERT: Stakeholder Success Criteria ═══
@@ -278,7 +278,7 @@ class TestLocalizedCampaignFeature:
                     for term in banned_terms
                 ), f"Banned term found in creative text: {creative.text}"
 
-    async def test_reject_campaign_with_brand_violations(self, controller):
+    async def test_reject_campaign_with_brand_violations(self, orchestrator):
         """
         Given: Campaign request with content violating brand guidelines
         When: Attempting to generate campaign
@@ -296,7 +296,7 @@ class TestLocalizedCampaignFeature:
 
         # ═══ ACT & ASSERT ═══
         with pytest.raises(BrandViolationError) as exc_info:
-            await controller.generate_campaign(request)
+            await orchestrator.generate_campaign(request)
 
         assert "cheap" in str(exc_info.value).lower(), \
             "Error should clearly indicate which banned term was violated"
@@ -309,20 +309,20 @@ class TestLocalizedCampaignFeature:
 - **Domain language** - `LocalizedCampaignRequest`, not `dict` or raw JSON
 - **BDD mindset** - Given/When/Then structure in docstrings
 
-### 2.2 Controller Implementation (Layer 2: Orchestration)
+### 2.2 Orchestrator Implementation (Layer 2: Orchestration)
 
-**File:** `app/interface_adapters/controllers/campaign_controller.py`
+**File:** `app/interface_adapters/orchestrators/campaign_orchestrator.py`
 
 ```python
 """
-LocalizedCampaignController orchestrates the full localized campaign generation feature.
+LocalizedCampaignOrchestrator orchestrates the full localized campaign generation feature.
 
 Responsibilities:
 1. Coordinate multiple use cases (generate, validate, emit events)
 2. Handle feature-level error handling
 3. Format response via presenter
 
-This maps to "Feature" in test language, "Controller" in implementation language.
+This maps to "Feature" in test language, "Orchestrator" in implementation language.
 """
 
 from dataclasses import dataclass
@@ -352,11 +352,11 @@ class LocalizedCampaignResponse:
     duration_seconds: float
 
 
-class LocalizedCampaignController:
+class LocalizedCampaignOrchestrator:
     """
     Feature orchestrator: coordinates generate → validate → emit events.
 
-    This is the "Controller" in Clean Architecture interface adapters layer.
+    This is the "Orchestrator" in Clean Architecture interface adapters layer.
     """
 
     def __init__(
@@ -719,7 +719,7 @@ This example demonstrates the **Outside-In workflow** for multi-stakeholder PoCs
 5. **Stakeholders approve the test as specification**
 
 **Workshop Day 2: Implement with Fakes**
-1. Implement `LocalizedCampaignController` (orchestration)
+1. Implement `LocalizedCampaignOrchestrator` (orchestration)
 2. Implement `GenerateCampaignUseCase` (business logic)
 3. Implement `FakeImageGenerator`, `FakeStorageAdapter` (test doubles)
 4. Run test → GREEN (all fakes)
@@ -762,7 +762,7 @@ campaign-generator-spike/
 
 | Aspect | Steel Thread | Pragmatic CA |
 |--------|--------------|--------------|
-| **Controllers** | ❌ None - CLI calls use case directly | ✅ Yes - orchestrate multiple use cases |
+| **Orchestrators** | ❌ None - CLI calls use case directly | ✅ Yes - orchestrate multiple use cases |
 | **Presenters** | ❌ None - use case returns dict | ✅ Yes - format responses + telemetry |
 | **Entities** | ❌ None - use dataclasses in use case | ✅ Yes - separate domain models |
 | **Interfaces** | ❌ None - adapters imported directly | ✅ Yes - protocols for DIP |
@@ -779,7 +779,7 @@ Steel Thread: Single-file use case with minimal ceremony.
 Trade-offs:
 - ✅ Fast to write (1-2 hours)
 - ✅ Proves technical feasibility
-- ❌ Hard to extend (no controllers, no interfaces)
+- ❌ Hard to extend (no orchestrators, no interfaces)
 - ❌ Not production-ready (no error handling, no telemetry)
 """
 
@@ -860,7 +860,7 @@ async def test_generate_campaign_for_multiple_markets():
 
 **Don't use Steel Thread when:**
 - ❌ Multi-stakeholder workshop (need testable contracts)
-- ❌ Multiple use cases to coordinate (need controllers)
+- ❌ Multiple use cases to coordinate (need orchestrators)
 - ❌ Production path required (need proper layering)
 
 → In these cases, start with **Pragmatic CA** instead.
@@ -933,9 +933,9 @@ campaign-generator-production/
 │  │     └─ fake_translate.py
 │  │
 │  ├─ interface_adapters/              # ═══ Comprehensive adapters ═══
-│  │  ├─ controllers/
+│  │  ├─ orchestrators/
 │  │  │  └─ campaign/
-│  │  │     ├─ controller.py           # LocalizedCampaignController
+│  │  │     ├─ orchestrator.py           # LocalizedCampaignOrchestrator
 │  │  │     └─ request_validators.py   # API-level validation
 │  │  ├─ presenters/
 │  │  │  └─ campaign/
@@ -967,7 +967,7 @@ campaign-generator-production/
 │  ├─ unit/                            # Isolated logic tests
 │  │  ├─ entities/
 │  │  ├─ use_cases/
-│  │  ├─ controllers/
+│  │  ├─ orchestrators/
 │  │  └─ presenters/
 │  ├─ integration/                     # Real adapter tests
 │  │  └─ adapters/
@@ -1249,7 +1249,7 @@ adapters/        ──same──►    adapters/            ──add──► 
                                openai.py                         openai.py
                                                                  firefly.py
 
-                 ──add──►     controllers/         ──refine──►  controllers/
+                 ──add──►     orchestrators/         ──refine──►  orchestrators/
                                 campaign.py                       campaign/
 
                  ──add──►     presenters/          ──refine──►  presenters/
@@ -1272,10 +1272,10 @@ tests/           ──organize──► tests/              ──add──► 
 
 **Steps:**
 
-1. **Add Controllers** (orchestration layer)
-   - [ ] Create `interface_adapters/controllers/`
-   - [ ] Extract orchestration logic from CLI → controller
-   - [ ] Controller coordinates multiple use cases
+1. **Add Orchestrators** (orchestration layer)
+   - [ ] Create `interface_adapters/orchestrators/`
+   - [ ] Extract orchestration logic from CLI → orchestrator
+   - [ ] Orchestrator coordinates multiple use cases
 
 2. **Add Presenters** (formatting + cross-cutting)
    - [ ] Create `interface_adapters/presenters/`
@@ -1379,7 +1379,7 @@ tests/           ──organize──► tests/              ──add──► 
 | **Timeline** | 1-2 days | 3-5 days | Weeks-months |
 | **Team Size** | 1 developer | 2-4 developers | 5+ developers |
 | **Use Cases** | 1 (happy path) | 2-5 | 10+ |
-| **Layers** | use_cases + adapters | + controllers + presenters | + entities + DTOs + events |
+| **Layers** | use_cases + adapters | + orchestrators + presenters | + entities + DTOs + events |
 | **Tests** | 1 end-to-end | acceptance + unit + integration | + e2e |
 | **DI** | ❌ Hardcoded | ✅ Manual | ✅ DI container |
 | **Deployment** | Local only | Docker Compose | Kubernetes |
