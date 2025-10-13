@@ -145,7 +145,7 @@ The key differentiator of this methodology is writing realistic, executable test
 
 ### Previous Work (For Reference)
 I've already drafted:
-- Blog post content exploring multi-stakeholder workshops [The Secret Sauce: Outside-In with All Stakeholders](/Users/ac/Code/el-besto/lean-clean-blog/wip/_wip-lean-clean-the-secret-sauce.md)
+- Blog post content exploring multi-stakeholder workshops [The Secret Sauce: Outside-In with All Stakeholders](/Users/ac/Code/el-besto/lean-clean-blog/drafts/_wip-lean-clean-the-secret-sauce.md)
 - Example tests showing the "Outside-In" approach
 
 These are helpful context but should not constrain your thinking.
