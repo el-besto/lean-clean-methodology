@@ -67,5 +67,73 @@ Specifically:
 - [ ] Methodology phases defined and documented
 - [ ] Foundation laid for Framework definition (next session)
 
+### Anti-Patterns to Avoid
+
+❌ **Don't jump to implementation details**
+   - Resist the urge to define folder structures or write code
+   - Focus on conceptual design: phases, principles, goals
+   - Implementation comes in Sessions 02-03
+
+❌ **Don't treat sketch projects as gospel**
+   - Extract patterns and lessons learned
+   - Don't copy structures without understanding trade-offs
+   - Challenge what exists if it doesn't serve the goal
+
+❌ **Don't over-architect for PoCs**
+   - Not every PoC needs Full Clean Architecture
+   - Pragmatic > Perfect
+   - Define multiple PoC types (Steel Thread, Pragmatic, Full) with evolution paths
+
+❌ **Don't create new terminology unnecessarily**
+   - Reuse established CA/DDD/BDD terms where possible
+   - Only introduce new terms when existing ones don't fit
+   - Define any new terms clearly
+
+❌ **Don't define phases in a vacuum**
+   - Keep the enterprise context in mind (multi-stakeholder, compliance, etc.)
+   - Phases should map to real project milestones
+   - Use Lean Product Playbook structure as inspiration
+
+### Suggested Approach
+
+I recommend tackling this in order:
+
+1. **First, review existing materials** (45-60 minutes)
+   - Read CLEAN_ARCHITECTURE_ANALYSIS.md if available
+   - Scan calibration-service and creative-ai-poc for patterns
+   - Review README.lean-clean.md for existing phase definitions
+   - Note what's working vs. what's conflicting
+
+2. **Then, answer divergent questions** (60-90 minutes)
+   - Take each question one at a time
+   - Provide clear answer + rationale + trade-offs
+   - Identify dependencies between answers (some answers inform others)
+   - Document any new questions that emerge
+
+3. **Next, define methodology phases** (90-120 minutes)
+   - Start with Lean Product Playbook pyramid structure (Problem Space → Solution Space)
+   - Map to PoC context (Discovery → Workshop → Implementation → Delivery)
+   - For each phase define: Name, Core Question, Purpose, Key Output, Activities, Inputs/Outputs
+   - Create summary table for quick reference
+
+4. **Finally, document and validate** (30-45 minutes)
+   - Write phase definitions in clear, scannable format
+   - Create visual diagram if helpful (ASCII or description)
+   - Review against success criteria
+   - Identify what needs to happen in Session 02 (Framework)
+
+### Why This Matters
+
+The methodology is the foundation for everything else. If we don't get clarity on:
+- How much CA to adopt for PoCs
+- Where cross-cutting concerns live
+- How tests map to layers
+- How PoC types evolve
+
+...then Sessions 02-04 will produce conflicting or over-complex solutions.
+
+**The goal:** Accelerate enterprise PoCs by defining executable tests early with stakeholders. The methodology must support this goal at every phase, balancing rigor with speed.
+
+Getting this right means teams can confidently move from stakeholder workshops to working code without getting stuck in architectural debates or over-engineering.
 
 **Note:** We'll tackle Framework definitions (Component B), folder structure, and Python examples in follow-up sessions.
