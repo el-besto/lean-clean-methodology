@@ -3,6 +3,11 @@
 **Date:** 2025-10-13
 **Status:** ✅ Complete
 
+**Document Evolution:**
+- **Current:** This document (initial high-level summary created early in session)
+- **Next:** `_session-02-summary-framework-folder-structures.md` (detailed summary with all 12 decisions)
+- **Reconciliation Needed:** `/plan/STRUCTURE.md` (pre-existing structure document)
+
 ---
 
 ## Session Goal
@@ -237,6 +242,28 @@ Session 02 achieved this by:
 
 ---
 
+## Document Evolution & Next Steps
+
+**This Document (Initial Summary):**
+- Created early in Session 02
+- Captured high-level insights and key examples
+- Focus: Feature = Controller pattern, nikolovlazar foundation, Outside-In workflow
+
+**Detailed Summary (Created at Session End):**
+- See: `_session-02-summary-framework-folder-structures.md`
+- Includes all 12 architectural decisions resolved
+- Includes 4 key patterns discovered
+- Includes migration paths and bash scripts
+- **Read this for complete Session 02 context**
+
+**Pre-Existing Structure Document (Needs Reconciliation):**
+- See: `/plan/STRUCTURE.md`
+- **Session 03 Task:** Reconcile STRUCTURE.md with Session 02 decisions
+- Identify conflicts, update outdated patterns, ensure consistency
+
+---
+
 **Document Status:** ✅ Complete
 
 **Last Updated:** 2025-10-13
+**Next Action:** Read `_session-02-summary-framework-folder-structures.md` for complete context, then reconcile with `/plan/STRUCTURE.md`
