@@ -1,5 +1,14 @@
 # Session 0: Base Context
-  **Note:** This file provides foundational context and should be included with Session 01. Subsequent sessions will reference the work completed in prior sessions.
+
+**Usage Note:** This file provides foundational context and should be **concatenated at the beginning of every session** (01, 02, 03, 04a, 04b, 04c). Each new Claude Code session starts fresh with no memory, so Session 0 ensures consistent grounding across all methodology work.
+
+**How to use:**
+```bash
+# For any session, concatenate Session 0 first:
+cat plan/_session-0.md plan/_session-01.md > combined-session-01.md
+cat plan/_session-0.md plan/_session-02.md > combined-session-02.md
+# etc.
+```
   
 ## Background:
 
