@@ -24,21 +24,45 @@ The methodology follows an 8-phase approach (P0-P8) for turning rough requiremen
 - **P8: Agentic System Design** - Extend with monitoring, validation, and alerts
 
 ### Proposed App Structure (NOT FINALIZED - being worked out through PoC implementation)
+
+Following nikolovlazar's modern Clean Architecture pattern with explicit Infrastructure layer:
+
 ```
 app/
-├─ core/          # Domain models & use cases
-├─ adapters/      # Infrastructure: storage, imagegen, vector, db
-├─ utils/         # Helpers: observability, manifest, brief loader
-├─ server.py      # FastAPI (optional micro-API)
-├─ models.py      # SQLAlchemy models (Run, Approval, Alert)
-└─ db.py          # DB session utilities (Postgres)
+├─ core/                    # Domain + Application layers
+│  ├─ entities/             # Domain models (Entities)
+│  ├─ use_cases/            # Application business rules (Use Cases)
+│  └─ interfaces/           # Infrastructure interfaces (defined by app, implemented by infra)
+├─ adapters/                # Infrastructure layer (implements core/interfaces)
+│  ├─ storage/              # Storage implementations (local, S3, etc.)
+│  ├─ imagegen/             # Image generation clients (Firefly, DALL-E)
+│  ├─ vector/               # Vector DB adapters (Weaviate)
+│  ├─ db/                   # Database repositories (Postgres)
+│  └─ compose.py            # Image composition utilities
+├─ interface_adapters/      # Controllers, Presenters, CLI handlers
+│  ├─ controllers/          # API/CLI request handlers
+│  └─ presenters/           # Response formatters
+├─ utils/                   # Cross-cutting concerns
+│  ├─ observability.py      # Phoenix/Arize telemetry
+│  ├─ manifest.py           # Manifest generation
+│  └─ brief_loader.py       # YAML loading utilities
+├─ server.py                # FastAPI (Frameworks & Drivers layer)
+├─ cli.py                   # Typer CLI (Frameworks & Drivers layer)
+├─ models.py                # SQLAlchemy models
+└─ db.py                    # DB session utilities
 tools/
-├─ agent_watcher.py   # Automation watcher
-├─ init_db.py         # Create tables
-└─ validate.py        # Schema validation CLI
+├─ agent_watcher.py         # Automation watcher
+├─ init_db.py               # Create tables
+└─ validate.py              # Schema validation CLI
 ```
 
-**Note:** The actual project structure will be determined through ongoing PoC implementation work. The above is a proposed structure based on Clean Architecture principles and may evolve.
+**Key Pattern - Infrastructure Interfaces**:
+- `app/core/interfaces/` defines contracts (e.g., `IStorageAdapter`, `IImageGenerator`)
+- `app/adapters/` provides concrete implementations
+- Use Cases depend on interfaces, not implementations (Dependency Inversion)
+- Achieved through Dependency Injection at runtime
+
+**Note:** The actual project structure will be determined through ongoing PoC implementation work. The above is a proposed structure based on Clean Architecture principles (see `images/ca/clean-architecture-diagram-nikolovlazar.jpg`) and may evolve.
 
 ## Key Principles
 
@@ -72,6 +96,19 @@ The methodology uses specific syntax for agent compatibility:
 - `_howto/NOTES_HowToUse_dayOf.md` - Day-of-demo workflow
 - `_howto/NOTES.md` - Tips, tricks, and bundle explanations
 - `_howto/cursor/suggested_artifacts.md` - Cursor IDE setup guide with `.cursorrules` and task prompts
+
+### Visual Documentation
+- `images/IMAGE_ANALYSIS.md` - Comprehensive analysis of all visual assets
+- `images/ca/` - Clean Architecture diagrams (Martin's classic + nikolovlazar's modern implementation)
+- `images/acceptance-criteria/` - Given/When/Then and 4Cs framework visualizations
+- `images/lpp/` - Lean Product Playbook pyramids (Product-Market Fit + 6-step process)
+
+**Visual Assets Mapped to Methodology Phases**:
+- **P0-P2** (Context/Ideation): Use Martin's CA diagram for conceptual design; LPP pyramid for defining MVP scope
+- **P3-P5** (Planning): Use nikolovlazar's CA for implementation structure; Given/When/Then for acceptance criteria
+- **P6** (Execution): Use nikolovlazar's CA as code organization blueprint
+- **P7** (Reflection): Use Martin's CA for stakeholder communication
+- **P8** (Agentic): Infrastructure layer pattern enables observability and monitoring hooks
 
 ## Typical Development Workflow (PROPOSED - being validated through PoC)
 
@@ -154,24 +191,80 @@ make api           # start FastAPI server
 ## Important Patterns (from methodology - implementation TBD)
 
 ### Clean Architecture Layers (Proposed)
-- **Domain** (`app/core/`): Business logic, models, use cases
-- **Adapters** (`app/adapters/`): External integrations (storage, image generation, vector search)
-- **Utils** (`app/utils/`): Cross-cutting concerns (observability, validation, manifest generation)
+
+Following the **nikolovlazar modern pattern** (see `images/ca/`), the methodology emphasizes:
+
+**Layer Hierarchy** (bottom to top):
+1. **Entities** (`app/core/entities/`): Domain models, business objects, errors
+2. **Application** (`app/core/use_cases/` + `app/core/interfaces/`):
+   - Use Cases implementing business rules
+   - Infrastructure Interfaces defining contracts for external dependencies
+3. **Infrastructure** (`app/adapters/`): Concrete implementations of interfaces (repositories, external service clients)
+4. **Interface Adapters** (`app/interface_adapters/`): Controllers, Presenters, CLI handlers
+5. **Frameworks & Drivers**: FastAPI, Typer CLI, Streamlit UI (entry points)
+
+**Dependency Rule**:
+- Dependencies point inward (toward Entities)
+- Outer layers depend on inner layers, never the reverse
+- Use Cases depend on Infrastructure Interfaces (defined in Application layer)
+- Infrastructure implements those interfaces (Dependency Inversion Principle)
+- External services (Database, APIs) consume Infrastructure layer
+
+**Key Differences from Classic Martin Pattern**:
+- **Explicit Infrastructure Layer**: Separated from Frameworks & Drivers
+- **Infrastructure Interfaces in Application Layer**: Contracts defined by business needs, not technical implementation
+- **Dependency Injection**: Explicitly used to wire implementations to interfaces at runtime
+- See `images/IMAGE_ANALYSIS.md` section 2 for detailed comparison
 
 ### YAML-Driven Development
+
 - Use-case specs are YAML files defining inputs, steps, and acceptance criteria
 - Playbooks are YAML/Markdown capturing the full PoC journey through all 8 phases
 - Agent tasks in Phase 8 are defined in `agent_task.P8.yaml`
 
-### Adapter Pattern for Substitution (Proposed)
-All external dependencies should be behind adapters:
-```python
-# Example pattern (not yet implemented)
-app/adapters/
-├─ storage_local.py      # LocalFS implementation
-├─ imagegen_firefly.py   # Adobe Firefly client
-└─ compose.py            # Image composition (Pillow/OpenCV)
+**Acceptance Criteria Format** (Given/When/Then):
+```yaml
+use_case:
+  name: RecoverPassword
+  acceptance_criteria:
+    - given: "User navigates to login page"
+      when: "User selects forgot password option"
+      and: "Enters valid email"
+      then: "System sends recovery link to email"
 ```
+
+See `images/acceptance-criteria/given-when-then-acceptance-criteria.webp` for detailed examples.
+
+### Adapter Pattern for Substitution (Proposed)
+
+All external dependencies should be behind adapters implementing core interfaces:
+
+```python
+# app/core/interfaces/storage.py
+from abc import ABC, abstractmethod
+
+class IStorageAdapter(ABC):
+    @abstractmethod
+    def save(self, path: str, content: bytes) -> str:
+        pass
+
+# app/adapters/storage/local.py
+class LocalStorageAdapter(IStorageAdapter):
+    def save(self, path: str, content: bytes) -> str:
+        # Implementation for local filesystem
+        pass
+
+# app/adapters/storage/s3.py
+class S3StorageAdapter(IStorageAdapter):
+    def save(self, path: str, content: bytes) -> str:
+        # Implementation for AWS S3
+        pass
+```
+
+**Benefits**:
+- Easy substitution for testing (use LocalStorage in tests, S3 in production)
+- Technology-agnostic Use Cases
+- Supports Phase 8 observability (wrap adapters with telemetry)
 
 ## Working with Cursor IDE
 
@@ -196,8 +289,23 @@ When using Cursor for development:
 
 ## References
 
-- _Lean Product Playbook_ – Dan Olsen
-- _Clean Architecture_ – Robert C. Martin
-- Arize / Phoenix – ML Observability
-- Weaviate – Vector Search Engine
-- Streamlit – Rapid UI for data apps
+### Foundational Works
+- _Lean Product Playbook_ – Dan Olsen (Product-Market Fit methodology)
+- _Clean Architecture_ – Robert C. Martin (architectural principles)
+
+### Visual References
+- Bob Martin's Clean Architecture diagram – Classic concentric circles pattern
+- nikolovlazar's Clean Architecture diagram – Modern implementation with explicit Infrastructure layer
+- Given/When/Then acceptance criteria – Behavior-Driven Development (BDD) format
+- 4 Cs Framework (Card, Conversation, Confirmation, Context) – Ron Jeffries
+
+### Technology Stack
+- **Observability**: Arize / Phoenix (ML/LLM observability and tracing)
+- **Vector DB**: Weaviate (vector search engine)
+- **API Framework**: FastAPI (modern Python API framework)
+- **Database**: PostgreSQL (relational database)
+- **UI**: Streamlit (rapid data app development)
+- **Testing**: pytest (Python test framework)
+
+### Additional Resources
+- See `images/IMAGE_ANALYSIS.md` for detailed visual asset analysis and architectural comparisons
