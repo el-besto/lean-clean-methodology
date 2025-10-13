@@ -32,6 +32,8 @@ The goal is to turn *rough requirements* into an **implemented, testable PoC** w
 
 ## 🏗️ Framework Structure
 
+**Note:** The methodology supports three PoC types—**Steel Thread** (1-2 days, minimal layers), **Pragmatic CA** (3-5 days, controllers + presenters), and **Full CA** (production-ready, comprehensive layers). Structure below represents Pragmatic CA. See Session 01 architectural decisions for progression paths.
+
 ```
 app/
 ├─ core/          # Domain models & use cases
@@ -169,14 +171,16 @@ tests/                # pytest suite
 
 **Activities:**
 
-- Select framework(s), tools, adapters 
-- Plan test harnesses, mock data, and deployment environment 
+- **Select PoC type:** Steel Thread (1-2 days, minimal), Pragmatic CA (3-5 days, production-ready subset), or Full CA (production hardening)
+- Select framework(s), tools, adapters
+- Plan test harnesses, mock data, and deployment environment
 - Define interface boundaries (ports/adapters)
-- Plan code skeletons aligned to Clean Architecture layers
+- Plan code skeletons aligned to selected PoC type's layering strategy
 
 **Outputs:**
 
-- Technical stack decision log 
+- **PoC type decision** with rationale (speed vs. rigor trade-off)
+- Technical stack decision log
 - PoC skeleton (repo initialized)
 - Development plan with milestones
 
@@ -207,14 +211,16 @@ tests/                # pytest suite
 
 **Activities:**
 
-- Document decision log and learning summary 
-- Update reusable templates, boilerplates, and playbooks 
+- Document decision log and learning summary
+- Update reusable templates, boilerplates, and playbooks
 - Conduct a retrospective ("what would we do differently?")
+- **Decide evolution path:** Stay at current PoC type, evolve to next level, or retire
 
 **Outputs:**
 
-- Retrospective doc 
+- Retrospective doc
 - Updated reusable artifacts (schemas, diagrams, templates)
+- **Evolution decision:** Steel Thread → Pragmatic CA, Pragmatic CA → Full CA, or retire
 - Go/no-go decision for productionization
 
 ### Phase 8: WIP

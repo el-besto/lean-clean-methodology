@@ -1,7 +1,7 @@
 ## Claude Instructions - Session 2
 
 ### Context
-In Session 1, we defined the Lean-Clean Methodology phases. Now we need to create the Framework that implements it.
+In Session 1, we defined the Lean-Clean Methodology phases and resolved divergent architectural questions (see `/plan/_session-01-architectural-decisions.md` for detailed rationale, `/plan/_session-01-summary.md` for overview). Now we need to create the Framework that implements it.
 
 ### Your Task for This Session
 
@@ -69,8 +69,9 @@ You are my framework architect and structural design partner. I need you to:
 I recommend tackling this in order:
 
 1. **First, review Session 01 outputs** (15-20 minutes)
-   - Review methodology phases defined in Session 01
-   - Understand PoC type distinctions (Steel Thread, Pragmatic CA, Full CA)
+   - Read `/plan/_session-01-summary.md` for quick overview
+   - Read `/plan/_session-01-architectural-decisions.md` for detailed Q&A (especially Q1: PoC types, Q2: cross-cutting concerns, Q4: Feature/Controller mapping)
+   - Review methodology phases defined in `README.lean-clean.md` (Phase 5: PoC type selection, Phase 7: evolution decisions)
    - Note any architectural decisions that inform folder structure
 
 2. **Then, review existing README.lean-clean.md** (30-45 minutes)
