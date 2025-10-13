@@ -49,7 +49,7 @@ Which term should we use in the Framework?
 
 **Impact:** HIGH - Affects folder names, class names, documentation throughout
 
-**Status:** ✅ RESOLVED - See `/plan/_lean-clean-axioms.md` Axiom 2
+**Status:** ✅ RESOLVED - See `/docs/lean-clean-axioms.md` Axiom 2
 
 ---
 

@@ -178,7 +178,7 @@ DON'T use this template for:
 **Should Read:**
 
 - `/path/to/related-work.md` - Related context
-- `/plan/_lean-clean-axioms.md` - Established principles
+- `/docs/lean-clean-axioms.md` - Established principles
 
 **Optional:**
 

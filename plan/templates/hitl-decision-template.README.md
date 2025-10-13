@@ -134,4 +134,4 @@ This template emerged from Session experience:
 **Other References:**
 
 - `/CLAUDE.md` - Repository overview and default working mode
-- `/plan/_lean-clean-axioms.md` - Established architectural principles
+- `/docs/lean-clean-axioms.md` - Established architectural principles

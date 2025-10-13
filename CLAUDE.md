@@ -103,6 +103,29 @@ When resuming work across sessions:
 - Review axioms and prior architectural decisions
 - Confirm understanding before proceeding
 
+### Repository Organization
+
+The repository uses a clear distinction between finalized and working documents:
+
+**`/docs/` - Finalized Documents**
+- Stable, approved architectural decisions and principles
+- Foundational documents that inform all methodology work
+- Examples: `lean-clean-axioms.md` (core architectural principles)
+- These documents should be treated as authoritative references
+- Changes to these documents require significant justification
+
+**`/plan/` - Working Documents**
+- Session notes and work-in-progress decisions
+- Experimental ideas and explorations
+- Decision documents being developed
+- Templates for Human-in-the-Loop workflows
+- Examples: `_session-*.md`, decision logs, framework explorations
+
+**When to reference which:**
+- Start methodology tasks by reading `/docs/` to understand finalized principles
+- Document your decision-making process in `/plan/`
+- Promote documents from `/plan/` to `/docs/` only after explicit approval
+
 ---
 
 ## Core Architecture Philosophy
@@ -182,6 +205,9 @@ The methodology uses specific syntax for agent compatibility:
 - **Metadata front matter**: YAML blocks at top of files for versioning and pipeline ingestion
 
 ## Key Documentation Files
+
+### Finalized Documents (`/docs/`)
+- `lean-clean-axioms.md` - Core architectural principles and foundational decisions
 
 ### Methodology Core
 - `README.lean-clean.md` - Complete v2.2 methodology documentation with all 8 phases

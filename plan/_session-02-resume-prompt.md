@@ -13,7 +13,7 @@ I'm continuing Session 02 work on defining the **Framework (Component B)** for t
 - Included complete feature example: Localized Campaign Generation
 - Documented progressive refinement evolution path
 
-✅ Created Core Axioms document: `/plan/_lean-clean-axioms.md`
+✅ Created Core Axioms document: `/docs/lean-clean-axioms.md`
 - 10 non-negotiable principles guiding methodology decisions
 - **Key Axiom 2:** Orchestrator-Centric Architecture (NOT Controller)
 - **Key Axiom 3:** Fakes are Production Code (in adapters/, not tests/)
@@ -197,7 +197,7 @@ After reviewing `/lean-clean-code/CLEAN_ARCHITECTURE_ANALYSIS.md`, we identified
 
 Please read these documents to inform your decisions:
 
-1. **`/plan/_lean-clean-axioms.md`** - Core non-negotiable principles
+1. **`/docs/lean-clean-axioms.md`** - Core non-negotiable principles
    - Axiom 2: Orchestrator-Centric Architecture
    - Axiom 3: Fakes are Production Code
    - Axiom 6: Hybrid Methodology (Not Pure CA)

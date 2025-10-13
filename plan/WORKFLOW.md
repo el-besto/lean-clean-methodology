@@ -124,7 +124,7 @@ Open `plan/_my-task-hitl-prompt.md` and fill in:
 
 **Should Read:**
 - `/path/to/related-work.md` - Related context
-- `/plan/_lean-clean-axioms.md` - Established principles
+- `/docs/lean-clean-axioms.md` - Established principles
 
 **Optional:**
 - `/path/to/reference.md` - Additional context if needed
@@ -347,7 +347,7 @@ The naming makes the relationship obvious: same prefix, different suffix.
 
 2. **✅ Read all specified documents:**
    - Everything in "Documents to Review" section
-   - Related axioms: `/plan/_lean-clean-axioms.md`
+   - Related axioms: `/docs/lean-clean-axioms.md`
    - Prior decision documents if referenced
 
 3. **✅ Perform thorough analysis:**
@@ -665,4 +665,4 @@ Common abbreviations and terms used in this workflow:
 - `/plan/templates/hitl-decision-template.README.md` - Template usage guide
 - `/plan/templates/decision-document-template.README.md` - Decisions artifact guide
 - `/CLAUDE.md` - Repository overview and default working mode
-- `/plan/_lean-clean-axioms.md` - Established architectural principles
+- `/docs/lean-clean-axioms.md` - Established architectural principles
