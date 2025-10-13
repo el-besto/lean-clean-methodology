@@ -1,5 +1,16 @@
 # TDD for Enterprise PoC Acceleration: Stakeholder Alignment Insights
 
+> **⚠️ SUPERSEDED BY SESSION 01**
+>
+> This document was created on 2025-10-12, before Session 01 architectural decisions (2025-10-13).
+>
+> **Session 01 now authoritatively defines:**
+> - **pytest vs Gherkin** → See `/plan/_session-01-architectural-decisions.md` Q3 (pytest with BDD docstrings)
+> - **Controllers/orchestration** → See Session 01 Q4 (Feature → Controller mapping)
+> - **PoC types** → See Session 01 Q1 (three types with evolution paths)
+>
+> This file remains for TDD acceleration insights and stakeholder workshop patterns but **use Session 01 architectural decisions when implementing.**
+
 ## Executive Summary
 
 **Key Discovery:** Test-Driven Development (TDD) fundamentally transforms enterprise PoC delivery not by finding bugs, but by **turning non-technical stakeholders into co-authors of executable specifications**.

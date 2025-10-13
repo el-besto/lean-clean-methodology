@@ -1,5 +1,16 @@
 # TDD for Enterprise-Level PoCs: Specification-First Development
 
+> **⚠️ SUPERSEDED BY SESSION 01**
+>
+> This document was created on 2025-10-12, before Session 01 architectural decisions (2025-10-13).
+>
+> **Session 01 now authoritatively defines:**
+> - **pytest vs Gherkin** → See `/plan/_session-01-architectural-decisions.md` Q3 (pytest with BDD docstrings)
+> - **Feature/Controller concept** → See Session 01 Q4 (Feature maps to Controller)
+> - **TDD approach integration** → Deferred to future session
+>
+> This file remains for TDD workflow patterns and stakeholder workshop examples but **defer to Session 01 for architectural decisions.**
+
 ## Executive Summary
 
 **Key Insight:** The calibration-service controller pattern enables **Outside-In TDD**, where you can write specifications as tests with stakeholders BEFORE expensive implementation. This dramatically accelerates enterprise PoC delivery by:

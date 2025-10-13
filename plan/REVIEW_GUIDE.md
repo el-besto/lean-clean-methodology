@@ -1,5 +1,16 @@
 # Review Guide: Deciding on Final PoC Structure
 
+> **⚠️ SUPERSEDED BY SESSION 01**
+>
+> This document was created on 2025-10-12, before Session 01 architectural decisions (2025-10-13).
+>
+> **Session 01 now authoritatively defines:**
+> - **PoC types** → See `/plan/_session-01-architectural-decisions.md` Q1 (Steel Thread, Pragmatic CA, Full CA)
+> - **Evolution paths** → See Session 01 Q5 (progressive refinement)
+> - **Decision framework** → Integrated into `README.lean-clean.md` Phase 5
+>
+> This file remains for additional decision guidance but **defer to Session 01 for current architectural decisions.**
+
 ## How to Use This Guide
 
 This guide provides a structured decision-making process for finalizing the PoC structure recommendations in the lean-clean-methodology. **Choose your path based on available time:**

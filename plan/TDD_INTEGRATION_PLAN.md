@@ -1,5 +1,16 @@
 # TDD Integration Plan for README.lean-clean.md
 
+> **⚠️ SUPERSEDED BY SESSION 01**
+>
+> This document was created on 2025-10-12, before Session 01 architectural decisions (2025-10-13).
+>
+> **Session 01 now authoritatively defines:**
+> - **PoC types** → See `/plan/_session-01-architectural-decisions.md` Q1 (Steel Thread, Pragmatic CA, Full CA)
+> - **pytest approach** → See Session 01 Q3 (pytest with BDD docstrings, not Gherkin)
+> - **Phase structure** → See `README.lean-clean.md` (refined with PoC type evolution)
+>
+> This file remains for TDD integration ideas but **integration should be done using Session 01 architectural decisions as foundation.**
+
 ## Overview
 
 This document provides a detailed plan for weaving Test-Driven Development (TDD) workflow into each phase of the Lean-Clean methodology (README.lean-clean.md). The integration is optional and triggered by a decision point early in the process.
