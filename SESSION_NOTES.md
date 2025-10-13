@@ -1,8 +1,21 @@
 # Session Notes: TDD Integration for Enterprise PoC Acceleration
 
+> **⚠️ HISTORICAL DOCUMENT**
+>
+> This file documents work completed on 2025-10-12, before Session 01 architectural decisions (2025-10-13).
+>
+> **For current authoritative guidance:**
+> - PoC types (Steel Thread, Pragmatic CA, Full CA) → See `/plan/_session-01-architectural-decisions.md` (Q1)
+> - Cross-cutting concerns placement → See Session 01 (Q2)
+> - pytest vs Gherkin → See Session 01 (Q3)
+> - Feature/Controller mapping → See Session 01 (Q4)
+> - Evolution paths → See Session 01 (Q5)
+>
+> This file remains for historical context and may contain TDD insights not yet integrated into Session 01.
+
 **Date:** 2025-10-12
 **Session Focus:** Analyzing and documenting how TDD accelerates enterprise PoC delivery through stakeholder alignment
-**Status:** ✅ Complete - Ready for implementation
+**Status:** ✅ Complete - Ready for implementation (SUPERSEDED by Session 01)
 
 ---
 
