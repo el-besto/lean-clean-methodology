@@ -41,7 +41,7 @@ Specifically:
    - Prior analysis is available at: /Users/ac/Code/el-besto/lean-clean-code/CLEAN_ARCHITECTURE_ANALYSIS.md
 
 2. **Review my existing phase definitions**
-   - located in README.lean-clean.md for steps 3 and 4. For step 4, I dont believe we will need to redefine much if anything.
+   - located in README.md for steps 3 and 4. For step 4, I dont believe we will need to redefine much if anything.
 
 3. **Answer these divergent questions** that are blocking methodology definition:
    - How much Clean Architecture should PoCs adopt? (Full CA vs Pragmatic subset?)
@@ -101,7 +101,7 @@ I recommend tackling this in order:
 1. **First, review existing materials** (45-60 minutes)
    - Read CLEAN_ARCHITECTURE_ANALYSIS.md if available
    - Scan calibration-service and creative-ai-poc for patterns
-   - Review README.lean-clean.md for existing phase definitions
+   - Review README.md for existing phase definitions
    - Note what's working vs. what's conflicting
 
 2. **Then, answer divergent questions** (60-90 minutes)

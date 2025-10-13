@@ -175,7 +175,7 @@ This means **tests don't break when you evolve**:
 2. `/plan/_session-02-summary.md` - This summary
 
 **Files NOT Changed:**
-- `README.lean-clean.md` - Kept as-is, references Session 02 via CLAUDE.md
+- `README.md` - Kept as-is, references Session 02 via CLAUDE.md
 
 ---
 

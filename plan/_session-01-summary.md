@@ -29,7 +29,7 @@ Each answer includes rationale, trade-offs, and code examples.
 
 ### 2. ✅ Refined Methodology Phases
 
-Made **minimal clarifying edits** to `README.lean-clean.md`:
+Made **minimal clarifying edits** to `README.md`:
 
 **Changes:**
 1. **Framework Structure (line 35):** Added note about three PoC types with reference to Session 01 decisions
@@ -62,7 +62,7 @@ Architectural decisions document explicitly calls out Session 02 work:
 | Criterion | Status | Evidence |
 |-----------|--------|----------|
 | Divergent questions answered with rationale | ✅ Complete | `_session-01-architectural-decisions.md` |
-| Methodology phases defined and documented | ✅ Complete | `README.lean-clean.md` (refined) |
+| Methodology phases defined and documented | ✅ Complete | `README.md` (refined) |
 | Foundation for Framework definition | ✅ Complete | Session 02 scope defined |
 
 ---
@@ -100,7 +100,7 @@ Telemetry, events, and metrics are "output for observability systems" - conceptu
 
 ---
 
-## What Changed in README.lean-clean.md
+## What Changed in README.md
 
 **Additions (bolded in diff):**
 - Framework Structure note about three PoC types

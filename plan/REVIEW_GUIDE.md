@@ -7,7 +7,7 @@
 > **Session 01 now authoritatively defines:**
 > - **PoC types** → See `/plan/_session-01-architectural-decisions.md` Q1 (Steel Thread, Pragmatic CA, Full CA)
 > - **Evolution paths** → See Session 01 Q5 (progressive refinement)
-> - **Decision framework** → Integrated into `README.lean-clean.md` Phase 5
+> - **Decision framework** → Integrated into `README.md` Phase 5
 >
 > This file remains for additional decision guidance but **defer to Session 01 for current architectural decisions.**
 
@@ -1040,7 +1040,7 @@ Based on your decisions, choose an approach:
    - [ ] Update "Key Principles" if needed
    - [ ] Add examples for chosen patterns
 
-2. **`README.lean-clean.md`** (if it references structure)
+2. **`README.md`** (if it references structure)
    - [ ] Update structure references
    - [ ] Ensure consistency with CLAUDE.md
 

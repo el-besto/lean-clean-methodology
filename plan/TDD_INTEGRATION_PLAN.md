@@ -1,4 +1,4 @@
-# TDD Integration Plan for README.lean-clean.md
+# TDD Integration Plan for README.md
 
 > **⚠️ SUPERSEDED BY SESSION 01**
 >
@@ -7,13 +7,13 @@
 > **Session 01 now authoritatively defines:**
 > - **PoC types** → See `/plan/_session-01-architectural-decisions.md` Q1 (Steel Thread, Pragmatic CA, Full CA)
 > - **pytest approach** → See Session 01 Q3 (pytest with BDD docstrings, not Gherkin)
-> - **Phase structure** → See `README.lean-clean.md` (refined with PoC type evolution)
+> - **Phase structure** → See `README.md` (refined with PoC type evolution)
 >
 > This file remains for TDD integration ideas but **integration should be done using Session 01 architectural decisions as foundation.**
 
 ## Overview
 
-This document provides a detailed plan for weaving Test-Driven Development (TDD) workflow into each phase of the Lean-Clean methodology (README.lean-clean.md). The integration is optional and triggered by a decision point early in the process.
+This document provides a detailed plan for weaving Test-Driven Development (TDD) workflow into each phase of the Lean-Clean methodology (README.md). The integration is optional and triggered by a decision point early in the process.
 
 **Key Principle:** TDD is presented as an **acceleration option for enterprise PoCs**, not a mandatory practice for all PoCs.
 
@@ -700,11 +700,11 @@ actions:
 
 ### Phase 1: Prepare
 
-- [ ] Review current README.lean-clean.md
+- [ ] Review current README.md
 - [ ] Review all plan/ documents
 - [ ] Get user approval on this integration plan
 
-### Phase 2: Update README.lean-clean.md
+### Phase 2: Update README.md
 
 **Before P0:**
 - [ ] Add "TDD Decision Point" section with decision framework
@@ -883,7 +883,7 @@ Before implementing these changes, please review:
 **Status:** Ready for user review
 **Next Steps:**
 1. User reviews and approves this plan
-2. Implement changes to README.lean-clean.md
+2. Implement changes to README.md
 3. Create supporting templates and examples
 4. Test with real PoC
 5. Iterate based on feedback

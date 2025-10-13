@@ -8,7 +8,7 @@ In Session 1, we defined the Lean-Clean Methodology phases and resolved divergen
 **Craft the Framework definitions** (Component B from Primary Components)
 
 Specifically:
-1. Review the existing README.lean-clean.md (mostly complete)
+1. Review the existing README.md (mostly complete)
 2. Define folder architecture for each PoC type:
    - Steel Thread (minimal, spike-level)
    - Pragmatic CA (pragmatic subset for PoCs)
@@ -71,10 +71,10 @@ I recommend tackling this in order:
 1. **First, review Session 01 outputs** (15-20 minutes)
    - Read `/plan/_session-01-summary.md` for quick overview
    - Read `/plan/_session-01-architectural-decisions.md` for detailed Q&A (especially Q1: PoC types, Q2: cross-cutting concerns, Q4: Feature/Controller mapping)
-   - Review methodology phases defined in `README.lean-clean.md` (Phase 5: PoC type selection, Phase 7: evolution decisions)
+   - Review methodology phases defined in `README.md` (Phase 5: PoC type selection, Phase 7: evolution decisions)
    - Note any architectural decisions that inform folder structure
 
-2. **Then, review existing README.lean-clean.md** (30-45 minutes)
+2. **Then, review existing README.md** (30-45 minutes)
    - Identify what's already documented and working
    - Note gaps or conflicts with Session 01 decisions
    - Understand the nikolovlazar CA pattern (explicit Infrastructure layer)

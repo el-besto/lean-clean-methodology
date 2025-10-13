@@ -1717,7 +1717,7 @@ This framework document now incorporates all 12 resolved architectural decisions
 
 **Future Work (Session 03 candidates):**
 
-1. ⏭️ Update README.lean-clean.md to reference this document
+1. ⏭️ Update README.md to reference this document
 2. ⏭️ Create Python code examples for each PoC type
 3. ⏭️ Document DI evolution patterns (manual → dependencies module → container)
 4. ⏭️ Document test patterns and fixtures

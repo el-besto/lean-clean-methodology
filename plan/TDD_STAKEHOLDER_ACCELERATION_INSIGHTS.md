@@ -968,7 +968,7 @@ For enterprise PoCs with:
 **Status:** Ready for integration into methodology
 **Impact:** CRITICAL - Changes enterprise PoC delivery fundamentally
 **Next Steps:**
-1. Add TDD decision point to each phase in README.lean-clean.md
+1. Add TDD decision point to each phase in README.md
 2. Create stakeholder workshop template
 3. Update REVIEW_GUIDE.md with TDD decision area
 4. Add example test suites for common PoC scenarios

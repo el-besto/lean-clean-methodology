@@ -210,7 +210,7 @@ The methodology uses specific syntax for agent compatibility:
 - `lean-clean-axioms.md` - Core architectural principles and foundational decisions
 
 ### Methodology Core
-- `README.lean-clean.md` - Complete v2.2 methodology documentation with all 8 phases
+- `README.md` - Complete v2.2 methodology documentation with all 8 phases
 - `Lean-Clean-PoC-Playbook-v2-template.md` - Template for creating project-specific playbooks
 - `lean-clean-methodology-v1.csv` & `lean-clean-methodology-v2.csv` - Phase tables
 

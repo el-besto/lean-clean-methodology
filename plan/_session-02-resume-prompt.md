@@ -218,7 +218,7 @@ Please read these documents to inform your decisions:
 4. **`/plan/_session-02-decisions-needed.md`** - Decisions document with all options
    - Decisions 8-12 with detailed options and trade-offs (lines 362-636)
 
-5. **`README.lean-clean.md`** - Methodology overview (if you need broader context)
+5. **`README.md`** - Methodology overview (if you need broader context)
 
 ## Visual References
 
