@@ -418,32 +418,78 @@ We could rename “controller” to orchestrator still to talk about its role in
 
 ### Example: Stakeholder Workshop Pattern
 
+Imagine a 90-minute workshop with Marketing, Legal, Product, and DevOps representatives. Together, you write this test:
+
 ```python
-# tests/unit/controllers/test_creative_controller.py
-# Written WITH stakeholders in 1-hour workshop
+# tests/acceptance/test_summer_campaign_feature.py
+# Written WITH all stakeholders in workshop
 
-async def test_generate_creatives_for_summer_campaign():
-    """Marketing team: Generate Instagram and Facebook ads for summer sale."""
-    # Stakeholders define the expected behavior
-    request = GenerateRequest(
-        campaign_message="50% Off All Summer Gear",
-        products=["sunglasses", "sandals"],
-        aspects=["1:1", "9:16"]  # Instagram post, Story
-    )
-
-    response = await controller.generate(request)
-
-    # Assertions stakeholders agreed to:
-    assert len(response.assets) == 4  # 2 products × 2 aspects
-    assert all(asset.image_url for asset in response.assets)
+@pytest.mark.feature("summer_campaign")
+class TestSummerCampaignFeature:
+    """
+    Feature: Generate compliant marketing creatives for summer campaign
     
+    Stakeholders & Requirements:
+    - Marketing: Instagram/Facebook ads, brand color compliance
+    - Legal: Obscenity filtering, no unsubstantiated claims
+    - Product: Conversion events, A/B test assignment
+    - DevOps: <2s latency, <$0.50 per creative generation
+    """
     
+    async def test_generate_compliant_summer_creatives(
+        self,
+        controller,
+        fake_brand_validator,
+        fake_content_filter,
+        fake_event_tracker,
+        fake_metrics_collector
+    ):
+        """
+        Given a summer campaign request for multiple products
+        When generating creatives for Instagram and Facebook
+        Then all stakeholder requirements are met
+        """
+        # Marketing: Define campaign parameters
+        request = GenerateRequest(
+            campaign_message="50% Off All Summer Gear",
+            products=["sunglasses", "sandals"],
+            channels=["instagram_post", "instagram_story", "facebook_ad"],
+            brand_guidelines={"primary_color": "#FF6B35"}
+        )
+        
+        # Execute
+        start_time = time.time()
+        response = await controller.generate(request)
+        latency = time.time() - start_time
+        
+        # Marketing: Verify creative outputs
+        assert len(response.assets) == 6  # 2 products × 3 formats
+        assert all(asset.image_url for asset in response.assets)
+        assert all(asset.brand_compliant for asset in response.assets)
+        
+        # Legal: Verify content filtering was applied
+        assert fake_content_filter.was_called()
+        assert not any(asset.flagged_content for asset in response.assets)
+        
+        # Product: Verify tracking events emitted
+        events = fake_event_tracker.get_events()
+        assert any(e.type == "campaign_generated" for e in events)
+        assert any(e.type == "ab_test_assigned" for e in events)
+        
+        # DevOps: Verify performance and cost SLAs
+        assert latency < 2.0  # SLA requirement
+        metrics = fake_metrics_collector.get_metrics()
+        assert metrics["cost_per_generation"] < 0.50
 ```
-This example needs a realistic set of all stakeholders having a discrete step, like branding checks for marketing and word obscenity ck for legal, capture events for product management and A\b experiments (telemetry for campaign effectiveness, conversion, for performance (latency), costs for devops etc. we should define different desirements for each of the identified stakeholders. Then come back to flesh out the example as this is really the differentiator of this approach for enterprise poc usage.
 
-We need to go “outside in” for all of these groups needs. How can we handle this? For example the events emitted may be at different layers of codebase for marketing events to track usage/conversion, vs ai model token consumption which is per model in the adapters layer.
+This multi-stakeholder testing approach works because different concerns live at different architectural layers, and the Orchestrator pattern coordinates them all:
 
-Do we need a higher order than “orchestrator” to write code with? Or something to group\wrap use cases like “Feature”? What learnings can we take from DDD, and Testing frameworks or methodologies that are more BDD in nature? How does XRay Enterprise handle this? Not coin code but in test report outputs? Have I heard these called Specs? Cucumber BDD?
+- **Cross-cutting concerns** (observability, cost tracking) use decorators/middleware
+- **Business rules** (legal compliance, brand checks) live in Use Cases
+- **Workflow coordination** (orchestrating multiple stakeholders) lives in Orchestrators
+- **Infrastructure details** (actual API calls, token counting) stay in Adapters
+
+The magic? You test all of this with **fakes**—no real APIs, no real costs—until stakeholders sign off. Then you implement real adapters in parallel while the PoC is already "done" from a stakeholder perspective.
 
 **Then implement to make tests pass.** No expensive adapters until spec is locked.
 

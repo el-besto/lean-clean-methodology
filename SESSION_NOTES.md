@@ -1,16 +1,3 @@
-Remember: our goal is to accelerate PoCs in the enterprise context
-
-Things got off track while we were working last.
-- My example repos are NOT finalized, they were just WIP sketches. The examples (skeleton, calibration-service, ____) were meant to provide you with Grounding in what I have sketched out so far. You will be inspired by them to create a workable python-based model to sythesize the Lean-Clean methodology to meet our goal.
-- The "REVIEW_GUIDE" was supposed to be you (the agent) helping me to refine and choose how to align on how we can create this python-based model, ie a how the Lean-Clean Methodology could appear in code. 
-
-We may need to simplify our approach to making the right decision by first deciding that 
-
-1. we will assume this is to create enterprise PoCs with 5-7 stakeholders
-2. we want to use TDD (and possibly BDD) framework principles to be able to turn "desirements" into executable code hand-in-hand with these stakeholders
-3. we will come back to provide a similar methodology for specific spike PoC efforts which may be constrained to 1-2 devs over 1-5 days for delivery.
-
-
 # Session Notes: TDD Integration for Enterprise PoC Acceleration
 
 **Date:** 2025-10-12
