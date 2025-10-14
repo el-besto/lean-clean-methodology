@@ -566,4 +566,4 @@ The magic? You test all of this with **fakes**—no real APIs, no real costs—u
 
 **Status:** Critical architectural decision identified + TDD acceleration pattern documented
 **Impact:** CRITICAL - Changes enterprise PoC delivery approach
-**Action Required:** Update STRUCTURE.md, PYTHON_PATTERNS.md, REVIEW_GUIDE.md, and integrate TDD_ENTERPRISE_POC.md
+**Action Required:** Update STRUCTURE.md, review-guide.md, and integrate TDD_ENTERPRISE_POC.md

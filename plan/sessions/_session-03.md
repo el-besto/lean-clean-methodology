@@ -1,4 +1,24 @@
-## Claude Instructions - Session 3
+## Claude Instructions - Session 3 (SUPERSEDED)
+
+**⚠️ THIS SESSION HAS BEEN SPLIT INTO 3 SUB-SESSIONS ⚠️**
+
+This session is now organized as:
+- **Session 03a:** Steel Thread Implementation → `examples/01-steel-thread-campaign-generator/`
+- **Session 03b:** Pragmatic CA Implementation → `examples/02-pragmatic-ca-campaign-generator/`
+- **Session 03c:** Full CA Implementation → `examples/03-full-ca-campaign-generator/`
+
+**Please use the individual session files instead of this one.**
+
+See:
+- `_session-03a.md` - Steel Thread (minimal, 1-2 days)
+- `_session-03b.md` - Pragmatic CA (production-ready subset, 3-5 days)
+- `_session-03c.md` - Full CA (production-scale, multi-team)
+
+---
+
+## Original Session 3 Content (for reference)
+
+## Claude Instructions - Session 3 (ORIGINAL)
 
 ### Context
 We have methodology phases (Session 1) and framework definitions (Session 2). Now we need working code.
@@ -11,7 +31,6 @@ Specifically:
 1. Generate a v1 folder structure for Pragmatic CA PoC type
 2. Create the "golden example" - the localized campaign generation test
 3. Implement enough code to make the test executable (with fakes)
-4. Document the coding patterns used
 
 ### Your Role in This Session
 

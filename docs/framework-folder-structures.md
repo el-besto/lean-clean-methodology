@@ -287,12 +287,12 @@ This test uses FAKES for all external dependencies to enable:
 
 import pytest
 from app.interface_adapters.orchestrators.campaign_orchestrator import LocalizedCampaignOrchestrator
-from app.core.use_cases.generate_campaign import GenerateCampaignUseCase
-from app.core.use_cases.validate_brand import ValidateBrandComplianceUseCase
-from app.core.use_cases.emit_events import EmitCampaignEventsUseCase
-from app.adapters.imagegen.fake_imagegen import FakeImageGenerator
-from app.adapters.storage.fake_storage import FakeStorageAdapter
-from app.adapters.events.fake_events import FakeEventTracker
+from app.use_cases.generate_campaign_uc import GenerateCampaignUseCase
+from app.use_cases.validate_brand_uc import ValidateBrandComplianceUseCase
+from app.use_cases.emit_events_uc import EmitCampaignEventsUseCase
+from app.adapters.imagegen.fake import FakeImageGenerator
+from app.adapters.storage.fake import FakeStorageAdapter
+from app.adapters.events.fake import FakeEventTracker
 
 
 @pytest.mark.feature("localized_campaign_generation")
@@ -442,9 +442,9 @@ This maps to "Feature" in test language, "Orchestrator" in implementation langua
 """
 
 from dataclasses import dataclass
-from app.core.use_cases.generate_campaign import GenerateCampaignUseCase, GenerateCampaignCommand
-from app.core.use_cases.validate_brand import ValidateBrandComplianceUseCase
-from app.core.use_cases.emit_events import EmitCampaignEventsUseCase
+from app.use_cases.generate_campaign_uc import GenerateCampaignUseCase, GenerateCampaignCommand
+from app.use_cases.validate_brand_uc import ValidateBrandComplianceUseCase
+from app.use_cases.emit_events_uc import EmitCampaignEventsUseCase
 from app.interface_adapters.presenters.campaign_presenter import CampaignPresenter
 
 
@@ -538,7 +538,7 @@ class LocalizedCampaignOrchestrator:
 
 ### 2.3 Use Case Implementation (Layer 3: Business Logic)
 
-**File:** `app/core/use_cases/generate_campaign.py`
+**File:** `app/use_cases/generate_campaign_uc.py`
 
 ```python
 """
@@ -554,10 +554,10 @@ This is the "Application" layer in Clean Architecture.
 """
 
 from dataclasses import dataclass
-from app.core.interfaces.image_generator import IImageGenerator
-from app.core.interfaces.storage import IStorageAdapter
-from app.core.entities.campaign import Campaign, CreativeSet, Creative
-from app.core.entities.errors import BudgetExceededError
+from app.adapters.imagegen.protocol import IImageGenerator
+from app.adapters.storage.protocol import IStorageAdapter
+from app.entities.campaign import Campaign, CreativeSet, Creative
+from app.entities.errors import BudgetExceededError
 
 
 @dataclass
@@ -690,14 +690,14 @@ class GenerateCampaignUseCase:
 
 ### 2.4 Interfaces (Layer 4: Infrastructure Contracts)
 
-**File:** `app/core/interfaces/image_generator.py`
+**File:** `app/adapters/imagegen/protocol.py`
 
 ```python
 """
 IImageGenerator defines what the application NEEDS from image generation.
 
 This is a "port" in Ports & Adapters (Hexagonal Architecture).
-Defined in Application layer, implemented in Infrastructure layer.
+In Pragmatic CA, ports are co-located with implementations for simplicity.
 """
 
 from abc import ABC, abstractmethod
@@ -739,7 +739,7 @@ class IImageGenerator(Protocol):
 
 ### 2.5 Fake Adapter (Layer 5: Test Double)
 
-**File:** `app/adapters/imagegen/fake_imagegen.py`
+**File:** `app/adapters/imagegen/fake.py`
 
 ```python
 """
@@ -757,7 +757,7 @@ Used in:
 """
 
 import asyncio
-from app.core.interfaces.image_generator import IImageGenerator
+from app.adapters.imagegen.protocol import IImageGenerator
 
 
 class FakeImageGenerator:
@@ -1239,7 +1239,7 @@ campaign-generator-production/
 
 **Full CA Solution:** Separate entities from ORM, use repository for mapping.
 
-**File:** `app/core/entities/campaign/campaign.py` (Domain Entity)
+**File:** `app/entities/campaign/campaign.py` (Domain Entity)
 
 ```python
 """
@@ -1251,9 +1251,9 @@ This is pure business logic, no ORM annotations, no infrastructure concerns.
 from dataclasses import dataclass, field
 from datetime import datetime
 from uuid import UUID, uuid4
-from app.core.entities.campaign.creative_set import CreativeSet
-from app.core.entities.campaign.events import CampaignCreated, CreativeGenerated
-from app.core.entities.shared.errors import BrandViolationError
+from app.entities.campaign.creative_set import CreativeSet
+from app.entities.campaign.events import CampaignCreated, CreativeGenerated
+from app.entities.shared.errors import BrandViolationError
 
 
 @dataclass
@@ -1330,7 +1330,7 @@ class Campaign:
             )
 ```
 
-**File:** `app/adapters/db/models.py` (ORM Model)
+**File:** `app/infrastructure/orm_models/campaign_orm.py` (ORM Model)
 
 ```python
 """
@@ -1364,16 +1364,17 @@ class CampaignModel(Base):
     creative_sets = relationship("CreativeSetModel", back_populates="campaign")
 ```
 
-**File:** `app/adapters/db/repositories/campaign_repo.py` (Repository)
+**File:** `app/infrastructure/repositories/campaign/postgres.py` (Repository)
 
 ```python
 """
 Campaign repository: maps between domain entities and ORM models.
 """
 
-from app.core.interfaces.repositories.campaign_repository import ICampaignRepository
-from app.core.entities.campaign.campaign import Campaign
-from app.adapters.db.models import CampaignModel, CreativeSetModel
+from app.application.ports.repositories.campaign_repository import ICampaignRepository
+from app.entities.campaign.campaign import Campaign
+from app.infrastructure.orm_models.campaign_orm import CampaignModel
+from app.infrastructure.orm_models.creative_orm import CreativeSetModel
 
 
 class CampaignRepository(ICampaignRepository):

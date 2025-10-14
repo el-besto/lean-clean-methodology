@@ -35,15 +35,15 @@ Tools/Templates (project seeds, boilerplates, etc.)
 
 Relevant for the Framework decisions (especially folder layout and test structure):
 
-![clean-architecture-diagram-nikolovlazar](/Users/ac/Code/el-besto/lean-clean-methodology/images/ca/clean-architecture-diagram-nikolovlazar.jpg) - modernizing view for modern web apps
+![clean-architecture-diagram-nikolovlazar](images/ca/clean-architecture-diagram-nikolovlazar.jpg) - modernizing view for modern web apps
 
-![clean-architecture-diagram-martin](/Users/ac/Code/el-besto/lean-clean-methodology/images/ca/clean-architecture-diagram-martin.jpg) - original diagram
+![clean-architecture-diagram-martin](images/ca/clean-architecture-diagram-martin.jpg) - original diagram
 
 #### Lean Product Playbook
 
 Helps us stay "customer focused" whether customer is the enterprise stakeholders, or the end users. Also, may influence naming conventions used for TDD/BDD paradigms/idoms in the Framework, Practice, and Tools/Templates steps.
 
-![lean-product-playbook-pyramid](/Users/ac/Code/el-besto/lean-clean-methodology/images/lpp/lpp-pyramid-product-market-fit.png)
+![lean-product-playbook-pyramid](images/lpp/lpp-pyramid-product-market-fit.png)
 
 The fundamental model showing the relationship between Product (Solution Space) and Market (Problem Space):
 
@@ -64,7 +64,7 @@ Structure:
 
 ---
 
-![The Lean Product Process](/Users/ac/Code/el-besto/lean-clean-methodology/images/lpp/lpp-pyramid-the-process.png) - The Lean Product Process.
+![The Lean Product Process](images/lpp/lpp-pyramid-the-process.png) - The Lean Product Process.
 The Product-Market Fit Pyramid consists of 5 layers divided into two sections:
 
 Market (Bottom Section - Blue):
@@ -90,7 +90,7 @@ The 6-Step Process:
 #### Turning "Desirements" into Acceptance Criteria
 4c's during workshoping, use case definition, acceptance criteria, etc.
 
-![Cards -> Conversation -> Confirmation -> Context](/Users/ac/Code/el-besto/lean-clean-methodology/images/acceptance-criteria/cards-conversation-confirmation-context.png)
+![Cards -> Conversation -> Confirmation -> Context](images/acceptance-criteria/cards-conversation-confirmation-context.png)
 
 **Four components of user story development:**
 
@@ -114,7 +114,7 @@ The 6-Step Process:
 
 **given-when-then-example**
 
-![Example Given-When-Then](/Users/ac/Code/el-besto/lean-clean-methodology/images/acceptance-criteria/given-when-then-acceptance-criteria.webp)
+![Example Given-When-Then](images/acceptance-criteria/given-when-then-acceptance-criteria.webp)
 
 
 ## Lean-Clean Methodology
@@ -145,7 +145,7 @@ The key differentiator of this methodology is writing realistic, executable test
 
 ### Previous Work (For Reference)
 I've already drafted:
-- Blog post content exploring multi-stakeholder workshops [The Secret Sauce: Outside-In with All Stakeholders](/Users/ac/Code/el-besto/lean-clean-blog/drafts/_wip-lean-clean-the-secret-sauce.md)
+- Blog post content exploring multi-stakeholder workshops [The Secret Sauce: Outside-In with All Stakeholders](../lean-clean-blog/drafts/_wip-lean-clean-the-secret-sauce.md)
 - Example tests showing the "Outside-In" approach
 
 These are helpful context but should not constrain your thinking.

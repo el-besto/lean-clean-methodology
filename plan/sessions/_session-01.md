@@ -34,11 +34,11 @@ Specifically:
 1. **Review my sketch projects** (I'll point you to them)
    - I have three WIP projects: `lean-clean-core-skeleton`, `calibration-service`, `creative-ai-poc`
    - Located at:
-     - /Users/ac/Code/el-besto/lean-clean-code/lean-clean-core-skeleton
-     - /Users/ac/Code/el-besto/creative-ai-poc
-     - /Users/ac/Code/el-besto/calibration-service
+     - ../lean-clean-code/lean-clean-core-skeleton
+     - ../creative-ai-poc
+     - ../calibration-service
    - Extract what's working, identify conflicts
-   - Prior analysis is available at: /Users/ac/Code/el-besto/lean-clean-code/CLEAN_ARCHITECTURE_ANALYSIS.md
+   - Prior analysis is available at: ../lean-clean-code/CLEAN_ARCHITECTURE_ANALYSIS.md
 
 2. **Review my existing phase definitions**
    - located in README.md for steps 3 and 4. For step 4, I dont believe we will need to redefine much if anything.

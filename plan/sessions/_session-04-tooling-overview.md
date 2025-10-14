@@ -307,9 +307,10 @@ This order ensures each tool builds on the previous, and you're always working w
 By end of session, we should have:
 
 ```text
-lean-clean-methodology/
+lean-clean-project-N/
 ├── docs/
 │   ├── review-guide.md              # In-Practice Review Guide
+│   ├── agreements.md                # Team agreements for implementation, eg python patterns, etc.
 │   ├── prompt-library.md            # Human-facing prompt templates
 │   └── quick-start.md               # 15-minute getting started
 ├── playbooks/
