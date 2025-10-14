@@ -1,9 +1,10 @@
 ## Claude Instructions - Session 4: Programmatic Application & Tooling
 
 **⚠️ NOTE: This session has been split into focused sub-sessions for better execution:**
-- **Session 4a** (`_session-04a.md`): Review Guide, Agent Playbooks, and Prompt Templates
-- **Session 4b** (`_session-04b.md`): Project Scaffolding & Templates
-- **Session 4c** (`_session-04c.md`): Artifact Generation & Integration
+- **Session 4a** (`sessions/_session-04a-review-playbooks-prompts.md`): Review Guide, Agent Playbooks, and Prompt Templates
+- **Session 4b** (`sessions/_session-04b-project-scaffolding.md`): Project Scaffolding & Templates
+- **Session 4c** (`sessions/_session-04c-artifact-generation.md`): Artifact Generation & Integration
+- **Session 4d** (`sessions/_session-04d-developer-adoption.md`): Developer Adoption & Implementation Workflows
 
 **Use the split sessions for actual work.** This file is kept for reference.
 
@@ -21,7 +22,7 @@
 - ✅ Documented folder architecture for PoC types (Steel Thread, Pragmatic CA, Full CA)
 - ✅ Defined how executable tests are written with stakeholders
 - ✅ Showed evolution path between Base Structures
-- ✅ Created Framework documentation (README.lean-clean.md)
+- ✅ Created Framework documentation (README.md)
 
 **Session 3: Working Code Examples**
 - ✅ Generated v1 folder structure for Pragmatic CA PoC

@@ -12,7 +12,7 @@
 - ✅ Documented folder architecture for PoC types (Steel Thread, Pragmatic CA, Full CA)
 - ✅ Defined how executable tests are written with stakeholders
 - ✅ Showed evolution path between Base Structures
-- ✅ Created Framework documentation (README.lean-clean.md)
+- ✅ Created Framework documentation (README.md)
 
 **Session 3: Working Code Examples**
 - ✅ Generated v1 folder structure for Pragmatic CA PoC

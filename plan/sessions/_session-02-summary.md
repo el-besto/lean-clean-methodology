@@ -5,7 +5,7 @@
 
 **Document Evolution:**
 - **Current:** This document (initial high-level summary created early in session)
-- **Next:** `_session-02-summary-framework-folder-structures.md` (detailed summary with all 12 decisions)
+- **Next:** `sessions/_session-02-summary-framework-folder-structures.md` (detailed summary with all 12 decisions)
 - **Reconciliation Needed:** `/plan/STRUCTURE.md` (pre-existing structure document)
 
 ---
@@ -175,7 +175,7 @@ This means **tests don't break when you evolve**:
 2. `/plan/_session-02-summary.md` - This summary
 
 **Files NOT Changed:**
-- `README.lean-clean.md` - Kept as-is, references Session 02 via CLAUDE.md
+- `README.md` - Kept as-is, references Session 02 via CLAUDE.md
 
 ---
 
@@ -250,7 +250,7 @@ Session 02 achieved this by:
 - Focus: Feature = Controller pattern, nikolovlazar foundation, Outside-In workflow
 
 **Detailed Summary (Created at Session End):**
-- See: `_session-02-summary-framework-folder-structures.md`
+- See: `sessions/_session-02-summary-framework-folder-structures.md`
 - Includes all 12 architectural decisions resolved
 - Includes 4 key patterns discovered
 - Includes migration paths and bash scripts
@@ -266,4 +266,4 @@ Session 02 achieved this by:
 **Document Status:** ✅ Complete
 
 **Last Updated:** 2025-10-13
-**Next Action:** Read `_session-02-summary-framework-folder-structures.md` for complete context, then reconcile with `/plan/STRUCTURE.md`
+**Next Action:** Read `sessions/_session-02-summary-framework-folder-structures.md` for complete context, then reconcile with `/plan/STRUCTURE.md`

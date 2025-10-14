@@ -12,6 +12,8 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 **CRITICAL:** This repository requires a different working mode than typical code repositories.
 
+**📖 Complete Workflow Guide:** See [`/plan/WORKFLOW.md`](plan/WORKFLOW.md) for detailed step-by-step instructions, file naming conventions, examples from practice, and troubleshooting guidance.
+
 ### This is a Living Methodology Repository
 
 Unlike code repositories where Claude can make autonomous implementation decisions, this repository is about **defining the methodology itself**. Most work involves architectural decisions, framework design, terminology choices, and pattern definitions that require **intimate human collaboration**.
@@ -46,11 +48,13 @@ Unlike code repositories where Claude can make autonomous implementation decisio
 - **This repo:** "Should we use pattern X or Y?" (multiple valid approaches, trade-offs matter)
 
 **Mistakes are expensive here:**
+
 - Unilateral architectural choices require rework across multiple documents
 - Terminology decisions affect consistency throughout the methodology
 - Pattern choices impact downstream framework definitions
 
 **Example from Session 02:**
+
 - Claude created framework with implicit choices about drivers/, gateways/, DTOs
 - Required discovering 5 additional decisions after initial work
 - Needed rework and split across multiple sessions
@@ -86,6 +90,7 @@ You CANNOT work autonomously for:
 ## Your First Task: Decision Discovery
 
 Before writing ANY code or creating ANY documents:
+
 1. Analyze the task requirements thoroughly
 2. Identify ALL architectural decisions that need to be made
 3. Research relevant context (read analysis docs, axioms, prior decisions)
@@ -103,11 +108,42 @@ When resuming work across sessions:
 - Review axioms and prior architectural decisions
 - Confirm understanding before proceeding
 
+### Quick Reference: Key Workflow Steps
+
+**For detailed workflow, see `/plan/WORKFLOW.md`**
+
+**When starting a task:**
+
+1. ✅ Acknowledge Human-in-the-Loop mode explicitly
+2. ✅ Read all documents listed in "Documents to Review"
+3. ✅ Create decisions document: `/plan/_[task-name]-decisions-needed.md`
+4. ✅ Present ALL decisions upfront before implementing
+5. ✅ Wait for user approval on each decision
+6. ✅ Document user choices and rationale
+7. ✅ Implement only after all decisions resolved
+
+**Key Resources:**
+
+- **Workflow Guide:** `/plan/WORKFLOW.md` - Complete step-by-step process
+- **HITL Template:** `/plan/templates/hitl-decision-template.md` - Start here for new tasks
+- **Decision Template:** `/plan/templates/decision-document-template.md` - Structure for decisions document
+- **Examples:** See `/plan/WORKFLOW.md` Section 6 for real examples from Session 02
+
+**Common Pitfalls to Avoid:**
+
+- ❌ Don't create files before presenting decisions
+- ❌ Don't make assumptions about user preferences
+- ❌ Don't discover decisions incrementally
+- ❌ Don't proceed without explicit approval
+
+See `/plan/WORKFLOW.md` for troubleshooting, anti-patterns, and detailed examples.
+
 ### Repository Organization
 
 The repository uses a clear distinction between finalized and working documents:
 
 **`/docs/` - Finalized Documents**
+
 - Stable, approved architectural decisions and principles
 - Foundational documents that inform all methodology work
 - Examples: `lean-clean-axioms.md` (core architectural principles)
@@ -115,13 +151,20 @@ The repository uses a clear distinction between finalized and working documents:
 - Changes to these documents require significant justification
 
 **`/plan/` - Working Documents**
+
 - Session notes and work-in-progress decisions
 - Experimental ideas and explorations
 - Decision documents being developed
 - Templates for Human-in-the-Loop workflows
-- Examples: `_session-*.md`, decision logs, framework explorations
+- Structure:
+  - `plan/sessions/` - Session documentation files (`_session-*.md`)
+  - `plan/drafts/` - Draft analysis and planning documents
+  - `plan/templates/` - HITL and session templates
+  - `plan/wip/` - Work in progress
+  - `plan/archive/` - Historical content
 
 **When to reference which:**
+
 - Start methodology tasks by reading `/docs/` to understand finalized principles
 - Document your decision-making process in `/plan/`
 - Promote documents from `/plan/` to `/docs/` only after explicit approval
@@ -133,6 +176,7 @@ The repository uses a clear distinction between finalized and working documents:
 The methodology follows an 8-phase approach (P0-P8) for turning rough requirements into implemented, testable PoCs:
 
 ### Phase Structure
+
 - **P0: Context Framing** - Define the "why" and constraints
 - **P1: Decomposition** - Break into atomic parts and distill minimal instructions
 - **P2: Ideation & Concept Design** - Explore solution options
@@ -143,46 +187,77 @@ The methodology follows an 8-phase approach (P0-P8) for turning rough requiremen
 - **P7: Reflection & Knowledge Capture** - Document learnings
 - **P8: Agentic System Design** - Extend with monitoring, validation, and alerts
 
-### Proposed App Structure (NOT FINALIZED - being worked out through PoC implementation)
+### Framework Structure (Finalized - Session 02)
 
-Following nikolovlazar's modern Clean Architecture pattern with explicit Infrastructure layer:
+The methodology supports three PoC types with progressive evolution:
+
+**For complete folder structures, code examples, and migration paths, see:**
+
+- [`/docs/framework-folder-structures.md`](docs/framework-folder-structures.md) - Authoritative framework structures for all 3 PoC types
+- [`/docs/references/implementations.md`](docs/references/implementations.md) - Analysis of reference implementations
+
+**Quick Reference - Pragmatic CA Structure:**
 
 ```
-app/
-├─ core/                    # Domain + Application layers
-│  ├─ entities/             # Domain models (Entities)
-│  ├─ use_cases/            # Application business rules (Use Cases)
-│  └─ interfaces/           # Infrastructure interfaces (defined by app, implemented by infra)
-├─ adapters/                # Infrastructure layer (implements core/interfaces)
-│  ├─ storage/              # Storage implementations (local, S3, etc.)
-│  ├─ imagegen/             # Image generation clients (Firefly, DALL-E)
-│  ├─ vector/               # Vector DB adapters (Weaviate)
-│  ├─ db/                   # Database repositories (Postgres)
-│  └─ compose.py            # Image composition utilities
-├─ interface_adapters/      # Controllers, Presenters, CLI handlers
-│  ├─ controllers/          # API/CLI request handlers
-│  └─ presenters/           # Response formatters
-├─ utils/                   # Cross-cutting concerns
-│  ├─ observability.py      # Phoenix/Arize telemetry
-│  ├─ manifest.py           # Manifest generation
-│  └─ brief_loader.py       # YAML loading utilities
-├─ server.py                # FastAPI (Frameworks & Drivers layer)
-├─ cli.py                   # Typer CLI (Frameworks & Drivers layer)
-├─ models.py                # SQLAlchemy models
-└─ db.py                    # DB session utilities
-tools/
-├─ agent_watcher.py         # Automation watcher
-├─ init_db.py               # Create tables
-└─ validate.py              # Schema validation CLI
+campaign-generator/
+├─ app/
+│  ├─ entities/                        # Domain models
+│  │  └─ campaign.py
+│  ├─ use_cases/                       # Business logic
+│  │  └─ generate_campaign_uc.py
+│  ├─ interface_adapters/              # Orchestrators & Presenters
+│  │  ├─ orchestrators/                # Business workflow coordinators
+│  │  │  └─ campaign_orchestrator.py
+│  │  └─ presenters/                   # Response formatters
+│  │     └─ campaign_presenter.py
+│  ├─ adapters/                        # External services (OpenAI, S3)
+│  │  ├─ imagegen/
+│  │  │  ├─ protocol.py
+│  │  │  ├─ fake.py                    # Fake for testing
+│  │  │  └─ openai.py
+│  │  └─ storage/
+│  │     ├─ protocol.py
+│  │     ├─ fake.py
+│  │     └─ s3.py
+│  └─ infrastructure/                  # Persistence (Postgres, MongoDB)
+│     └─ repositories/
+│        └─ campaign/
+│           ├─ protocol.py
+│           ├─ in_memory.py            # In-memory for testing
+│           └─ postgres.py
+│
+├─ drivers/                            # Entry points (CLI + UI always)
+│  ├─ cli/
+│  │  └─ commands.py
+│  ├─ rest/                            # When enterprise integration needed
+│  │  ├─ main.py
+│  │  └─ schemas/
+│  └─ ui/
+│     └─ streamlit/
+│        └─ app.py
+│
+├─ tests/                              # Three-layer test structure
+│  ├─ acceptance/                      # Stakeholder contracts (always fakes)
+│  ├─ unit/                            # Isolated logic tests
+│  └─ integration/                     # Real service tests
+│
+├─ tools/                              # Development utilities
+│  ├─ validate.py
+│  └─ init_db.py
+│
+├─ pyproject.toml
+├─ Makefile
+└─ docker-compose.yaml
 ```
 
-**Key Pattern - Infrastructure Interfaces**:
-- `app/core/interfaces/` defines contracts (e.g., `IStorageAdapter`, `IImageGenerator`)
-- `app/adapters/` provides concrete implementations
-- Use Cases depend on interfaces, not implementations (Dependency Inversion)
-- Achieved through Dependency Injection at runtime
+**Key Patterns - Finalized in Session 02:**
 
-**Note:** The actual project structure will be determined through ongoing PoC implementation work. The above is a proposed structure based on Clean Architecture principles (see `images/ca/clean-architecture-diagram-nikolovlazar.jpg`) and may evolve.
+- **Orchestrators not Controllers** - Stakeholder-friendly terminology (Decision 1)
+- **Drivers layer** - CLI + UI always from day 1 (Decision 9: Enterprise PoC Reality)
+- **Fakes in production code** - Two types: fake adapters + in-memory repositories (Decision 8)
+- **Infrastructure split** - Separate `adapters/` (external services) and `infrastructure/` (persistence) (Decision 10)
+- **Outside-In TDD** - Acceptance tests with stakeholders → fakes → real adapters (Decision 7)
+- **Progressive Evolution** - Steel Thread → Pragmatic CA → Full CA with additive changes (Decision 12)
 
 ## Key Principles
 
@@ -207,86 +282,33 @@ The methodology uses specific syntax for agent compatibility:
 ## Key Documentation Files
 
 ### Finalized Documents (`/docs/`)
+
 - `lean-clean-axioms.md` - Core architectural principles and foundational decisions
+- `framework-folder-structures.md` - Authoritative framework structures for all 3 PoC types (Steel Thread, Pragmatic CA, Full CA)
+- `references/implementations.md` - Analysis of reference implementations with Session 02 alignment notes
 
 ### Methodology Core
-- `README.lean-clean.md` - Complete v2.2 methodology documentation with all 8 phases
+
+- `README.md` - Complete v2.2 methodology documentation with all 8 phases
 - `Lean-Clean-PoC-Playbook-v2-template.md` - Template for creating project-specific playbooks
 - `lean-clean-methodology-v1.csv` & `lean-clean-methodology-v2.csv` - Phase tables
 
-### How-To Guides
-- `_howto/NOTES_HowToUse.md` - Repo bootstrap and app skeleton setup
-- `_howto/NOTES_HowToUse_dayOf.md` - Day-of-demo workflow
-- `_howto/NOTES.md` - Tips, tricks, and bundle explanations
-
 ### Visual Documentation
+
 - `images/IMAGE_ANALYSIS.md` - Comprehensive analysis of all visual assets
 - `images/ca/` - Clean Architecture diagrams (Martin's classic + nikolovlazar's modern implementation)
 - `images/acceptance-criteria/` - Given/When/Then and 4Cs framework visualizations
 - `images/lpp/` - Lean Product Playbook pyramids (Product-Market Fit + 6-step process)
 
 **Visual Assets Mapped to Methodology Phases**:
+
 - **P0-P2** (Context/Ideation): Use Martin's CA diagram for conceptual design; LPP pyramid for defining MVP scope
 - **P3-P5** (Planning): Use nikolovlazar's CA for implementation structure; Given/When/Then for acceptance criteria
 - **P6** (Execution): Use nikolovlazar's CA as code organization blueprint
 - **P7** (Reflection): Use Martin's CA for stakeholder communication
 - **P8** (Agentic): Infrastructure layer pattern enables observability and monitoring hooks
 
-## Typical Development Workflow (PROPOSED - being validated through PoC)
-
-When implementing a PoC using this methodology:
-
-### 1. Setup
-```bash
-uv sync                          # Install dependencies (when pyproject.toml exists)
-```
-
-### 2. Validation (when schemas exist)
-```bash
-uv run python tools/validate.py playbook <playbook.yaml>
-uv run python tools/validate.py use_case <use-case.yaml>
-make validate-playbook           # If Makefile exists
-make validate-use-case
-```
-
-### 3. CLI Execution (typical pattern)
-```bash
-uv run python -m app.cli run --brief ./campaigns/brief.yaml
-uv run python -m app.cli validate --brief ./campaigns/brief.yaml
-```
-
-### 4. Testing
-```bash
-uv run pytest -q                 # Run test suite
-```
-
-### 5. Agentic Watcher (when implemented)
-```bash
-# With observability enabled
-export OBS_ENABLED=1
-export PHOENIX_ENDPOINT=http://localhost:6006/api/traces
-export ARIZE_ENDPOINT=https://api.arize.com/v1/log
-export ARIZE_API_KEY=xxx
-
-uv run python tools/agent_watcher.py \
-  --inbox ./briefs/inbox \
-  --cmd "uv run python -m app.cli run --brief {brief}" \
-  --out-root ./out \
-  --alerts-root ./alerts
-```
-
-### 6. Docker Stack (when docker-compose.yaml exists)
-```bash
-make up            # docker compose up -d
-make down          # tear down
-make db-init       # create tables in Postgres
-make watch         # run watcher locally
-make api           # start FastAPI server
-```
-
-**Note:** These workflows are proposed patterns documented in the methodology. Actual implementation commands will be finalized through PoC development.
-
-## Technology Stack (PROPOSED - subject to change based on PoC learnings)
+## Technology Stack
 
 ### Core
 - **Language**: Python (uv for dependency management)
@@ -294,11 +316,6 @@ make api           # start FastAPI server
 - **API**: FastAPI (optional)
 - **Database**: PostgreSQL (approvals, runs, alerts)
 - **Vector DB**: Weaviate (optional, for RAG)
-
-### Observability
-- **Phoenix**: Local LLM trace explorer (port 6006)
-- **Arize**: Hosted observability/analytics
-- **Observability utils**: `app/utils/observability.py`
 
 ### UI Options
 - **Streamlit**: Simple dashboard for human-in-loop approvals (port 8501)
@@ -310,22 +327,24 @@ make api           # start FastAPI server
 
 **Note:** Technology choices documented in the methodology are recommendations. Actual stack decisions will be made based on specific PoC requirements and learnings.
 
-## Important Patterns (from methodology - implementation TBD)
+## Important Patterns
 
-### Clean Architecture Layers (Proposed)
+### Clean Architecture Layers
 
-Following the **nikolovlazar modern pattern** (see `images/ca/`), the methodology emphasizes:
+Following the **nikolovlazar modern pattern** (see `images/ca/`), the methodology emphasizes (finalized in Session 02):
 
 **Layer Hierarchy** (bottom to top):
+
 1. **Entities** (`app/core/entities/`): Domain models, business objects, errors
 2. **Application** (`app/core/use_cases/` + `app/core/interfaces/`):
    - Use Cases implementing business rules
    - Infrastructure Interfaces defining contracts for external dependencies
 3. **Infrastructure** (`app/adapters/`): Concrete implementations of interfaces (repositories, external service clients)
-4. **Interface Adapters** (`app/interface_adapters/`): Controllers, Presenters, CLI handlers
+4. **Interface Adapters** (`app/interface_adapters/`): Orchestrators, Presenters, CLI handlers
 5. **Frameworks & Drivers**: FastAPI, Typer CLI, Streamlit UI (entry points)
 
 **Dependency Rule**:
+
 - Dependencies point inward (toward Entities)
 - Outer layers depend on inner layers, never the reverse
 - Use Cases depend on Infrastructure Interfaces (defined in Application layer)
@@ -333,6 +352,7 @@ Following the **nikolovlazar modern pattern** (see `images/ca/`), the methodolog
 - External services (Database, APIs) consume Infrastructure layer
 
 **Key Differences from Classic Martin Pattern**:
+
 - **Explicit Infrastructure Layer**: Separated from Frameworks & Drivers
 - **Infrastructure Interfaces in Application Layer**: Contracts defined by business needs, not technical implementation
 - **Dependency Injection**: Explicitly used to wire implementations to interfaces at runtime
@@ -345,6 +365,7 @@ Following the **nikolovlazar modern pattern** (see `images/ca/`), the methodolog
 - Agent tasks in Phase 8 are defined in `agent_task.P8.yaml`
 
 **Acceptance Criteria Format** (Given/When/Then):
+
 ```yaml
 use_case:
   name: RecoverPassword
@@ -357,7 +378,7 @@ use_case:
 
 See `images/acceptance-criteria/given-when-then-acceptance-criteria.webp` for detailed examples.
 
-### Adapter Pattern for Substitution (Proposed)
+### Adapter Pattern for Substitution
 
 All external dependencies should be behind adapters implementing core interfaces:
 
@@ -384,6 +405,7 @@ class S3StorageAdapter(IStorageAdapter):
 ```
 
 **Benefits**:
+
 - Easy substitution for testing (use LocalStorage in tests, S3 in production)
 - Technology-agnostic Use Cases
 - Supports Phase 8 observability (wrap adapters with telemetry)
@@ -394,25 +416,22 @@ class S3StorageAdapter(IStorageAdapter):
 - GitHub Actions workflow (`.github/workflows/validate.yml`) runs validation on CI
 - Always validate before committing changes to YAML specs
 
-## Version History
-
-- **v2.0**: Added schemas & PoC templates
-- **v2.1**: Added Agentic (Phase 8) spec and experimental watcher
-- **v2.2**: Added Observability (Phoenix/Arize), FastAPI, Weaviate, Postgres, Streamlit, pytest suite, and Docker stack
-
 ## References
 
 ### Foundational Works
+
 - _Lean Product Playbook_ – Dan Olsen (Product-Market Fit methodology)
 - _Clean Architecture_ – Robert C. Martin (architectural principles)
 
 ### Visual References
+
 - Bob Martin's Clean Architecture diagram – Classic concentric circles pattern
 - nikolovlazar's Clean Architecture diagram – Modern implementation with explicit Infrastructure layer
 - Given/When/Then acceptance criteria – Behavior-Driven Development (BDD) format
 - 4 Cs Framework (Card, Conversation, Confirmation, Context) – Ron Jeffries
 
 ### Technology Stack
+
 - **Observability**: Arize / Phoenix (ML/LLM observability and tracing)
 - **Vector DB**: Weaviate (vector search engine)
 - **API Framework**: FastAPI (modern Python API framework)
@@ -421,4 +440,5 @@ class S3StorageAdapter(IStorageAdapter):
 - **Testing**: pytest (Python test framework)
 
 ### Additional Resources
+
 - See `images/IMAGE_ANALYSIS.md` for detailed visual asset analysis and architectural comparisons

@@ -137,10 +137,10 @@ Should we have this much in one document?
   - Con: Long (1,666 lines), potentially overwhelming
 
 - [ ] **Option B: Split into multiple docs**
-  - `_session-02-pragmatic-ca.md` (start here)
-  - `_session-02-steel-thread.md`
-  - `_session-02-full-ca.md`
-  - `_session-02-evolution.md`
+  - `sessions/_session-02-pragmatic-ca.md` (start here)
+  - `sessions/_session-02-steel-thread.md`
+  - `sessions/_session-02-full-ca.md`
+  - `sessions/_session-02-evolution.md`
   - Pro: Focused, easier to digest
   - Con: Relationships less obvious
 
@@ -1756,7 +1756,7 @@ All 12 architectural decisions have been collaboratively resolved:
 
 **Ready for Implementation Phase:**
 
-1. **Update Framework Document** (`_session-02-framework-folder-structures.md`)
+1. **Update Framework Document** (`sessions/_session-02-framework-folder-structures.md`)
    - Incorporate all 12 resolved decisions
    - Ensure Steel Thread, Pragmatic CA, and Full CA are consistent
    - Add migration paths for all evolution points

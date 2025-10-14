@@ -1,19 +1,19 @@
-# TDD Integration Plan for README.lean-clean.md
+# TDD Integration Plan for README.md
 
 > **⚠️ SUPERSEDED BY SESSION 01**
 >
 > This document was created on 2025-10-12, before Session 01 architectural decisions (2025-10-13).
 >
 > **Session 01 now authoritatively defines:**
-> - **PoC types** → See `/plan/_session-01-architectural-decisions.md` Q1 (Steel Thread, Pragmatic CA, Full CA)
+> - **PoC types** → See `/plan/sessions/_session-01-architectural-decisions.md` Q1 (Steel Thread, Pragmatic CA, Full CA)
 > - **pytest approach** → See Session 01 Q3 (pytest with BDD docstrings, not Gherkin)
-> - **Phase structure** → See `README.lean-clean.md` (refined with PoC type evolution)
+> - **Phase structure** → See `README.md` (refined with PoC type evolution)
 >
 > This file remains for TDD integration ideas but **integration should be done using Session 01 architectural decisions as foundation.**
 
 ## Overview
 
-This document provides a detailed plan for weaving Test-Driven Development (TDD) workflow into each phase of the Lean-Clean methodology (README.lean-clean.md). The integration is optional and triggered by a decision point early in the process.
+This document provides a detailed plan for weaving Test-Driven Development (TDD) workflow into each phase of the Lean-Clean methodology (README.md). The integration is optional and triggered by a decision point early in the process.
 
 **Key Principle:** TDD is presented as an **acceleration option for enterprise PoCs**, not a mandatory practice for all PoCs.
 
@@ -64,7 +64,7 @@ If using TDD, you'll follow this enhanced workflow:
 - **Without TDD:** 2-4 weeks (with multiple rebuild cycles)
 - **With TDD:** 1-2 weeks (single build cycle, no rework)
 
-**See:** `plan/TDD_STAKEHOLDER_ACCELERATION_INSIGHTS.md` for detailed analysis
+**See:** `plan/drafts/TDD_STAKEHOLDER_ACCELERATION_INSIGHTS.md` for detailed analysis
 
 ---
 ```
@@ -151,7 +151,7 @@ If using TDD, schedule a 1-3 hour workshop with stakeholders to:
 
 **Workshop Output:** Test scenario document (becomes test file skeletons in P3)
 
-**See:** `plan/TDD_STAKEHOLDER_ACCELERATION_INSIGHTS.md` section "Stakeholder Workshop Template"
+**See:** `plan/drafts/TDD_STAKEHOLDER_ACCELERATION_INSIGHTS.md` section "Stakeholder Workshop Template"
 ```
 
 #### 2. Update Outputs
@@ -211,7 +211,7 @@ class OpenAIImageGen:
 
 **Decision:** If using TDD, prefer **Full Clean Architecture** with controllers over simplified structure.
 
-**See:** `plan/CRITICAL_INSIGHTS.md` section "TDD Revelation: Controllers as Specification Layer"
+**See:** `plan/drafts/CRITICAL_INSIGHTS.md` section "TDD Revelation: Controllers as Specification Layer"
 ```
 
 ---
@@ -700,11 +700,11 @@ actions:
 
 ### Phase 1: Prepare
 
-- [ ] Review current README.lean-clean.md
+- [ ] Review current README.md
 - [ ] Review all plan/ documents
 - [ ] Get user approval on this integration plan
 
-### Phase 2: Update README.lean-clean.md
+### Phase 2: Update README.md
 
 **Before P0:**
 - [ ] Add "TDD Decision Point" section with decision framework
@@ -883,7 +883,7 @@ Before implementing these changes, please review:
 **Status:** Ready for user review
 **Next Steps:**
 1. User reviews and approves this plan
-2. Implement changes to README.lean-clean.md
+2. Implement changes to README.md
 3. Create supporting templates and examples
 4. Test with real PoC
 5. Iterate based on feedback

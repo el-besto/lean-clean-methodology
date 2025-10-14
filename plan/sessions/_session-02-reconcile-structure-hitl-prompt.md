@@ -134,7 +134,7 @@ After this reconciliation:
 
 **Must NOT:**
 - Lose valuable reference implementation insights
-- Create redundancy with `_session-02-framework-folder-structures.md`
+- Create redundancy with `sessions/_session-02-framework-folder-structures.md`
 - Introduce new terminology conflicts
 - Remove content without considering preservation alternatives
 
@@ -163,8 +163,8 @@ After this reconciliation:
 2. `/plan/_session-02-framework-folder-structures.md` - Authoritative framework structures (1,740 lines)
 3. `/plan/_session-02-all-decisions-resolved.md` - Complete decision context (600+ lines)
 4. `/plan/_session-02-decisions-needed.md` - All 12 decisions with resolutions
-5. `/plan/CRITICAL_INSIGHTS`, `/plan/PYTHON_PATTERNS.md`,
-6. `plan/TDD_STAKEHOLDER_ACCELERATION_INSIGHTS.md`
+5. `/plan/drafts/CRITICAL_INSIGHTS`, `/plan/drafts/PYTHON_PATTERNS.md`,
+6. `plan/drafts/TDD_STAKEHOLDER_ACCELERATION_INSIGHTS.md`
 
 **Target Document:**
 5. `/plan/STRUCTURE.md` - Document to be reconciled (currently pre-Session 02)
@@ -261,7 +261,7 @@ Consider these approaches (will need decisions for each section):
 - Extract reference implementation analysis to separate doc
 - Update recommendations to match Session 02
 - Create clear document boundaries (what STRUCTURE.md covers vs framework doc)
-- Possible rename: `REFERENCE-IMPLEMENTATIONS.md`?
+- Possible rename: `references/implementations.md`?
 
 ### Option D: Hybrid Approach
 - Preserve reference implementation analysis
@@ -301,13 +301,13 @@ After reconciliation, we need to decide:
 
 ### Candidates for `/docs/` (Finalized)
 - Updated STRUCTURE.md (or renamed version)
-- `_session-02-framework-folder-structures.md` (rename without underscore?)
+- `sessions/_session-02-framework-folder-structures.md` (rename without underscore?)
 - Anything else ready for "finalized" status?
 
 ### Keep in `/plan/` (Working Documents)
-- Session-specific decision documents (`_session-02-decisions-needed.md`, etc.)
-- Context preservation files (`_session-02-all-decisions-resolved.md`)
-- Summaries (`_session-02-summary*.md`)
+- Session-specific decision documents (`sessions/_session-02-decisions-needed.md`, etc.)
+- Context preservation files (`sessions/_session-02-all-decisions-resolved.md`)
+- Summaries (`sessions/_session-02-summary*.md`)
 - Or should some move to `/docs/` as permanent record?
 
 ### Archive or Remove

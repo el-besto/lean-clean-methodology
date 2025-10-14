@@ -5,7 +5,7 @@
 > This document was created on 2025-10-12, before Session 01 architectural decisions (2025-10-13).
 >
 > **Session 01 now authoritatively defines:**
-> - **pytest vs Gherkin** → See `/plan/_session-01-architectural-decisions.md` Q3 (pytest with BDD docstrings)
+> - **pytest vs Gherkin** → See `/plan/sessions/_session-01-architectural-decisions.md` Q3 (pytest with BDD docstrings)
 > - **Controllers/orchestration** → See Session 01 Q4 (Feature → Controller mapping)
 > - **PoC types** → See Session 01 Q1 (three types with evolution paths)
 >
@@ -968,7 +968,7 @@ For enterprise PoCs with:
 **Status:** Ready for integration into methodology
 **Impact:** CRITICAL - Changes enterprise PoC delivery fundamentally
 **Next Steps:**
-1. Add TDD decision point to each phase in README.lean-clean.md
+1. Add TDD decision point to each phase in README.md
 2. Create stakeholder workshop template
 3. Update REVIEW_GUIDE.md with TDD decision area
 4. Add example test suites for common PoC scenarios

@@ -666,7 +666,7 @@ See `/docs/framework-folder-structures.md` for all 12 architectural decisions an
 
 **For framework folder structures:** `/docs/framework-folder-structures.md`
 **For core principles:** `/docs/lean-clean-axioms.md`
-**For methodology phases:** `/README.lean-clean.md`
+**For methodology phases:** `/README.md`
 
 ---
 
