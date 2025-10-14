@@ -1,32 +1,26 @@
-```
-┌─────────────────────────────┐
-│   LEAN-CLEAN METHODOLOGY    │
-├─────────────────────────────┤
-│  Workshop → Tests → Code    │
-└─────────────────────────────┘
-```
-
-```
-┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
-┃  LEAN-CLEAN METHODOLOGY                ┃
-┃  ────────────────────────              ┃
-┃  Write Tests WITH Stakeholders         ┃
-┃  Validate BEFORE Building              ┃
-┃  Evolve WITHOUT Rewrites               ┃
-┃                                         ┃
-┃  $200 • 5 Days • Production Ready      ┃
-┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
-```
-
 # Lean-Clean Methodology
-_A pragmatic framework for designing, prototyping, and operationalizing AI-driven systems._
 
-Version: **v2.2 (Agentic + Observability + Streamlit + Weaviate + Postgres)**  
+_A pragmatic framework for designing, prototyping, and operationalizing Enterprise PoCs._
+
 Status: **Living Document — update per project context**
 
 ---
 
 ## 🧭 Overview
+
+<div align="center">
+<pre>
+┌────────────────────────────────────────┐
+│  LEAN-CLEAN METHODOLOGY                │
+├────────────────────────────────────────┤
+│  Given: Workshop WITH stakeholders     │
+│  When:  Tests define the spec          │
+│  Then:  Code validates expectations    │
+│                                        │
+│  Outside-In TDD for Enterprise PoCs    │
+└────────────────────────────────────────┘
+</pre>
+</div>
 
 **Lean-Clean** blends principles from:
 - **Lean Product Development** → iterative learning, minimal viable slice, validated loops  
