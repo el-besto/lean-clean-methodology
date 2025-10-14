@@ -230,33 +230,42 @@ plan/sessions/campaign-generator/
 - Implement Steel Thread feature set
 - Document expansion path for Full CA
 
-## Open Questions (To Be Resolved via HITL)
+## All Questions Resolved ✅
 
-### Architectural Decisions
-1. **PoC Structure:** Steel Thread vs Pragmatic CA? (Leaning Pragmatic CA)
-2. **Storage Strategy:** Local filesystem vs mock cloud (S3/Azure)? (Suggest local with S3 adapter interface)
-3. **GenAI Provider:** Which image generation API? (Suggest DALL-E 3 via OpenAI)
-4. **Brand Store:** How to represent brand guidelines? (Entity vs external file?)
-5. **Asset Reuse Logic:** Simple filename match vs vector similarity? (Suggest filename for PoC)
+**All 13 architectural decisions have been resolved!**
 
-### Domain Model Questions
-6. Does `locale` belong in `Product` or `CampaignBrief`? (Suggest CampaignBrief for multi-locale campaigns)
-7. What constitutes "input_artifacts" for brand search? (Brand guidelines doc + reference images)
-8. What validation rules in `validate_personalized_slogans`? (Length, prohibited words, brand voice)
-9. What compliance checks are required? (Prohibited words list, required disclaimers)
-10. How do we define "similar brands" in vector search? (MVP: exact match by brand_id)
+See `_decisions-needed.md` for complete decision rationale:
 
-### Implementation Scope
-11. **Localization:** English-only or multi-locale for PoC? (Suggest English + 1 locale for bonus)
-12. **HITL Approval:** In PoC or documented for Task 3? (Document for Task 3, simulate in PoC)
-13. **Telemetry:** What events to emit? (Brief received, asset generated, validation failed, output saved)
+1. ✅ **PoC Structure:** Pragmatic CA
+2. ✅ **Storage Strategy:** Local with adapter interface (MinIO + Weaviate ready)
+3. ✅ **GenAI Provider:** Dual implementation (Fake + OpenAI + Claude)
+4. ✅ **Input Format:** YAML
+5. ✅ **Brand Store:** YAML config with adapter for Weaviate evolution
+6. ✅ **Locale Handling:** Campaign-level (not product-level)
+7. ✅ **Localization Scope:** English + Spanish (US)
+8. ✅ **Asset Reuse:** Vector similarity search (deferred to session-02)
+9. ✅ **HITL Approval:** Simulated with logging
+10. ✅ **Nice-to-Have Features:** Logging + legal checks (stubbed)
+11. ✅ **CLI vs UI:** CLI + Streamlit (both from day 1)
+12. ✅ **Testing:** One feature-level test (blog post style)
+13. ✅ **Language & Tooling:** Python + pip/requirements.txt
 
-## Next Steps
+## Session Complete ✅
+
+**All deliverables created (14 files, ~266KB, 6,500+ lines):**
 
 1. ✅ Read PDF and update understanding
-2. ⏭️ Create decisions document (`_decisions-needed.md`)
-3. ⏭️ Create session files for Task 1 and Task 2
-4. ⏭️ Define entities, use cases, and schemas
-5. ⏭️ Create architecture diagram (textual representation)
-6. ⏭️ Create roadmap
-7. ⏭️ Create presentation outline (10 slides)
+2. ✅ Create decisions document (`_decisions-needed.md` - 13/13 resolved)
+3. ✅ Create session files for Task 1 and Task 2
+   - `session-01-architecture-roadmap.md` (580 lines)
+   - `session-02-steel-thread-poc.md` (2,263 lines)
+4. ✅ Define entities, use cases, and schemas
+   - `entities.md` (6 entities with Python dataclasses)
+   - `use-cases.md` (3 use cases)
+   - `campaign-brief-schema.yaml` (schema + 3 examples)
+   - `function-composition.md` (15+ functions)
+5. ✅ Create architecture diagram (`architecture-diagram.md` - Pragmatic CA)
+6. ✅ Create roadmap (`roadmap.md` - 10 weeks, 5 phases, 25 epics)
+7. ✅ Create presentation outline (`presentation.md` - 10 slides, 30 min)
+
+**Status:** 🎉 Planning complete - Ready for implementation!
