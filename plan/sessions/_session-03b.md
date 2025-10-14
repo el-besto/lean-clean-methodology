@@ -37,6 +37,8 @@ You are my implementation architect for the **Pragmatic CA PoC type**. I need yo
 
 ### Target Folder Structure (Pragmatic CA)
 
+**Authoritative Reference:** See [`docs/framework-folder-structures.md` §1.1](../../docs/framework-folder-structures.md#11-folder-structure) for the complete Pragmatic CA structure with detailed explanations.
+
 **Project Location:** `examples/02-pragmatic-ca-campaign-generator/`
 
 ```

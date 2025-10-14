@@ -41,6 +41,8 @@ You are my implementation architect for the **Full CA PoC type**. I need you to:
 
 ### Target Folder Structure (Full CA)
 
+**Authoritative Reference:** See [`docs/framework-folder-structures.md` §4.1](../../docs/framework-folder-structures.md#41-folder-structure) for the complete Full CA structure with detailed explanations.
+
 **Project Location:** `examples/03-full-ca-campaign-generator/`
 
 ```
