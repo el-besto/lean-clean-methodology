@@ -37,7 +37,7 @@ You are my implementation architect for the **Pragmatic CA PoC type**. I need yo
 
 ### Target Folder Structure (Pragmatic CA)
 
-**Authoritative Reference:** See [`docs/framework-folder-structures.md` §1.1](../../docs/framework-folder-structures.md#11-folder-structure) for the complete Pragmatic CA structure with detailed explanations.
+**Authoritative Reference:** See [`docs/framework-folder-structures.md` §1.1](../../../docs/framework-folder-structures.md#11-folder-structure) for the complete Pragmatic CA structure with detailed explanations.
 
 **Project Location:** `examples/02-pragmatic-ca-campaign-generator/`
 
@@ -146,7 +146,7 @@ examples/02-pragmatic-ca-campaign-generator/
 
 ### Migration Strategy from Steel Thread
 
-Follow this step-by-step process (documented in [framework-folder-structures.md §5.2](../../docs/framework-folder-structures.md#52-migration-checklist-steel-thread--pragmatic-ca)):
+Follow this step-by-step process (documented in [framework-folder-structures.md §5.2](../../../docs/framework-folder-structures.md#52-migration-checklist-steel-thread--pragmatic-ca)):
 
 1. **First, copy Steel Thread project** (5 minutes)
    - `cp -r examples/01-steel-thread-campaign-generator examples/02-pragmatic-ca-campaign-generator`
@@ -287,7 +287,7 @@ examples/02-pragmatic-ca-campaign-generator/
 ```markdown
 # Migration from Steel Thread to Pragmatic CA
 
-Based on [framework-folder-structures.md §5.2](../../docs/framework-folder-structures.md#52-migration-checklist-steel-thread--pragmatic-ca)
+Based on [framework-folder-structures.md §5.2](../../../docs/framework-folder-structures.md#52-migration-checklist-steel-thread--pragmatic-ca)
 
 ## Migration Checklist
 

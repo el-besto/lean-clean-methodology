@@ -1,0 +1,206 @@
+# Campaign Brief Schema & Examples
+#
+# Purpose: Input contract for campaign generation (Decision 4: YAML format)
+# Location: This serves as both schema definition and example template
+# Usage: Copy to `briefs/my-campaign.yaml` and customize
+
+---
+# Example 1: Holiday Gift Campaign (Minimum Requirements)
+#
+# PDF Requirements Met:
+# - ✅ At least 2 products (Lavender Soap, Citrus Shower Gel)
+# - ✅ At least 3 aspect ratios (1:1, 9:16, 16:9)
+# - ✅ Target region, audience, campaign message
+# - ✅ YAML format (Decision 4)
+
+brief_id: "holiday-gift-2025-01"
+brand_id: "natural-suds-co"
+campaign_slogan: "Give the gift of natural care"
+target_region: "North America"
+target_audience: "Gift shoppers 25-45, eco-conscious"
+target_locales:  # Decision 6 & 7: Campaign-level, English + Spanish US
+  - "en-US"
+  - "es-US"
+
+products:
+  - name: "Lavender Soap"
+    palette_words:
+      - "calming"
+      - "purple"
+      - "elegant"
+      - "botanical"
+
+  - name: "Citrus Shower Gel"
+    palette_words:
+      - "energizing"
+      - "bright"
+      - "fresh"
+      - "vibrant"
+
+aspects:  # PDF requirement: at least 3 aspect ratios
+  - "1:1"    # Instagram square
+  - "9:16"   # Instagram/TikTok story
+  - "16:9"   # YouTube/Facebook landscape
+
+# Expected Output:
+# - 2 products × 3 aspects × 2 locales = 12 total creative assets
+# - Organized folder structure:
+#   out/assets/
+#     ├─ lavender-soap/
+#     │  ├─ en-US/
+#     │  │  ├─ 1x1/
+#     │  │  ├─ 9x16/
+#     │  │  └─ 16x9/
+#     │  └─ es-US/
+#     │     ├─ 1x1/
+#     │     ├─ 9x16/
+#     │     └─ 16x9/
+#     └─ citrus-shower-gel/
+#        ├─ en-US/
+#        │  ├─ 1x1/
+#        │  ├─ 9x16/
+#        │  └─ 16x9/
+#        └─ es-US/
+#           ├─ 1x1/
+#           ├─ 9x16/
+#           └─ 16x9/
+
+---
+# Example 2: Summer Skincare Campaign (Expanded)
+#
+# Demonstrates:
+# - More products (3 instead of minimum 2)
+# - Additional aspect ratio
+# - Richer palette words
+
+brief_id: "summer-skincare-2025-06"
+brand_id: "natural-suds-co"
+campaign_slogan: "Summer skin, naturally radiant"
+target_region: "United States"
+target_audience: "Active adults 25-50, outdoor enthusiasts"
+target_locales:
+  - "en-US"
+  - "es-US"
+
+products:
+  - name: "SPF Moisturizer"
+    palette_words:
+      - "sunny"
+      - "protective"
+      - "beach"
+      - "lightweight"
+      - "glowing"
+
+  - name: "After-Sun Lotion"
+    palette_words:
+      - "cooling"
+      - "soothing"
+      - "aloe"
+      - "refreshing"
+      - "hydrating"
+
+  - name: "Exfoliating Face Scrub"
+    palette_words:
+      - "renewing"
+      - "natural"
+      - "smooth"
+      - "radiant"
+      - "gentle"
+
+aspects:
+  - "1:1"     # Instagram square
+  - "9:16"    # Instagram/TikTok story
+  - "16:9"    # YouTube/Facebook landscape
+  - "4:5"     # Instagram portrait
+
+# Expected Output:
+# - 3 products × 4 aspects × 2 locales = 24 total creative assets
+
+---
+# Example 3: Brand Discovery Campaign (New Brand)
+#
+# Demonstrates:
+# - English-only (minimum requirement)
+# - Brand understanding workflow (Claude Vision)
+# - Initial brand assets provided
+
+brief_id: "brand-discovery-eco-care-2025-01"
+brand_id: "eco-care-essentials"  # New brand, needs brand_summary generation
+campaign_slogan: "Discover the power of nature"
+target_region: "EMEA"
+target_audience: "Conscious consumers 30-60, premium segment"
+target_locales:
+  - "en-US"  # Start with English only (PDF minimum requirement)
+
+products:
+  - name: "Bamboo Toothbrush Set"
+    palette_words:
+      - "sustainable"
+      - "minimal"
+      - "natural"
+      - "modern"
+
+  - name: "Organic Cotton Towels"
+    palette_words:
+      - "soft"
+      - "luxurious"
+      - "pure"
+      - "eco-friendly"
+
+aspects:
+  - "1:1"
+  - "9:16"
+  - "16:9"
+
+# Workflow Note:
+# 1. understand_brand() uses Claude Vision to analyze brand assets
+# 2. search_similar_brands() checks if "eco-care-essentials" exists in Weaviate
+# 3. If not found, create new BrandSummary from analysis
+# 4. accept_brand_choice() logs approval checkpoint (Decision 9: simulated)
+# 5. Generate campaign assets using brand guidelines
+
+# Expected Output:
+# - 2 products × 3 aspects × 1 locale = 6 total creative assets
+# - New brand_summary.yaml created in brands/eco-care-essentials.yaml
+
+---
+# Schema Definition (for validation)
+
+# Required Fields:
+# - brief_id: string (unique identifier)
+# - brand_id: string (references brands/{brand_id}.yaml)
+# - campaign_slogan: string (main campaign message)
+# - target_region: string (geographic market)
+# - target_audience: string (demographic/psychographic description)
+# - target_locales: list of strings (minimum 1: ["en-US"])
+# - products: list of Product objects (minimum 2)
+#   - name: string (product identifier)
+#   - palette_words: list of strings (visual style keywords)
+# - aspects: list of strings (minimum 3: ["1:1", "9:16", "16:9"])
+
+# Validation Rules:
+# - len(products) >= 2  (PDF requirement)
+# - len(aspects) >= 3   (PDF requirement)
+# - len(target_locales) >= 1  (English minimum)
+# - All product names must be unique within brief
+# - All aspect ratios must be valid format (e.g., "16:9", "4:5")
+
+# Supported Aspect Ratios:
+# - "1:1"   - Square (Instagram feed, Facebook)
+# - "4:5"   - Portrait (Instagram feed)
+# - "9:16"  - Vertical (Instagram/TikTok stories, Reels)
+# - "16:9"  - Landscape (YouTube, Facebook video)
+# - "21:9"  - Ultra-wide (cinematic, optional)
+
+# Supported Locales (Decision 7: English + Spanish US for PoC):
+# - "en-US" - English (United States) - REQUIRED
+# - "es-US" - Spanish (United States) - BONUS
+
+# Future Expansion:
+# - "en-GB" - English (United Kingdom)
+# - "es-MX" - Spanish (Mexico)
+# - "fr-FR" - French (France)
+# - "de-DE" - German (Germany)
+# - "pt-BR" - Portuguese (Brazil)
+# - "ja-JP" - Japanese (Japan)
+# - "zh-CN" - Chinese (Simplified)

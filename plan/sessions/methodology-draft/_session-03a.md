@@ -36,7 +36,7 @@ You are my implementation architect for the **Steel Thread PoC type**. I need yo
 
 ### Target Folder Structure (Steel Thread)
 
-**Authoritative Reference:** See [`docs/framework-folder-structures.md` §3.1](../../docs/framework-folder-structures.md#31-folder-structure) for the complete Steel Thread structure with detailed explanations.
+**Authoritative Reference:** See [`docs/framework-folder-structures.md` §3.1](../../../docs/framework-folder-structures.md#31-folder-structure) for the complete Steel Thread structure with detailed explanations.
 
 **Project Location:** `examples/01-steel-thread-campaign-generator/`
 
