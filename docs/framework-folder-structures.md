@@ -19,11 +19,11 @@ This document defines **Component B (Framework)** of the Lean-Clean Methodology:
 
 **PoC Type Summary:**
 
-| PoC Type | Timeline | Layers | Use Case | Evolution Trigger |
-|----------|----------|--------|----------|-------------------|
-| **Steel Thread** | 1-2 days | Minimal (use_cases + adapters + fakes + drivers) | Technical feasibility spike | Stakeholders approved, need production path |
-| **Pragmatic CA** | 3-5 days | Production-ready subset (+ orchestrators + presenters + infrastructure) | Multi-stakeholder workshop output | Scaling to multi-team or complex domain |
-| **Full CA** | Production | Comprehensive (+ separate entities, DTOs, events, CQRS, extracted ports) | Production-grade system | Already in production |
+| PoC Type         | Timeline   | Layers                                                                   | Use Case                          | Evolution Trigger                           |
+|------------------|------------|--------------------------------------------------------------------------|-----------------------------------|---------------------------------------------|
+| **Steel Thread** | 1-2 days   | Minimal (use_cases + adapters + fakes + drivers)                         | Technical feasibility spike       | Stakeholders approved, need production path |
+| **Pragmatic CA** | 3-5 days   | Production-ready subset (+ orchestrators + presenters + infrastructure)  | Multi-stakeholder workshop output | Scaling to multi-team or complex domain     |
+| **Full CA**      | Production | Comprehensive (+ separate entities, DTOs, events, CQRS, extracted ports) | Production-grade system           | Already in production                       |
 
 ---
 
@@ -195,17 +195,17 @@ campaign-generator/                    # Root project directory
 
 **Mapping to nikolovlazar's Clean Architecture Pattern:**
 
-| Folder | CA Layer | Responsibility | Depends On |
-|--------|----------|----------------|------------|
-| `entities/` | **Entities** (innermost) | Domain models, business rules, domain errors | Nothing |
-| `use_cases/` | **Application** | Business logic, orchestrate entities, use protocols | Entities, Protocols (co-located) |
-| `adapters/*/protocol.py` | **Application** (ports) | External service contracts (co-located with implementations) | Entities |
-| `infrastructure/repositories/*/protocol.py` | **Application** (ports) | Persistence contracts (co-located with implementations) | Entities |
-| `adapters/` | **Infrastructure** | External service implementations (OpenAI, CRM, fakes) | Protocols, External services |
-| `infrastructure/` | **Infrastructure** | Persistence implementations (Postgres, in-memory) | Protocols, Databases |
-| `interface_adapters/orchestrators/` | **Interface Adapters** | Feature orchestration (multi-use-case coordination) | Use Cases |
-| `interface_adapters/presenters/` | **Interface Adapters** | Response formatting, telemetry, events | Entities, Use Case outputs |
-| `drivers/` | **Frameworks & Drivers** | Entry points (CLI, REST, UI) | Orchestrators, Presenters |
+| Folder                                      | CA Layer                 | Responsibility                                               | Depends On                       |
+|---------------------------------------------|--------------------------|--------------------------------------------------------------|----------------------------------|
+| `entities/`                                 | **Entities** (innermost) | Domain models, business rules, domain errors                 | Nothing                          |
+| `use_cases/`                                | **Application**          | Business logic, orchestrate entities, use protocols          | Entities, Protocols (co-located) |
+| `adapters/*/protocol.py`                    | **Application** (ports)  | External service contracts (co-located with implementations) | Entities                         |
+| `infrastructure/repositories/*/protocol.py` | **Application** (ports)  | Persistence contracts (co-located with implementations)      | Entities                         |
+| `adapters/`                                 | **Infrastructure**       | External service implementations (OpenAI, CRM, fakes)        | Protocols, External services     |
+| `infrastructure/`                           | **Infrastructure**       | Persistence implementations (Postgres, in-memory)            | Protocols, Databases             |
+| `interface_adapters/orchestrators/`         | **Interface Adapters**   | Feature orchestration (multi-use-case coordination)          | Use Cases                        |
+| `interface_adapters/presenters/`            | **Interface Adapters**   | Response formatting, telemetry, events                       | Entities, Use Case outputs       |
+| `drivers/`                                  | **Frameworks & Drivers** | Entry points (CLI, REST, UI)                                 | Orchestrators, Presenters        |
 
 **Dependency Rule:** All dependencies point inward (toward Entities). Outer layers never imported by inner layers.
 
@@ -905,16 +905,16 @@ This isn't over-engineering—it's recognizing that enterprise AI PoCs involve s
 
 ### 3.2 Key Differences from Pragmatic CA
 
-| Aspect | Steel Thread | Pragmatic CA |
-|--------|--------------|--------------|
-| **Orchestrators** | ❌ None - drivers call use case directly | ✅ Yes - orchestrate multiple use cases |
-| **Presenters** | ❌ None - use case returns domain objects | ✅ Yes - format responses + telemetry |
-| **Entities** | ✅ Minimal - simple dataclasses | ✅ Yes - richer domain models |
-| **Infrastructure Split** | ❌ No - only `adapters/` | ✅ Yes - `adapters/` + `infrastructure/` |
-| **Ports** | ✅ Co-located `protocol.py` | ✅ Co-located `protocol.py` (same) |
-| **DTOs** | ❌ None - domain objects everywhere | ⚠️ Minimal - only at `drivers/rest/schemas/` |
-| **Drivers** | ✅ Flat - `cli.py` + `ui/streamlit_app.py` | ✅ Organized - `drivers/{cli,rest,ui}/` |
-| **Test Layers** | ✅ Three layers (flat) | ✅ Three layers (organized) |
+| Aspect                   | Steel Thread                              | Pragmatic CA                                 |
+|--------------------------|-------------------------------------------|----------------------------------------------|
+| **Orchestrators**        | ❌ None - drivers call use case directly   | ✅ Yes - orchestrate multiple use cases       |
+| **Presenters**           | ❌ None - use case returns domain objects  | ✅ Yes - format responses + telemetry         |
+| **Entities**             | ✅ Minimal - simple dataclasses            | ✅ Yes - richer domain models                 |
+| **Infrastructure Split** | ❌ No - only `adapters/`                   | ✅ Yes - `adapters/` + `infrastructure/`      |
+| **Ports**                | ✅ Co-located `protocol.py`                | ✅ Co-located `protocol.py` (same)            |
+| **DTOs**                 | ❌ None - domain objects everywhere        | ⚠️ Minimal - only at `drivers/rest/schemas/` |
+| **Drivers**              | ✅ Flat - `cli.py` + `ui/streamlit_app.py` | ✅ Organized - `drivers/{cli,rest,ui}/`       |
+| **Test Layers**          | ✅ Three layers (flat)                     | ✅ Three layers (organized)                   |
 
 ### 3.3 Example: Steel Thread Use Case
 
@@ -1219,19 +1219,19 @@ campaign-generator-production/
 
 ### 4.2 Key Differences from Pragmatic CA
 
-| Aspect | Pragmatic CA | Full CA |
-|--------|--------------|---------|
-| **Entities** | Simple dataclasses in `entities/` | Rich aggregate roots with domain events |
-| **Use Cases** | Single file per use case (no DTOs) | Folder per use case (`use_case.py` + `dtos.py`) |
-| **Ports Location** | Co-located `protocol.py` with implementations | Extracted to `application/ports/` (Decision 12) |
-| **DTOs** | Minimal (only `drivers/rest/schemas/`) | Comprehensive (`drivers/rest/schemas/` + `use_cases/*/dtos.py`) |
-| **Application Layer** | Flat `entities/` + `use_cases/` | Organized under `application/` (Decision 2) |
-| **Infrastructure** | Split (`adapters/` + `infrastructure/`) | Same split (maintained) |
-| **Repositories** | In `infrastructure/repositories/` with protocol | Same, but protocol extracted to `application/ports/repositories/` |
-| **ORM Models** | ⚠️ Can be same as entities (pragmatic) | ✅ Separate entities from ORM (mapping layer) |
-| **Drivers** | Organized (`cli/`, `rest/`, `ui/`) | Same + production middleware |
-| **Events** | Emitted via presenters | Domain events + event sourcing |
-| **Deployment** | Docker Compose | Kubernetes + horizontal scaling |
+| Aspect                | Pragmatic CA                                    | Full CA                                                           |
+|-----------------------|-------------------------------------------------|-------------------------------------------------------------------|
+| **Entities**          | Simple dataclasses in `entities/`               | Rich aggregate roots with domain events                           |
+| **Use Cases**         | Single file per use case (no DTOs)              | Folder per use case (`use_case.py` + `dtos.py`)                   |
+| **Ports Location**    | Co-located `protocol.py` with implementations   | Extracted to `application/ports/` (Decision 12)                   |
+| **DTOs**              | Minimal (only `drivers/rest/schemas/`)          | Comprehensive (`drivers/rest/schemas/` + `use_cases/*/dtos.py`)   |
+| **Application Layer** | Flat `entities/` + `use_cases/`                 | Organized under `application/` (Decision 2)                       |
+| **Infrastructure**    | Split (`adapters/` + `infrastructure/`)         | Same split (maintained)                                           |
+| **Repositories**      | In `infrastructure/repositories/` with protocol | Same, but protocol extracted to `application/ports/repositories/` |
+| **ORM Models**        | ⚠️ Can be same as entities (pragmatic)          | ✅ Separate entities from ORM (mapping layer)                      |
+| **Drivers**           | Organized (`cli/`, `rest/`, `ui/`)              | Same + production middleware                                      |
+| **Events**            | Emitted via presenters                          | Domain events + event sourcing                                    |
+| **Deployment**        | Docker Compose                                  | Kubernetes + horizontal scaling                                   |
 
 ### 4.3 Example: Separate Domain Entity from ORM Model
 
@@ -1650,16 +1650,16 @@ tests/           ──organize──► tests/              ──add──► 
 
 ### 6.1 Quick Reference Table
 
-| Aspect | Steel Thread | Pragmatic CA | Full CA |
-|--------|--------------|--------------|---------|
-| **Timeline** | 1-2 days | 3-5 days | Weeks-months |
-| **Team Size** | 1 developer | 2-4 developers | 5+ developers |
-| **Use Cases** | 1 (happy path) | 2-5 | 10+ |
-| **Layers** | use_cases + adapters | + orchestrators + presenters | + entities + DTOs + events |
-| **Tests** | 1 end-to-end | acceptance + unit + integration | + e2e |
-| **DI** | ❌ Hardcoded | ✅ Manual | ✅ DI container |
-| **Deployment** | Local only | Docker Compose | Kubernetes |
-| **When to Use** | Feasibility spike | Multi-stakeholder PoC | Production system |
+| Aspect          | Steel Thread         | Pragmatic CA                    | Full CA                    |
+|-----------------|----------------------|---------------------------------|----------------------------|
+| **Timeline**    | 1-2 days             | 3-5 days                        | Weeks-months               |
+| **Team Size**   | 1 developer          | 2-4 developers                  | 5+ developers              |
+| **Use Cases**   | 1 (happy path)       | 2-5                             | 10+                        |
+| **Layers**      | use_cases + adapters | + orchestrators + presenters    | + entities + DTOs + events |
+| **Tests**       | 1 end-to-end         | acceptance + unit + integration | + e2e                      |
+| **DI**          | ❌ Hardcoded          | ✅ Manual                        | ✅ DI container             |
+| **Deployment**  | Local only           | Docker Compose                  | Kubernetes                 |
+| **When to Use** | Feasibility spike    | Multi-stakeholder PoC           | Production system          |
 
 ### 6.2 Core Insight: Outside-In with All Three Types
 
@@ -1680,20 +1680,20 @@ This is the power of Clean Architecture + Outside-In TDD: **evolution without re
 
 This framework document now incorporates all 12 resolved architectural decisions:
 
-| Decision | Impact on Framework | Section |
-|----------|---------------------|---------|
-| **1. Terminology** | "Orchestrator" not "Controller" | All sections, 1.3 |
-| **2. Folder Depth** | Progressive (flat → moderate → deep) | Steel Thread, Pragmatic CA, Full CA structures |
-| **3. Document Scope** | All three PoC types in one doc | Entire document |
-| **4. Example Scenario** | Localized Campaign Generation | Section 2 |
-| **5. Code Detail** | Detailed but incomplete | All code examples |
-| **6. Interface Style** | Protocol (not ABC) | All interface examples |
-| **7. Test Structure** | acceptance/unit/integration | All test structures |
-| **8. Fakes Location** | Two types: `adapters/` + `infrastructure/repositories/` | 1.3, Pattern 3 |
-| **9. Drivers Layer** | CLI + UI always, FastAPI when needed | Steel Thread 3.1, Pragmatic CA 1.1, Pattern 2 |
-| **10. Gateways Split** | `adapters/` + `infrastructure/` | Pragmatic CA 1.1, Full CA 4.1 |
-| **11. DTO Strategy** | Minimal with progressive evolution | 1.3, Pragmatic CA DTOs, Full CA DTOs |
-| **12. Ports Location** | Co-located → extracted | 1.3, Full CA 4.1, Migration 5.3 |
+| Decision                | Impact on Framework                                     | Section                                        |
+|-------------------------|---------------------------------------------------------|------------------------------------------------|
+| **1. Terminology**      | "Orchestrator" not "Controller"                         | All sections, 1.3                              |
+| **2. Folder Depth**     | Progressive (flat → moderate → deep)                    | Steel Thread, Pragmatic CA, Full CA structures |
+| **3. Document Scope**   | All three PoC types in one doc                          | Entire document                                |
+| **4. Example Scenario** | Localized Campaign Generation                           | Section 2                                      |
+| **5. Code Detail**      | Detailed but incomplete                                 | All code examples                              |
+| **6. Interface Style**  | Protocol (not ABC)                                      | All interface examples                         |
+| **7. Test Structure**   | acceptance/unit/integration                             | All test structures                            |
+| **8. Fakes Location**   | Two types: `adapters/` + `infrastructure/repositories/` | 1.3, Pattern 3                                 |
+| **9. Drivers Layer**    | CLI + UI always, FastAPI when needed                    | Steel Thread 3.1, Pragmatic CA 1.1, Pattern 2  |
+| **10. Gateways Split**  | `adapters/` + `infrastructure/`                         | Pragmatic CA 1.1, Full CA 4.1                  |
+| **11. DTO Strategy**    | Minimal with progressive evolution                      | 1.3, Pragmatic CA DTOs, Full CA DTOs           |
+| **12. Ports Location**  | Co-located → extracted                                  | 1.3, Full CA 4.1, Migration 5.3                |
 
 **Cross-References:**
 - See `_session-02-all-decisions-resolved.md` for complete decision context

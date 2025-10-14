@@ -79,12 +79,12 @@ images/
 
 ### Visual Representation Philosophy
 
-| Aspect | Bob Martin (Classic) | nikolovlazar (Modern) |
-|--------|---------------------|----------------------|
-| **Layout** | Concentric circles | Vertical layers/stacks |
-| **Metaphor** | Onion/rings | Architectural tiers |
-| **Orientation** | Radial (center-out) | Bottom-up hierarchy |
-| **Flow** | Circular with explicit ports | Linear dependency flow |
+| Aspect          | Bob Martin (Classic)         | nikolovlazar (Modern)  |
+|-----------------|------------------------------|------------------------|
+| **Layout**      | Concentric circles           | Vertical layers/stacks |
+| **Metaphor**    | Onion/rings                  | Architectural tiers    |
+| **Orientation** | Radial (center-out)          | Bottom-up hierarchy    |
+| **Flow**        | Circular with explicit ports | Linear dependency flow |
 
 ### Abstraction Level
 
