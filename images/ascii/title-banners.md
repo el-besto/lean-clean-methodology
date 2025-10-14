@@ -11,6 +11,7 @@ This file contains various ASCII art title banners for the Lean-Clean Methodolog
 ## Currently in README.md
 
 ### Style 5a: Minimalist with Philosophy
+
 ```
 ┌─────────────────────────────┐
 │   LEAN-CLEAN METHODOLOGY    │
@@ -25,6 +26,7 @@ This file contains various ASCII art title banners for the Lean-Clean Methodolog
 ---
 
 ### Style 6c: Modern Box with Value Proposition
+
 ```
 ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
 ┃  LEAN-CLEAN METHODOLOGY                ┃
@@ -47,6 +49,7 @@ This file contains various ASCII art title banners for the Lean-Clean Methodolog
 These variants incorporate BDD (Behavior-Driven Development) syntax to emphasize the methodology's acceptance criteria approach and stakeholder-first workflow.
 
 ### Variant 1: Minimalist with BDD Flow
+
 ```
 ┌─────────────────────────────────────┐
 │   LEAN-CLEAN METHODOLOGY            │
@@ -64,6 +67,7 @@ These variants incorporate BDD (Behavior-Driven Development) syntax to emphasize
 ---
 
 ### Variant 2: Modern Box with BDD Workflow
+
 ```
 ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
 ┃  LEAN-CLEAN METHODOLOGY                ┃
@@ -82,6 +86,7 @@ These variants incorporate BDD (Behavior-Driven Development) syntax to emphasize
 ---
 
 ### Variant 3: Expanded BDD with Evolution
+
 ```
 ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
 ┃  LEAN-CLEAN METHODOLOGY                      ┃
@@ -105,6 +110,7 @@ These variants incorporate BDD (Behavior-Driven Development) syntax to emphasize
 ---
 
 ### Variant 4: Compact BDD Style
+
 ```
 ┌────────────────────────────────────────┐
 │  LEAN-CLEAN METHODOLOGY                │
@@ -124,6 +130,7 @@ These variants incorporate BDD (Behavior-Driven Development) syntax to emphasize
 ---
 
 ### Variant 5: Full BDD Journey
+
 ```
 ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
 ┃  LEAN-CLEAN METHODOLOGY                        ┃
@@ -149,6 +156,7 @@ These variants incorporate BDD (Behavior-Driven Development) syntax to emphasize
 ---
 
 ### Variant 6: Compact BDD with Metrics
+
 ```
 ┌──────────────────────────────────────┐
 │  LEAN-CLEAN METHODOLOGY              │
@@ -173,7 +181,7 @@ See more ascii options [title-banners.txt](title-banners.txt) => Source: https:/
 
 ### Big Money-nw
 
-```tex
+```
 $$\                                             $$$$$$\  $$\                               
 $$ |                                           $$  __$$\ $$ |                              
 $$ |      $$$$$$\   $$$$$$\  $$$$$$$\          $$ /  \__|$$ | $$$$$$\   $$$$$$\  $$$$$$$\  
@@ -189,16 +197,16 @@ $$$$$$$$\\$$$$$$$\ \$$$$$$$ |$$ |  $$ |        \$$$$$$  |$$ |\$$$$$$$\ \$$$$$$$ 
 
 ## Recommendation Matrix
 
-| Variant | Audience | Use Case | Axioms Emphasized |
-|---------|----------|----------|-------------------|
-| **5a** | Technical teams | Documentation, quick reference | Workflow simplicity |
-| **6c** | Executives, decision-makers | Value proposition, ROI | Core differentiators (1, 4, 9) |
-| **Variant 1** | BDD practitioners | Technical documentation | BDD alignment (1, 5) |
-| **Variant 2** | Mixed technical/business | Balanced presentation | Outside-In workflow (1, 3, 4) |
-| **Variant 3** | Methodology trainers | Comprehensive training | Progressive refinement (4, 7, 10) |
-| **Variant 4** | Development teams | Internal documentation | Outside-In TDD (1, 4) |
-| **Variant 5** | Sales, marketing | Case studies, pitches | Complete story (1, 3, 4, 9) |
-| **Variant 6** | Budget approvers | Cost justification | Speed & economics (9) |
+| Variant       | Audience                    | Use Case                       | Axioms Emphasized                 |
+|---------------|-----------------------------|--------------------------------|-----------------------------------|
+| **5a**        | Technical teams             | Documentation, quick reference | Workflow simplicity               |
+| **6c**        | Executives, decision-makers | Value proposition, ROI         | Core differentiators (1, 4, 9)    |
+| **Variant 1** | BDD practitioners           | Technical documentation        | BDD alignment (1, 5)              |
+| **Variant 2** | Mixed technical/business    | Balanced presentation          | Outside-In workflow (1, 3, 4)     |
+| **Variant 3** | Methodology trainers        | Comprehensive training         | Progressive refinement (4, 7, 10) |
+| **Variant 4** | Development teams           | Internal documentation         | Outside-In TDD (1, 4)             |
+| **Variant 5** | Sales, marketing            | Case studies, pitches          | Complete story (1, 3, 4, 9)       |
+| **Variant 6** | Budget approvers            | Cost justification             | Speed & economics (9)             |
 
 ---
 

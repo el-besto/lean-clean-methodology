@@ -1,19 +1,16 @@
-<div align="center">
+<div style="text-align: center;">
 <pre>
- /$$                                              /$$$$$$  /$$                              
-| $$                                             /$$__  $$| $$                              
-| $$        /$$$$$$   /$$$$$$  /$$$$$$$         | $$  \__/| $$  /$$$$$$   /$$$$$$  /$$$$$$$ 
-| $$       /$$__  $$ |____  $$| $$__  $$ /$$$$$$| $$      | $$ /$$__  $$ |____  $$| $$__  $$
-| $$      | $$$$$$$$  /$$$$$$$| $$  \ $$|______/| $$      | $$| $$$$$$$$  /$$$$$$$| $$  \ $$
-| $$      | $$_____/ /$$__  $$| $$  | $$        | $$    $$| $$| $$_____/ /$$__  $$| $$  | $$
-| $$$$$$$$|  $$$$$$$|  $$$$$$$| $$  | $$        |  $$$$$$/| $$|  $$$$$$$|  $$$$$$$| $$  | $$
-|________/ \_______/ \_______/|__/  |__/         \______/ |__/ \_______/ \_______/|__/  |__/
-                                                                                            
-                                                                                            
+    __                           ________               
+   / /   ___  ____ _____        / ____/ /__  ____ _____ 
+  / /   / _ \/ __ `/ __ \______/ /   / / _ \/ __ `/ __ \
+ / /___/  __/ /_/ / / / /_____/ /___/ /  __/ /_/ / / / /
+/_____/\___/\__,_/_/ /_/      \____/_/\___/\__,_/_/ /_/ 
+                                                        
+                                                        
 </pre>
 </div>
 
-# _Lean-Clean Methodology_
+# Lean-Clean Methodology
 
 _A pragmatic framework for designing, prototyping, and operationalizing Enterprise PoCs._
 
@@ -23,26 +20,24 @@ Status: **Living Document — update per project context**
 
 ## 🧭 Overview
 
-<div align="center">
-<pre>
-┌────────────────────────────────────────┐
-│  LEAN-CLEAN METHODOLOGY                │
-├────────────────────────────────────────┤
-│  Given: Workshop WITH stakeholders     │
-│  When:  Tests define the spec          │
-│  Then:  Code validates expectations    │
-│                                        │
-│  Outside-In TDD for Enterprise PoCs    │
-└────────────────────────────────────────┘
-</pre>
-</div>
-
 **Lean-Clean** blends principles from:
 - **Lean Product Development** → iterative learning, minimal viable slice, validated loops  
 - **Clean Architecture** → decoupled layers, testable boundaries, replaceable adapters  
-- **Agentic Design** → AI-assisted orchestration, observability, and human-in-the-loop workflows  
+- **Agentic Design** → AI-assisted orchestration, observability, and human-in-the-loop workflows
 
 The goal is to turn *rough requirements* into an **implemented, testable PoC** with traceable artifacts, clear responsibilities, and optional agentic automation.
+
+<div style="text-align: center;">
+<pre>
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃  LEAN-CLEAN METHODOLOGY                ┃
+┃  ────────────────────────              ┃
+┃  Write Tests WITH Stakeholders         ┃
+┃  Validate BEFORE Building              ┃
+┃  Evolve WITHOUT Rewrites               ┃
+┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
+</pre>
+</div>
 
 ---
 
@@ -530,6 +525,20 @@ docker compose up --build -d
 - Streamlit – Rapid UI for data apps  
 
 ---
+
+<div style="text-align: center;">
+<pre>
+┌────────────────────────────────────────┐
+│  LEAN-CLEAN METHODOLOGY                │
+├────────────────────────────────────────┤
+│  Given: Workshop WITH stakeholders     │
+│  When:  Tests define the spec          │
+│  Then:  Code validates expectations    │
+│                                        │
+│  Outside-In TDD for Enterprise PoCs    │
+└────────────────────────────────────────┘
+</pre>
+</div>
 
 > "**Lean-Clean** is not a fixed process; it’s a scaffolding methodology for iteration.  
 > Each project begins lean — decomposed, minimal, observable —  
