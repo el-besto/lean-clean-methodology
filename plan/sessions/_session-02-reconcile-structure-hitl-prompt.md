@@ -190,8 +190,8 @@ After this reconciliation:
 13. `/images/IMAGE_ANALYSIS.md` - Visual asset analysis
 
 **Reference Implementations (if diving deep):**
-14. `~/Code/el-besto/calibration-service/` - Production CA example
-15. `~/Code/el-besto/creative-ai-poc/` - AI PoC example
+14. `../calibration-service/` - Production CA example
+15. `../creative-ai-poc/` - AI PoC example
 
 ---
 

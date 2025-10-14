@@ -73,7 +73,7 @@ This guide helps you systematically review the proposed structures and patterns 
 - **`lean-clean-core-skeleton`** - Minimal steel thread (no controllers, inline wiring)
 
 ### External Analysis
-- **`~/Code/el-besto/lean-clean-code/CLEAN_ARCHITECTURE_ANALYSIS.md`** - Detailed comparison of calibration-service vs lean-clean patterns
+- **`../lean-clean-code/CLEAN_ARCHITECTURE_ANALYSIS.md`** - Detailed comparison of calibration-service vs lean-clean patterns
 
 ## Review Workflow
 

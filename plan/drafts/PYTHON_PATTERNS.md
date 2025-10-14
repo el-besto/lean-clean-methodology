@@ -635,7 +635,7 @@ When updating STRUCTURE.md:
 
 ## References
 
-- **Source:** `/Users/ac/Code/el-besto/lean-clean-code/lean-clean-python-style-guide`
+- **Source:** `../lean-clean-code/lean-clean-python-style-guide`
 - **Key Documents:**
   - `SUMMARY.md` - Overview of all patterns
   - `PART-A.Python-General/README.md` - Core Python idioms
