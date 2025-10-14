@@ -23,17 +23,17 @@ This document provides a textual and ASCII representation of the Campaign Genera
 └───────────────────────────────────────────────────────────────────────────┘
 
 ┌───────────────────────────────────────────────────────────────────────────┐
-│ LAYER 5: DRIVERS (Entry Points)                                          │
+│ LAYER 5: DRIVERS (Entry Points)                                           │
 │                                                                           │
-│  ┌─────────────────────┐              ┌─────────────────────┐            │
-│  │   CLI Driver        │              │   UI Driver         │            │
-│  │   (Typer)           │              │   (Streamlit)       │            │
-│  ├─────────────────────┤              ├─────────────────────┤            │
-│  │ commands.py         │              │ app.py              │            │
-│  │  - generate         │              │  - Dashboard        │            │
-│  │  - validate         │              │  - Asset viewer     │            │
-│  │  - list-brands      │              │  - Approval UI      │            │
-│  └─────────┬───────────┘              └──────────┬──────────┘            │
+│  ┌─────────────────────┐              ┌─────────────────────┐             │
+│  │   CLI Driver        │              │   UI Driver         │             │
+│  │   (Typer)           │              │   (Streamlit)       │             │
+│  ├─────────────────────┤              ├─────────────────────┤             │
+│  │ commands.py         │              │ app.py              │             │
+│  │  - generate         │              │  - Dashboard        │             │
+│  │  - validate         │              │  - Asset viewer     │             │
+│  │  - list-brands      │              │  - Approval UI      │             │
+│  └─────────┬───────────┘              └──────────┬──────────┘             │
 │            │                                     │                        │
 │            └─────────────────┬───────────────────┘                        │
 └──────────────────────────────┼────────────────────────────────────────────┘
@@ -41,26 +41,26 @@ This document provides a textual and ASCII representation of the Campaign Genera
                                │ Dependency Injection
                                ▼
 ┌───────────────────────────────────────────────────────────────────────────┐
-│ LAYER 4: INTERFACE ADAPTERS (Orchestration & Presentation)               │
+│ LAYER 4: INTERFACE ADAPTERS (Orchestration & Presentation)                │
 │                                                                           │
-│  ┌─────────────────────────────────┐  ┌──────────────────────────────┐   │
-│  │   Orchestrators                 │  │   Presenters                 │   │
-│  │   (Workflow Coordination)       │  │   (Response Formatting)      │   │
-│  ├─────────────────────────────────┤  ├──────────────────────────────┤   │
-│  │ campaign_orchestrator.py        │  │ campaign_presenter.py        │   │
-│  │  - coordinate_generation()      │  │  - format_assets()           │   │
-│  │  - coordinate_validation()      │  │  - format_summary()          │   │
-│  │  - log_approval_checkpoint()    │  │  - format_alert_email()      │   │
-│  └─────────────┬───────────────────┘  └──────────┬───────────────────┘   │
-│                │                                  │                        │
-│                └──────────────────┬───────────────┘                        │
-└───────────────────────────────────┼────────────────────────────────────────┘
+│  ┌─────────────────────────────────┐  ┌──────────────────────────────┐    │
+│  │   Orchestrators                 │  │   Presenters                 │    │
+│  │   (Workflow Coordination)       │  │   (Response Formatting)      │    │
+│  ├─────────────────────────────────┤  ├──────────────────────────────┤    │
+│  │ campaign_orchestrator.py        │  │ campaign_presenter.py        │    │
+│  │  - coordinate_generation()      │  │  - format_assets()           │    │
+│  │  - coordinate_validation()      │  │  - format_summary()          │    │
+│  │  - log_approval_checkpoint()    │  │  - format_alert_email()      │    │
+│  └─────────────┬───────────────────┘  └──────────┬───────────────────┘    │
+│                │                                  │                       │
+│                └──────────────────┬───────────────┘                       │
+└───────────────────────────────────┼───────────────────────────────────────┘
                                     │
                                     │ Calls Use Cases
                                     ▼
-┌───────────────────────────────────────────────────────────────────────────┐
-│ LAYER 3: USE CASES (Business Logic)                                      │
-│                                                                           │
+┌─────────────────────────────────────────────────────────────────────────┐
+│ LAYER 3: USE CASES (Business Logic)                                     │
+│                                                                         │
 │  ┌────────────────┐  ┌──────────────────┐  ┌───────────────────────┐    │
 │  │ Understand     │  │ Generate         │  │ Validate              │    │
 │  │ Brand UC       │  │ Campaign UC      │  │ Campaign UC           │    │
@@ -72,63 +72,63 @@ This document provides a textual and ASCII representation of the Campaign Genera
 │  │   brands()     │  │ overlay_text()   │  │ create_validation_    │    │
 │  │                │  │                  │  │   result()            │    │
 │  └────┬───────────┘  └────┬─────────────┘  └──────┬────────────────┘    │
-│       │                   │                        │                      │
-│       │ Uses              │ Uses                   │ Uses                 │
-│       ▼                   ▼                        ▼                      │
-└───────────────────────────────────────────────────────────────────────────┘
+│       │                   │                        │                    │
+│       │ Uses              │ Uses                   │ Uses               │
+│       ▼                   ▼                        ▼                    │
+└─────────────────────────────────────────────────────────────────────────┘
         │                   │                        │
         │                   │                        │
         ▼                   ▼                        ▼
 ┌───────────────────────────────────────────────────────────────────────────┐
-│ LAYER 2: ENTITIES (Domain Models)                                        │
+│ LAYER 2: ENTITIES (Domain Models)                                         │
 │                                                                           │
-│  ┌──────────────┐  ┌──────────────┐  ┌──────────────┐  ┌─────────────┐  │
-│  │ Brand        │  │ Campaign     │  │ Creative     │  │ Approval    │  │
-│  │ Summary      │  │ Brief        │  │ Asset        │  │             │  │
-│  └──────────────┘  └──────────────┘  └──────────────┘  └─────────────┘  │
+│  ┌──────────────┐  ┌──────────────┐  ┌──────────────┐  ┌─────────────┐    │
+│  │ Brand        │  │ Campaign     │  │ Creative     │  │ Approval    │    │
+│  │ Summary      │  │ Brief        │  │ Asset        │  │             │    │
+│  └──────────────┘  └──────────────┘  └──────────────┘  └─────────────┘    │
 │                                                                           │
-│  ┌──────────────┐  ┌──────────────┐                                      │
-│  │ Alert        │  │ Validation   │                                      │
-│  │              │  │ Result       │                                      │
-│  └──────────────┘  └──────────────┘                                      │
+│  ┌──────────────┐  ┌──────────────┐                                       │
+│  │ Alert        │  │ Validation   │                                       │
+│  │              │  │ Result       │                                       │
+│  └──────────────┘  └──────────────┘                                       │
 │                                                                           │
 └───────────────────────────────────────────────────────────────────────────┘
         │                   │                        │
         │ Depends on        │ Depends on             │ Depends on
         ▼                   ▼                        ▼
 ┌───────────────────────────────────────────────────────────────────────────┐
-│ LAYER 1: ADAPTERS & INFRASTRUCTURE (External Dependencies)               │
+│ LAYER 1: ADAPTERS & INFRASTRUCTURE (External Dependencies)                │
 │                                                                           │
-│  ┌─────────────────────────────────────────────────────────────────────┐ │
-│  │ ADAPTERS (External Services)                                        │ │
-│  ├─────────────────────────────────────────────────────────────────────┤ │
-│  │                                                                     │ │
-│  │  ┌───────────────────┐  ┌───────────────────┐  ┌────────────────┐ │ │
-│  │  │ AI Adapters       │  │ Storage Adapters  │  │ Other Adapters │ │ │
-│  │  ├───────────────────┤  ├───────────────────┤  ├────────────────┤ │ │
-│  │  │ protocol.py       │  │ protocol.py       │  │ email.py       │ │ │
-│  │  │ (IAIAdapter)      │  │ (IStorageAdapter) │  │ (IEmailSender) │ │ │
-│  │  ├───────────────────┤  ├───────────────────┤  └────────────────┘ │ │
-│  │  │ fake.py           │  │ local.py          │                      │ │
-│  │  │ openai_image.py   │  │ minio.py          │                      │ │
-│  │  │ claude.py         │  │                   │                      │ │
-│  │  └───────────────────┘  └───────────────────┘                      │ │
-│  │                                                                     │ │
-│  └─────────────────────────────────────────────────────────────────────┘ │
+│  ┌─────────────────────────────────────────────────────────────────────┐  │
+│  │ ADAPTERS (External Services)                                        │  │
+│  ├─────────────────────────────────────────────────────────────────────┤  │
+│  │                                                                     │  │
+│  │  ┌───────────────────┐  ┌───────────────────┐  ┌────────────────┐   │  │
+│  │  │ AI Adapters       │  │ Storage Adapters  │  │ Other Adapters │   │  │
+│  │  ├───────────────────┤  ├───────────────────┤  ├────────────────┤   │  │
+│  │  │ protocol.py       │  │ protocol.py       │  │ email.py       │   │  │
+│  │  │ (IAIAdapter)      │  │ (IStorageAdapter) │  │ (IEmailSender) │   │  │
+│  │  ├───────────────────┤  ├───────────────────┤  └────────────────┘   │  │
+│  │  │ fake.py           │  │ local.py          │                       │  │
+│  │  │ openai_image.py   │  │ minio.py          │                       │  │
+│  │  │ claude.py         │  │                   │                       │  │
+│  │  └───────────────────┘  └───────────────────┘                       │  │
+│  │                                                                     │  │
+│  └─────────────────────────────────────────────────────────────────────┘  │
 │                                                                           │
-│  ┌─────────────────────────────────────────────────────────────────────┐ │
-│  │ INFRASTRUCTURE (Persistence)                                        │ │
-│  ├─────────────────────────────────────────────────────────────────────┤ │
-│  │                                                                     │ │
-│  │  ┌────────────────────────────────────────────────────────────────┐│ │
-│  │  │ Brand Repository                                               ││ │
-│  │  ├────────────────────────────────────────────────────────────────┤│ │
-│  │  │ protocol.py (IBrandRepository)                                 ││ │
-│  │  │ yaml_file.py (Load brands from YAML config)                    ││ │
-│  │  │ weaviate.py (Vector similarity search for brands)              ││ │
-│  │  └────────────────────────────────────────────────────────────────┘│ │
-│  │                                                                     │ │
-│  └─────────────────────────────────────────────────────────────────────┘ │
+│  ┌─────────────────────────────────────────────────────────────────────┐  │
+│  │ INFRASTRUCTURE (Persistence)                                        │  │
+│  ├─────────────────────────────────────────────────────────────────────┤  │
+│  │                                                                     │  │
+│  │  ┌────────────────────────────────────────────────────────────────┐ │  │
+│  │  │ Brand Repository                                               │ │  │
+│  │  ├────────────────────────────────────────────────────────────────┤ │  │
+│  │  │ protocol.py (IBrandRepository)                                 │ │  │
+│  │  │ yaml_file.py (Load brands from YAML config)                    │ │  │
+│  │  │ weaviate.py (Vector similarity search for brands)              │ │  │
+│  │  └────────────────────────────────────────────────────────────────┘ │  │
+│  │                                                                     │  │
+│  └─────────────────────────────────────────────────────────────────────┘  │
 │                                                                           │
 └───────────────────────────────────────────────────────────────────────────┘
 ```
@@ -156,7 +156,7 @@ Interface Adapters (Orchestrators)
     ↓
 Use Cases (Business Logic)
     ↓
-Entities (Domain Models) ←──────────┐
+Entities (Domain Models) ←───────────┐
     ↑                                │
     │                                │
     │ (Uses via Interface)           │ (Implements Interface)
@@ -294,17 +294,17 @@ Adapter Protocols (Interfaces)  →   Concrete Adapters/Infrastructure
 ├──────────────────────────────────────────────────────┤
 │                                                      │
 │  AI Services:                                        │
-│  ├─ OpenAI API (DALL-E 3, text overlay)             │
-│  ├─ Claude API (Vision, multilingual)               │
-│  └─ Fake Adapter (demo mode)                        │
+│  ├─ OpenAI API (DALL-E 3, text overlay)              │
+│  ├─ Claude API (Vision, multilingual)                │
+│  └─ Fake Adapter (demo mode)                         │
 │                                                      │
 │  Storage:                                            │
-│  ├─ Local Filesystem (default)                      │
-│  └─ MinIO (S3-compatible, Docker)                   │
+│  ├─ Local Filesystem (default)                       │
+│  └─ MinIO (S3-compatible, Docker)                    │
 │                                                      │
 │  Repositories:                                       │
-│  ├─ YAML File Loader (brands config)                │
-│  └─ Weaviate (vector similarity search)             │
+│  ├─ YAML File Loader (brands config)                 │
+│  └─ Weaviate (vector similarity search)              │
 │                                                      │
 └──────────────────────────────────────────────────────┘
 ```
@@ -320,10 +320,10 @@ Adapter Protocols (Interfaces)  →   Concrete Adapters/Infrastructure
 └─────────────────────────────────────────────────────────────────────────┘
 
 ┌─────────────────────────────────────────────────┐
-│ Use Case: generate_campaign()                  │
+│ Use Case: generate_campaign()                   │
 │  ↓                                              │
-│  Uses: ai_adapter.generate_image(prompt)       │
-│         ai_adapter.overlay_text(image, text)   │
+│  Uses: ai_adapter.generate_image(prompt)        │
+│         ai_adapter.overlay_text(image, text)    │
 └──────────────────────┬──────────────────────────┘
                        │
                        │ Depends on INTERFACE (not implementation)
@@ -336,9 +336,9 @@ Adapter Protocols (Interfaces)  →   Concrete Adapters/Infrastructure
                        │
                        │ Multiple Implementations
                        ▼
-    ┌──────────────────┴──────────────────┬─────────────────┐
-    │                                     │                 │
-    ▼                                     ▼                 ▼
+    ┌──────────────────┴──────────────┬─────────────────┐
+    │                                 │                 │
+    ▼                                 ▼                 ▼
 ┌─────────────┐              ┌─────────────────┐  ┌─────────────┐
 │ Fake        │              │ OpenAI          │  │ Claude      │
 │ Adapter     │              │ Adapter         │  │ Adapter     │

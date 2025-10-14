@@ -84,6 +84,8 @@ AI-driven agent design for:
 
 ```
 plan/sessions/campaign-generator/
+├── README.md                               # Session overview and navigation
+├── SESSION-NOTES.md                        # Session activity log
 ├── _agent-understanding.md                 # This file - complete context
 ├── _scenario-context.md                    # Extracted requirements from PDF
 ├── _decisions-needed.md                    # HITL decisions document
@@ -254,18 +256,23 @@ See `_decisions-needed.md` for complete decision rationale:
 
 **All deliverables created (14 files, ~266KB, 6,500+ lines):**
 
-1. ✅ Read PDF and update understanding
-2. ✅ Create decisions document (`_decisions-needed.md` - 13/13 resolved)
-3. ✅ Create session files for Task 1 and Task 2
+1. ✅ Session organization and navigation
+   - `README.md` (Session overview)
+   - `SESSION-NOTES.md` (Activity log)
+2. ✅ Read PDF and update understanding
+   - `_agent-understanding.md` (This file)
+   - `_scenario-context.md` (PDF extraction)
+3. ✅ Create decisions document (`_decisions-needed.md` - 13/13 resolved)
+4. ✅ Create session files for Task 1 and Task 2
    - `session-01-architecture-roadmap.md` (580 lines)
    - `session-02-steel-thread-poc.md` (2,263 lines)
-4. ✅ Define entities, use cases, and schemas
+5. ✅ Define entities, use cases, and schemas
    - `entities.md` (6 entities with Python dataclasses)
    - `use-cases.md` (3 use cases)
    - `campaign-brief-schema.yaml` (schema + 3 examples)
    - `function-composition.md` (15+ functions)
-5. ✅ Create architecture diagram (`architecture-diagram.md` - Pragmatic CA)
-6. ✅ Create roadmap (`roadmap.md` - 10 weeks, 5 phases, 25 epics)
-7. ✅ Create presentation outline (`presentation.md` - 10 slides, 30 min)
+6. ✅ Create architecture diagram (`architecture-diagram.md` - Pragmatic CA)
+7. ✅ Create roadmap (`roadmap.md` - 10 weeks, 5 phases, 25 epics)
+8. ✅ Create presentation outline (`presentation.md` - 10 slides, 30 min)
 
 **Status:** 🎉 Planning complete - Ready for implementation!

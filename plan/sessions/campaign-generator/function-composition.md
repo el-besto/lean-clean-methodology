@@ -30,79 +30,79 @@ INPUT (YAML Brief) → BRAND → GENERATION → VALIDATION → APPROVAL → OUTP
 
 ```
 ┌─────────────────────────────────────────────────────────────────────────┐
-│ PHASE 1: BRAND UNDERSTANDING                                             │
+│ PHASE 1: BRAND UNDERSTANDING                                            │
 ├─────────────────────────────────────────────────────────────────────────┤
-│                                                                           │
+│                                                                         │
 │  load_campaign_brief(yaml_path)                                         │
-│         ↓                                                                 │
+│         ↓                                                               │
 │  load_or_understand_brand(brand_id, assets?)                            │
 │         ├─→ [IF brand_id exists]: load_brand_from_repository()          │
 │         └─→ [IF new brand]: understand_brand() → search_similar()       │
-│                                    ↓                                      │
-│              accept_brand_choice() ← HITL CHECKPOINT (simulated)         │
-│                                                                           │
+│                                    ↓                                    │
+│              accept_brand_choice() ← HITL CHECKPOINT (simulated)        │
+│                                                                         │
 └───────────────────────────────┬─────────────────────────────────────────┘
                                 ↓
 ┌─────────────────────────────────────────────────────────────────────────┐
-│ PHASE 2: LOCALIZATION                                                    │
+│ PHASE 2: LOCALIZATION                                                   │
 ├─────────────────────────────────────────────────────────────────────────┤
-│                                                                           │
-│  localize_campaign_slogans(slogan, target_locales, brand)              │
-│         ↓                                                                 │
-│  {en-US: "Give the Gift of Nature", es-US: "Regala la Naturaleza"}     │
-│                                                                           │
+│                                                                         │
+│  localize_campaign_slogans(slogan, target_locales, brand)               │
+│         ↓                                                               │
+│  {en-US: "Give the Gift of Nature", es-US: "Regala la Naturaleza"}      │
+│                                                                         │
 └───────────────────────────────┬─────────────────────────────────────────┘
                                 ↓
 ┌─────────────────────────────────────────────────────────────────────────┐
 │ PHASE 3: ASSET GENERATION (Loop: product × aspect × locale)             │
 ├─────────────────────────────────────────────────────────────────────────┤
-│                                                                           │
+│                                                                         │
 │  FOR EACH (product, aspect_ratio, locale):                              │
-│         ↓                                                                 │
+│         ↓                                                               │
 │  search_existing_asset(product, aspect, locale)                         │
 │         ├─→ [IF found]: reuse_asset() → mark_as_reused()                │
-│         └─→ [IF not found]:                                              │
-│                   ↓                                                       │
-│            generate_hero_image(product, brand, aspect)                   │
-│                   ↓                                                       │
+│         └─→ [IF not found]:                                             │
+│                   ↓                                                     │
+│            generate_hero_image(product, brand, aspect)                  │
+│                   ↓                                                     │
 │            add_slogan_to_image(image, localized_slogan, brand_colors)   │
-│                   ↓                                                       │
-│            save_creative_asset(asset, storage_adapter)                   │
-│                   ↓                                                       │
-│            create_creative_asset_entity()                                │
-│                                                                           │
+│                   ↓                                                     │
+│            save_creative_asset(asset, storage_adapter)                  │
+│                   ↓                                                     │
+│            create_creative_asset_entity()                               │
+│                                                                         │
 └───────────────────────────────┬─────────────────────────────────────────┘
                                 ↓
 ┌─────────────────────────────────────────────────────────────────────────┐
-│ PHASE 4: VALIDATION                                                      │
+│ PHASE 4: VALIDATION                                                     │
 ├─────────────────────────────────────────────────────────────────────────┤
-│                                                                           │
-│  FOR EACH creative_asset:                                                │
-│         ↓                                                                 │
+│                                                                         │
+│  FOR EACH creative_asset:                                               │
+│         ↓                                                               │
 │  validate_brand_compliance(asset, brand) → [STUBBED]                    │
-│         ↓                                                                 │
+│         ↓                                                               │
 │  check_legal_content(asset.message) → [IMPLEMENTED]                     │
-│         ↓                                                                 │
+│         ↓                                                               │
 │  create_validation_result(checks, issues)                               │
-│                                                                           │
-│  aggregate_validation_results()                                          │
-│         ↓                                                                 │
+│                                                                         │
+│  aggregate_validation_results()                                         │
+│         ↓                                                               │
 │  [IF failures]: create_alert(VALIDATION_FAILED)                         │
-│                                                                           │
+│                                                                         │
 └───────────────────────────────┬─────────────────────────────────────────┘
                                 ↓
 ┌─────────────────────────────────────────────────────────────────────────┐
-│ PHASE 5: APPROVAL & OUTPUT                                               │
+│ PHASE 5: APPROVAL & OUTPUT                                              │
 ├─────────────────────────────────────────────────────────────────────────┤
-│                                                                           │
+│                                                                         │
 │  accept_campaign_images() ← HITL CHECKPOINT (simulated)                 │
-│         ↓                                                                 │
+│         ↓                                                               │
 │  log_approval_checkpoint("campaign_complete", assets)                   │
-│         ↓                                                                 │
+│         ↓                                                               │
 │  organize_output_folder(assets) → out/assets/{product}/{locale}/{aspect}│
-│         ↓                                                                 │
+│         ↓                                                               │
 │  generate_campaign_report(metrics, validation_results)                  │
-│                                                                           │
+│                                                                         │
 └─────────────────────────────────────────────────────────────────────────┘
 ```
 

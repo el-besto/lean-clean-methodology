@@ -37,21 +37,21 @@
 
 **Key Decisions:**
 
-| Decision | Choice | Rationale |
-|----------|--------|-----------|
-| **1. PoC Architecture** | Pragmatic CA | Demonstrates sophistication within time budget |
-| **2. Storage Strategy** | Local + Adapter Interface | MinIO/Weaviate dockerfiles ready |
-| **3. GenAI Provider** | Dual (Fake + OpenAI + Claude) | Multiple AI adapters for different functions |
-| **4. Input Format** | YAML | Lean-Clean methodology alignment |
-| **5. Brand Guidelines** | YAML Config + Adapter | Evolution path to Weaviate |
-| **6. Locale Handling** | Campaign-level | Supports multi-locale campaigns |
-| **7. Localization Scope** | English + Spanish US | Bonus feature for interview |
-| **8. Asset Reuse** | Vector Similarity | Details deferred to session-02 |
-| **9. HITL Approval** | Simulated + Logging | Foundation for Task 3 |
-| **10. Nice-to-Have** | Logging + Legal Checks | Stubbed in orchestrator |
-| **11. UI** | CLI + Streamlit | Lean-Clean drivers pattern |
-| **12. Testing** | One Feature Test | Blog post style |
-| **13. Tooling** | Python + pip | Maximum compatibility |
+| Decision                  | Choice                        | Rationale                                      |
+|---------------------------|-------------------------------|------------------------------------------------|
+| **1. PoC Architecture**   | Pragmatic CA                  | Demonstrates sophistication within time budget |
+| **2. Storage Strategy**   | Local + Adapter Interface     | MinIO/Weaviate dockerfiles ready               |
+| **3. GenAI Provider**     | Dual (Fake + OpenAI + Claude) | Multiple AI adapters for different functions   |
+| **4. Input Format**       | YAML                          | Lean-Clean methodology alignment               |
+| **5. Brand Guidelines**   | YAML Config + Adapter         | Evolution path to Weaviate                     |
+| **6. Locale Handling**    | Campaign-level                | Supports multi-locale campaigns                |
+| **7. Localization Scope** | English + Spanish US          | Bonus feature for interview                    |
+| **8. Asset Reuse**        | Vector Similarity             | Details deferred to session-02                 |
+| **9. HITL Approval**      | Simulated + Logging           | Foundation for Task 3                          |
+| **10. Nice-to-Have**      | Logging + Legal Checks        | Stubbed in orchestrator                        |
+| **11. UI**                | CLI + Streamlit               | Lean-Clean drivers pattern                     |
+| **12. Testing**           | One Feature Test              | Blog post style                                |
+| **13. Tooling**           | Python + pip                  | Maximum compatibility                          |
 
 **Technology Stack:**
 - **OpenAI API:** Image generation, text overlay

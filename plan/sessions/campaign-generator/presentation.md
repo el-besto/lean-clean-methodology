@@ -75,24 +75,24 @@ Campaign Brief (YAML) → Brand Understanding → Asset Generation → Validatio
 
 ```
 ┌─────────────────────────────────────────────────────────────┐
-│ DRIVERS (Entry Points)                                       │
+│ DRIVERS (Entry Points)                                      │
 │  CLI (Typer) + Streamlit UI                                 │
 └────────────────────┬────────────────────────────────────────┘
                      │
 ┌────────────────────▼────────────────────────────────────────┐
-│ INTERFACE ADAPTERS                                           │
+│ INTERFACE ADAPTERS                                          │
 │  ├─ Orchestrators (Campaign workflow coordination)          │
 │  └─ Presenters (Response formatting)                        │
 └────────────────────┬────────────────────────────────────────┘
                      │
 ┌────────────────────▼────────────────────────────────────────┐
-│ USE CASES (Business Logic)                                   │
-│  ├─ Understand Brand                                         │
-│  ├─ Generate Campaign                                        │
-│  └─ Validate Campaign                                        │
+│ USE CASES (Business Logic)                                  │
+│  ├─ Understand Brand                                        │
+│  ├─ Generate Campaign                                       │
+│  └─ Validate Campaign                                       │
 └─────────┬───────────────────┬──────────────────┬────────────┘
           │                   │                  │
-┌─────────▼─────────┐ ┌──────▼────────┐ ┌──────▼────────────┐
+┌─────────▼─────────┐ ┌───────▼────────┐ ┌───────▼───────────┐
 │ ENTITIES          │ │ ADAPTERS       │ │ INFRASTRUCTURE    │
 │  BrandSummary     │ │  AI (OpenAI,   │ │  Repositories     │
 │  CampaignBrief    │ │      Claude)   │ │  (YAML, Weaviate) │
@@ -115,16 +115,16 @@ Campaign Brief (YAML) → Brand Understanding → Asset Generation → Validatio
 
 **Core Technologies:**
 
-| Component | Technology | Purpose |
-|-----------|-----------|---------|
-| **Image Generation** | OpenAI DALL-E 3 | Hero images for campaigns |
-| **Text Overlay** | OpenAI API | Campaign message on images |
-| **Brand Understanding** | Claude Vision | Analyze brand assets |
-| **Localization** | Claude Multilingual | English + Spanish translation |
-| **Asset Search** | Weaviate (vector DB) | Intelligent asset reuse |
-| **Storage** | MinIO (S3-compatible) | Asset management |
-| **UI** | Streamlit | Dashboard for stakeholders |
-| **CLI** | Typer (Python) | Automation interface |
+| Component               | Technology            | Purpose                       |
+|-------------------------|-----------------------|-------------------------------|
+| **Image Generation**    | OpenAI DALL-E 3       | Hero images for campaigns     |
+| **Text Overlay**        | OpenAI API            | Campaign message on images    |
+| **Brand Understanding** | Claude Vision         | Analyze brand assets          |
+| **Localization**        | Claude Multilingual   | English + Spanish translation |
+| **Asset Search**        | Weaviate (vector DB)  | Intelligent asset reuse       |
+| **Storage**             | MinIO (S3-compatible) | Asset management              |
+| **UI**                  | Streamlit             | Dashboard for stakeholders    |
+| **CLI**                 | Typer (Python)        | Automation interface          |
 
 **Why These Choices:**
 - OpenAI + Claude: Best-in-class AI for images and text
@@ -195,6 +195,7 @@ Campaign Brief (YAML) → Brand Understanding → Asset Generation → Validatio
    - ✅ Output saved to `out/assets/`
 
 4. **Output:** Show folder structure
+
    ```
    out/assets/
    ├─ lavender-soap/

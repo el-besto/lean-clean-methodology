@@ -33,15 +33,15 @@
 
 ### Completed Deliverables (7 files, 5 commits)
 
-| File | Lines | Purpose | Status |
-|------|-------|---------|--------|
-| `_agent-understanding.md` | 262 | Requirements + initial analysis | ✅ Committed (c628bb3) |
-| `_decisions-needed.md` | 895 | 13 architectural decisions resolved | ✅ Committed (3578172) |
-| `_scenario-context.md` | 284 | PDF requirements extraction | ✅ Committed (f0e0e4e) |
-| `SESSION-NOTES.md` | 347 | Session summary + domain model | ✅ Committed (10fb0a1) |
-| `entities.md` | ~400 | 6 entities with Python dataclasses | ✅ Committed (453926a) |
-| `campaign-brief-schema.yaml` | ~250 | Input contract + 3 examples | ✅ Committed (453926a) |
-| `presentation.md` | ~383 | 10-slide presentation outline | ✅ Committed (453926a) |
+| File                         | Lines | Purpose                             | Status                |
+|------------------------------|-------|-------------------------------------|-----------------------|
+| `_agent-understanding.md`    | 262   | Requirements + initial analysis     | ✅ Committed (c628bb3) |
+| `_decisions-needed.md`       | 895   | 13 architectural decisions resolved | ✅ Committed (3578172) |
+| `_scenario-context.md`       | 284   | PDF requirements extraction         | ✅ Committed (f0e0e4e) |
+| `SESSION-NOTES.md`           | 347   | Session summary + domain model      | ✅ Committed (10fb0a1) |
+| `entities.md`                | ~400  | 6 entities with Python dataclasses  | ✅ Committed (453926a) |
+| `campaign-brief-schema.yaml` | ~250  | Input contract + 3 examples         | ✅ Committed (453926a) |
+| `presentation.md`            | ~383  | 10-slide presentation outline       | ✅ Committed (453926a) |
 
 **Total:** ~2,800 lines of planning documentation
 
@@ -63,18 +63,18 @@
 
 ### Technology Stack
 
-| Layer | Technology | Purpose |
-|-------|-----------|---------|
-| **Image Gen** | OpenAI DALL-E 3 | Hero images |
-| **Text Overlay** | OpenAI API | Campaign messages on images |
-| **Brand Analysis** | Claude Vision | Brand understanding from assets |
-| **Localization** | Claude Multilingual | English ↔ Spanish translation |
-| **Asset Search** | Weaviate | Vector similarity for reuse |
-| **Storage** | MinIO (S3-compatible) | Asset management (Docker) |
-| **UI** | Streamlit | Stakeholder dashboard |
-| **CLI** | Typer (Python) | Automation interface |
-| **Language** | Python 3.11+ | Core implementation |
-| **Dependencies** | pip/requirements.txt | Package management |
+| Layer              | Technology            | Purpose                         |
+|--------------------|-----------------------|---------------------------------|
+| **Image Gen**      | OpenAI DALL-E 3       | Hero images                     |
+| **Text Overlay**   | OpenAI API            | Campaign messages on images     |
+| **Brand Analysis** | Claude Vision         | Brand understanding from assets |
+| **Localization**   | Claude Multilingual   | English ↔ Spanish translation   |
+| **Asset Search**   | Weaviate              | Vector similarity for reuse     |
+| **Storage**        | MinIO (S3-compatible) | Asset management (Docker)       |
+| **UI**             | Streamlit             | Stakeholder dashboard           |
+| **CLI**            | Typer (Python)        | Automation interface            |
+| **Language**       | Python 3.11+          | Core implementation             |
+| **Dependencies**   | pip/requirements.txt  | Package management              |
 
 ---
 
