@@ -107,7 +107,7 @@ Campaign Brief (YAML) → Brand Understanding → Asset Generation → Validatio
 - Adapter pattern for AI service substitution
 - Dual implementation (Fake + Real) for demo flexibility
 
-**📝 Update:** Add actual architecture diagram from `architecture-diagram.md` when completed
+**📝 Updated:** Architecture diagram created (`architecture-diagram.md`) - Ready for visual conversion
 
 ---
 
@@ -166,7 +166,7 @@ Campaign Brief (YAML) → Brand Understanding → Asset Generation → Validatio
 
 **Legend:** ✅ Complete | 🔄 In Progress | 📅 Planned
 
-**📝 Update:** Refine roadmap with actual sprint breakdown from `roadmap.md`
+**📝 Updated:** Roadmap created (`roadmap.md`) with 5 phases, 25 epics, 10-week timeline
 
 ---
 
@@ -213,7 +213,7 @@ Campaign Brief (YAML) → Brand Understanding → Asset Generation → Validatio
 - Localized messaging
 - Brand consistent visuals
 
-**📝 Update:** Replace with actual demo screenshots/recordings when available
+**📝 Ready:** Complete implementation guide created (`session-02-steel-thread-poc.md`) - Demo recording instructions included
 
 ---
 
