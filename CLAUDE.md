@@ -279,6 +279,29 @@ The methodology uses specific syntax for agent compatibility:
 - **Fenced commands**: Triple backticks with language hints (e.g., ```bash)
 - **Metadata front matter**: YAML blocks at top of files for versioning and pipeline ingestion
 
+## Python Code Standards
+
+When adding Python code to this repository (examples, scripts, utilities), follow the **Lean-Clean Python Style Guide**.
+
+**Style Guide Location:** `../lean-clean-code/lean-clean-python-style-guide/AGENT_REFERENCE.md`
+
+**When to Apply:**
+- Example code in documentation
+- Utility scripts in `/tools/`
+- Test examples in methodology documentation
+- Any Python snippets in Markdown files
+
+**Process:**
+1. Before writing Python code, read the style guide
+2. Apply conventions consistently across all Python code in this repo
+3. Reference the style guide when reviewing code
+4. **If you discover a pattern not in the style guide:**
+   - Log it using the template in AGENT_REFERENCE.md section "Capturing New Patterns"
+   - Save to `/plan/_future-work.md` or current session notes
+   - Tag with `[STYLE-GUIDE-ADDITION]`
+
+**Note:** Since this is a documentation repository, code examples should prioritize clarity and teaching value while still following the style guide.
+
 ## Key Documentation Files
 
 ### Finalized Documents (`/docs/`)

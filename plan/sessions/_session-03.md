@@ -11,7 +11,6 @@ Specifically:
 1. Generate a v1 folder structure for Pragmatic CA PoC type
 2. Create the "golden example" - the localized campaign generation test
 3. Implement enough code to make the test executable (with fakes)
-4. Document the coding patterns used
 
 ### Your Role in This Session
 
