@@ -970,5 +970,5 @@ For enterprise PoCs with:
 **Next Steps:**
 1. Add TDD decision point to each phase in README.md
 2. Create stakeholder workshop template
-3. Update REVIEW_GUIDE.md with TDD decision area
+3. Update review-guide.md with TDD decision area
 4. Add example test suites for common PoC scenarios

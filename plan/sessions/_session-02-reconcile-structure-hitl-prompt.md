@@ -163,7 +163,7 @@ After this reconciliation:
 2. `/plan/_session-02-framework-folder-structures.md` - Authoritative framework structures (1,740 lines)
 3. `/plan/_session-02-all-decisions-resolved.md` - Complete decision context (600+ lines)
 4. `/plan/_session-02-decisions-needed.md` - All 12 decisions with resolutions
-5. `/plan/drafts/CRITICAL_INSIGHTS`, `/plan/drafts/PYTHON_PATTERNS.md`,
+5. `/plan/drafts/CRITICAL_INSIGHTS`, `/plan/drafts/`,
 6. `plan/drafts/TDD_STAKEHOLDER_ACCELERATION_INSIGHTS.md`
 
 **Target Document:**

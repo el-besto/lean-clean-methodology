@@ -63,9 +63,8 @@ This guide helps you systematically review the proposed structures and patterns 
 1. **`plan/drafts/CRITICAL_INSIGHTS.md`** ⚠️ **READ FIRST** - Controller vs Mapper distinction, progressive architecture
 2. **`plan/drafts/TDD_STAKEHOLDER_ACCELERATION_INSIGHTS.md`** ⚠️ **CRITICAL FOR ENTERPRISE** - How TDD reduces delivery from 2-4 weeks to 1 week
 3. **`plan/STRUCTURE.md`** - Comprehensive analysis of 3 reference projects with proposed baseline structure
-4. **`plan/drafts/PYTHON_PATTERNS.md`** - Python-specific idioms and patterns from the style guide
-5. **`plan/drafts/TDD_INTEGRATION_PLAN.md`** - Roadmap for weaving TDD into methodology phases
-6. **`plan/drafts/TDD_ENTERPRISE_POC.md`** - Original TDD framework and patterns
+4. **`plan/drafts/TDD_INTEGRATION_PLAN.md`** - Roadmap for weaving TDD into methodology phases
+5. **`plan/drafts/TDD_ENTERPRISE_POC.md`** - Original TDD framework and patterns
 
 ### Reference Implementations
 - **`calibration-service`** - Production-grade CA (true controllers, rich use cases, DTOs)
@@ -85,12 +84,7 @@ This guide helps you systematically review the proposed structures and patterns 
 - [ ] Review the "Recommended Baseline: Pragmatic Clean Architecture" structure
 - [ ] Note which parts feel immediately right or wrong
 
-#### Step 2: Quick Scan of PYTHON_PATTERNS.md
-- [ ] Read the Summary section
-- [ ] Scan the 10 key pattern updates
-- [ ] Note which patterns you're already using vs. new to you
-
-#### Step 3: Identify Your Context
+#### Step 2: Identify Your Context
 
 Answer these questions:
 
@@ -621,89 +615,11 @@ async def test_rejects_invalid_aspect_ratio():
 
 ## Decision Area 6: Python Patterns - Which to Include?
 
+> 🟡 **TODO:** choose core patterns relevant to rapid development and reference here. 
+
 **Question:** Which Python patterns should be mandatory vs. optional vs. not recommended?
 
-Review each pattern in `PYTHON_PATTERNS.md` and rate:
-
-### Pattern: Immutable Dataclasses with `slots=True, frozen=True`
-
-```python
-@dataclass(slots=True, frozen=True)
-class Brief:
-    brand_id: str
-    campaign_message: str
-    products: tuple['Product', ...]  # Note: tuple not list
-```
-
-**Rating:**
-
-- [ ] **Mandatory** - All examples should use this
-- [ ] **Recommended** - Include in docs as best practice
-- [ ] **Optional** - Mention but don't require
-- [ ] **Not Recommended** - Overkill for PoCs
-
-**Notes:** _______________________________________________
-
-### Pattern: TypedDict for Payload Composition
-
-```python
-class InvokeParams(TypedDict, total=False):
-    temperature: float
-    top_p: float
-
-def build_payload(model: str, msgs: list[dict], params: InvokeParams) -> dict:
-    return {"model": model, **params, "messages": msgs}
-```
-
-**Rating:**
-
-- [ ] **Mandatory** - All adapter payload building should use this
-- [ ] **Recommended** - Include in adapter examples
-- [ ] **Optional** - Mention as advanced pattern
-- [ ] **Not Recommended** - Plain dicts are sufficient
-
-**Notes:** _______________________________________________
-
-### Pattern: Singledispatch for Response Normalization
-
-```python
-@singledispatch
-def normalize_response(response: object) -> DomainResult:
-    raise NotImplementedError
-
-@normalize_response.register
-def _(resp: OpenAIResponse) -> DomainResult:
-    return DomainResult(...)
-```
-
-**Rating:**
-
-- [ ] **Mandatory** - Required for multi-provider adapters
-- [ ] **Recommended** - Show as pattern for normalization
-- [ ] **Optional** - Mention as alternative to if/elif
-- [ ] **Not Recommended** - Simple if/elif is clearer
-
-**Notes:** _______________________________________________
-
-### Pattern: Attribute Flattening for Telemetry
-
-```python
-def brief_attrs(brief: Brief) -> Iterator[tuple[str, str]]:
-    yield ("campaign.brand_id", brief.brand_id)
-    # ...
-
-for key, value in (*span_kind_attrs(), *brief_attrs(brief)):
-    span.set_attribute(key, value)
-```
-
-**Rating:**
-
-- [ ] **Mandatory** - All telemetry should use generators
-- [ ] **Recommended** - Include in observability examples
-- [ ] **Optional** - Show as advanced pattern
-- [ ] **Not Recommended** - Simple dicts are clearer
-
-**Notes:** _______________________________________________
+Review each pattern and rate:
 
 ### Pattern: Error Taxonomy with Translation
 
@@ -727,26 +643,6 @@ except ValidationError as e:
 - [ ] **Recommended** - Include in all examples
 - [ ] **Optional** - Show for complex PoCs
 - [ ] **Not Recommended** - Let exceptions bubble
-
-**Notes:** _______________________________________________
-
-### Pattern: LRU-Cached Settings
-
-```python
-@lru_cache(maxsize=1)
-def get_settings() -> Settings:
-    return Settings(
-        openai_api_key=os.environ["OPENAI_API_KEY"],
-        # ...
-    )
-```
-
-**Rating:**
-
-- [ ] **Mandatory** - All config loading should use this
-- [ ] **Recommended** - Include in config examples
-- [ ] **Optional** - Show as optimization
-- [ ] **Not Recommended** - Direct env access is fine
 
 **Notes:** _______________________________________________
 
@@ -1046,14 +942,13 @@ Based on your decisions, choose an approach:
 
 3. **Create new files (if needed):**
    - [ ] `docs/STRUCTURE_EXAMPLES.md` - Complete working examples
-   - [ ] `docs/PYTHON_PATTERNS.md` - Pattern reference guide
+   - [ ] `lean-clean-code/lean-clean-python-style-guide` - Pattern reference guide
    - [ ] `templates/` - Project scaffolding templates
 
 ### Content to Archive
 
 - [ ] Move `plan/STRUCTURE.md` → `docs/STRUCTURE_ANALYSIS.md` (reference)
-- [ ] Move `plan/drafts/PYTHON_PATTERNS.md` → `docs/PYTHON_PATTERNS.md` (reference)
-- [ ] Keep `plan/drafts/REVIEW_GUIDE.md` for next review cycle
+- [ ] Keep `plan/drafts/project-artifacts/review-guide.md` for next review cycle
 
 ---
 
