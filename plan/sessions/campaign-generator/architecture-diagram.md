@@ -52,8 +52,8 @@ This document provides a textual and ASCII representation of the Campaign Genera
 │  │  - coordinate_validation()      │  │  - format_summary()          │    │
 │  │  - log_approval_checkpoint()    │  │  - format_alert_email()      │    │
 │  └─────────────┬───────────────────┘  └──────────┬───────────────────┘    │
-│                │                                  │                       │
-│                └──────────────────┬───────────────┘                       │
+│                │                                 │                        │
+│                └──────────────────┬──────────────┘                        │
 └───────────────────────────────────┼───────────────────────────────────────┘
                                     │
                                     │ Calls Use Cases
@@ -72,13 +72,13 @@ This document provides a textual and ASCII representation of the Campaign Genera
 │  │   brands()     │  │ overlay_text()   │  │ create_validation_    │    │
 │  │                │  │                  │  │   result()            │    │
 │  └────┬───────────┘  └────┬─────────────┘  └──────┬────────────────┘    │
-│       │                   │                        │                    │
-│       │ Uses              │ Uses                   │ Uses               │
-│       ▼                   ▼                        ▼                    │
+│       │                   │                       │                     │
+│       │ Uses              │ Uses                  │ Uses                │
+│       ▼                   ▼                       ▼                     │
 └─────────────────────────────────────────────────────────────────────────┘
-        │                   │                        │
-        │                   │                        │
-        ▼                   ▼                        ▼
+        │                   │                       │
+        │                   │                       │
+        ▼                   ▼                       ▼
 ┌───────────────────────────────────────────────────────────────────────────┐
 │ LAYER 2: ENTITIES (Domain Models)                                         │
 │                                                                           │

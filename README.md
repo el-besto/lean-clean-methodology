@@ -18,6 +18,27 @@ Status: **Living Document — update per project context**
 
 ---
 
+## 📑 Table of Contents
+
+- [Overview](#-overview)
+- [Core Principles](#-core-principles)
+- [Framework Structure](#️-framework-structure)
+- [Phases](#️-phases)
+  - [P0: Context Framing](#phase-0-context-framing)
+  - [P1: Decomposition](#phase-1-decomposition)
+  - [P2: Ideation & Concept Design](#phase-2-ideation--concept-design)
+  - [P3: Refinement & Steel Thread](#phase-3-refinement--steel-thread-definition)
+  - [P4: Reconstitution & Roadmapping](#phase-4-reconstitution--roadmapping)
+  - [P5: Implementation Planning](#phase-5-implementation-planning)
+  - [P6: Execution & Iteration](#phase-6-execution--iteration)
+  - [P7: Reflection & Knowledge Capture](#phase-7-reflection--knowledge-capture)
+  - [P8: Agentic System Design](#phase-8-wip)
+- [Agentic Extension](#-agentic-extension-phase-8)
+- [Observability Layer](#-observability-layer)
+- [References](#-references)
+
+---
+
 ## 🧭 Overview
 
 **Lean-Clean** blends principles from:
@@ -118,6 +139,9 @@ campaign-generator/
 
 ### Phase 8 Extensions (Agentic + Observability)
 
+> [!WARNING]
+> **Under Construction:** This section is actively being developed.
+
 When implementing Phase 8 (Agentic System Design), extend the structure:
 
 ```
@@ -142,21 +166,26 @@ docker-compose.yaml              # Full stack (app, phoenix, weaviate, postgres)
 
 ---
 
-## ⚙️ Phases (Lean-Clean v2.2)
+## ⚙️ Phases
 
-| Phase  | Name                                  | Core Question                       | Purpose                                                        | Key Output                        | Key Artifacts                                         |
-|:-------|:--------------------------------------|-------------------------------------|:---------------------------------------------------------------|-----------------------------------|:------------------------------------------------------|
-| **P0** | Context Framing                       | Why are we solving this?            | Define the "why" and constraints.                              | Problem Statement                 | `problem_statement.md`                                |
-| **P1** | Decomposition                         | What are the atomic parts?          | Identify atomic steps, interfaces.                             | Concept Map, Unknowns             | `domain_model.yaml`                                   |
-| **P2** | Ideation & Concept Design             | How might we solve it?              | Explore options & tradeoffs.                                   | Solution Options                  | `pros_cons_matrix.md`                                 |
-| **P3** | Refinement & Steel Thread Definition  | What’s the smallest testable slice? | Select a "steel thread" MVP path.                              | Steel Thread Definition           | `decision_matrix.md`                                  |
-| **P4** | Reconstitution & Roadmapping          | How does this fit into the roadmap? | Translate decisions → epics & dependencies.                    | Epics & Architecture              | `epics_list.yaml`                                     |
-| **P5** | Implementation Planning               | How do we build it "Cleanly"?       | Define executable spec (use-case YAML).                        | Stack Decisions, Skeleton         | `use_case_spec.yaml`                                  |
-| **P6** | Execution & Iteration                 | Can it work in reality?             | Build & run the PoC.                                           | PoC Output                        | `working_poc`, `manifest.json`                        |
-| **P7** | Reflection & Knowledge Capture        | What did we learn?                  | Capture lessons & next steps.                                  | Retrospective, Reusable Artifacts | `retrospective.md`                                    |
-| **P8** | Agentic System Design & Communication |                                     | Extend system with agents, monitoring, and stakeholder alerts. |                                   | `agent_task.P8.yaml`, `mcp.yaml`, `alert_template.md` |
+**The 8-phase journey from rough requirements to production-ready PoC:**
 
-    
+| Phase  | Name                           | Core Question & Purpose                                                           | Key Output                | Details                                           |
+|:-------|:-------------------------------|:----------------------------------------------------------------------------------|:--------------------------|:--------------------------------------------------|
+| **P0** | Context Framing                | **Why are we solving this?**<br>Define the "why" and constraints.                 | Problem Statement         | [↓](#phase-0-context-framing)                     |
+| **P1** | Decomposition                  | **What are the atomic parts?**<br>Identify atomic steps, interfaces.              | Concept Map, Unknowns     | [↓](#phase-1-decomposition)                       |
+| **P2** | Ideation & Concept Design      | **How might we solve it?**<br>Explore options & tradeoffs.                        | Solution Options          | [↓](#phase-2-ideation--concept-design)            |
+| **P3** | Refinement & Steel Thread      | **What's the smallest testable slice?**<br>Select a "steel thread" MVP path.      | Steel Thread Definition   | [↓](#phase-3-refinement--steel-thread-definition) |
+| **P4** | Reconstitution & Roadmapping   | **How does this fit the roadmap?**<br>Translate decisions → epics & dependencies. | Epics & Architecture      | [↓](#phase-4-reconstitution--roadmapping)         |
+| **P5** | Implementation Planning        | **How do we build it "Cleanly"?**<br>Define executable spec (use-case YAML).      | Stack Decisions, Skeleton | [↓](#phase-5-implementation-planning)             |
+| **P6** | Execution & Iteration          | **Can it work in reality?**<br>Build & run the PoC.                               | PoC Output                | [↓](#phase-6-execution--iteration)                |
+| **P7** | Reflection & Knowledge Capture | **What did we learn?**<br>Capture lessons & next steps.                           | Retrospective, Artifacts  | [↓](#phase-7-reflection--knowledge-capture)       |
+| **P8** | Agentic System Design          | **How do we automate & monitor?**<br>Extend with agents, monitoring, alerts.      | Agent Tasks, MCP, Alerts  | [↓](#phase-8-wip)                                 |
+
+> **Quick navigation:** Click ↓ to jump to the detailed phase descriptions below.
+
+---
+
 ### Phase 0: Context Framing
 
 > Anchor before diving in.
@@ -251,8 +280,7 @@ docker-compose.yaml              # Full stack (app, phoenix, weaviate, postgres)
 
 ### Phase 5: Implementation Planning
 
-> Decide how to build and test.
->   __Define interfaces, machine-readable use cases, and validation checklists.__
+> Decide how to build and test. Define interfaces, machine-readable use cases, and validation checklists.
 
 **Goal:** Define the technical execution strategy.
 
@@ -266,14 +294,13 @@ docker-compose.yaml              # Full stack (app, phoenix, weaviate, postgres)
 
 **PoC Type Selection:**
 
-| PoC Type | Timeline | Use Case | Evolution Trigger |
-|----------|----------|----------|-------------------|
-| **Steel Thread** | 1-2 days | Technical feasibility spike | Stakeholders approved, need production path |
-| **Pragmatic CA** | 3-5 days | Multi-stakeholder workshop output | Scaling to multi-team or complex domain |
-| **Full CA** | Production | Production-grade system | Already in production |
+| PoC Type         | Timeline   | Use Case                          | Evolution Trigger                           |
+|------------------|------------|-----------------------------------|---------------------------------------------|
+| **Steel Thread** | 1-2 days   | Technical feasibility spike       | Stakeholders approved, need production path |
+| **Pragmatic CA** | 3-5 days   | Multi-stakeholder workshop output | Scaling to multi-team or complex domain     |
+| **Full CA**      | Production | Production-grade system           | Already in production                       |
 
-**For detailed folder structures and migration paths, see:**
-- [`/docs/framework-folder-structures.md`](docs/framework-folder-structures.md) - Complete structures for all 3 types
+> **📖 Deep dive:** See [Framework Structure](#️-framework-structure) above or [`/docs/framework-folder-structures.md`](docs/framework-folder-structures.md) for complete folder structures and migration paths.
 
 **Outputs:**
 
@@ -302,8 +329,7 @@ For enterprise PoCs with multiple stakeholders, use **Outside-In TDD**:
 2. Implement with fakes (fast feedback, no API costs)
 3. Implement real adapters (parallel development)
 
-**For complete Outside-In workflow and examples, see:**
-- [`/docs/framework-folder-structures.md` Section 2](docs/framework-folder-structures.md#2-complete-feature-example-localized-campaign-generation) - Complete feature example with acceptance tests
+> **📖 Deep dive:** See [Core Principles](#-core-principles) above or [`/docs/framework-folder-structures.md` Section 2](docs/framework-folder-structures.md#2-complete-feature-example-localized-campaign-generation) for complete Outside-In workflow and test examples.
 
 **Outputs:**
 
@@ -329,12 +355,11 @@ For enterprise PoCs with multiple stakeholders, use **Outside-In TDD**:
 **Steel Thread → Pragmatic CA:** When stakeholders approved and need production readiness
 **Pragmatic CA → Full CA:** When scaling to multi-team, production load, or complex domain
 
-**For migration checklists and bash commands, see:**
-- [`/docs/framework-folder-structures.md` Section 5](docs/framework-folder-structures.md#5-evolution-path-how-poc-types-relate) - Complete migration paths
-
 **Typical Evolution Time:**
 - Steel Thread → Pragmatic CA: 1-2 days
 - Pragmatic CA → Full CA: 2-4 weeks
+
+> **📖 Deep dive:** See [`/docs/framework-folder-structures.md` Section 5](docs/framework-folder-structures.md#5-evolution-path-how-poc-types-relate) for complete migration checklists and bash commands.
 
 **Outputs:**
 
@@ -359,6 +384,8 @@ For enterprise PoCs with multiple stakeholders, use **Outside-In TDD**:
 
 **Outputs:**
 Alerts (YAML/Email), Logs, Status Dashboard
+
+[↑ Back to Phases table](#️-phases) | [↑ Back to top](#lean-clean-methodology)
 
 ---
 
@@ -405,121 +432,32 @@ _This alert was generated by the Agentic Monitor._
 
 ---
 
-## 📡 Observability Layer
+## 🚀 Future Work & Tooling
 
-**Goal:** Make agentic actions measurable.
+> [!NOTE]
+> **Planned:** Comprehensive tooling layer to support adoption (workbooks, agent playbooks, scaffolding templates, artifact generators).
+>
+> See [`/plan/sessions/methodology-draft/_session-04-tooling-overview.md`](plan/sessions/methodology-draft/_session-04-tooling-overview.md) for the draft roadmap.
 
-| Component           | Purpose                          | Technology                   |
-|---------------------|----------------------------------|------------------------------|
-| Phoenix             | Local LLM trace explorer         | `arizephoenix/phoenix`       |
-| Arize               | Hosted observability / analytics | `api.arize.com`              |
-| Observability Stubs | Minimal HTTP emitters for PoC    | `app/utils/observability.py` |
+**Planned tooling includes:**
+- **In-practice review guides and workbooks** - Interactive guides for selecting PoC types and applying methodology phase-by-phase
+- **AI agent playbooks for each methodology phase** - System prompts and templates for AI-assisted facilitation
+- **Project scaffolding templates** - Ready-to-use templates for Steel Thread, Pragmatic CA, and Full CA
+- **Artifact generators** - Tools connecting phase outputs to phase inputs (e.g., workshop outputs → test skeletons)
 
-Enable by setting:
-```bash
-export OBS_ENABLED=1
-export PHOENIX_ENDPOINT=http://localhost:6006/api/traces
-export ARIZE_ENDPOINT=https://api.arize.com/v1/log
-export ARIZE_API_KEY=xxx
-```
-
----
-
-## 🗃️ Data & Storage
-
-| Layer        | Purpose                           | Tool                 |
-|--------------|-----------------------------------|----------------------|
-| **Postgres** | Durable approvals, runs, alerts   | SQLAlchemy / psycopg |
-| **Weaviate** | Vector metadata search (optional) | weaviate-client      |
-| **Local FS** | Manifest & asset storage          | native I/O           |
-
----
-
-## 💻 User Interfaces
-
-| Interface      | Purpose                                       | Framework             |
-|----------------|-----------------------------------------------|-----------------------|
-| **CLI**        | Primary automation surface                    | Typer / argparse      |
-| **FastAPI**    | Optional REST API for approvals, runs, alerts | FastAPI               |
-| **Streamlit**  | Simple dashboard for human-in-loop approvals  | Streamlit             |
-| **Phoenix UI** | Observability dashboard                       | http://localhost:6006 |
-
-Streamlit runs at **http://localhost:8501** with tabs for *Runs*, *Approvals*, *Alerts*, and *Upload Brief*.
-
----
-
-## 🧰 Development & Operations
-
-**Makefile Commands**
-```bash
-make up         # docker compose up -d
-make down       # tear down
-make watch      # run watcher locally
-make api        # start FastAPI server
-make db-init    # create tables in Postgres
-make test       # run pytest suite
-```
-
-**Local Execution**
-```bash
-uv sync
-uv run python tools/agent_watcher.py   --inbox ./briefs/inbox   --cmd "uv run python -m app.cli run --brief {brief}"   --out-root ./out   --alerts-root ./alerts
-```
-
----
-
-## 🧪 Testing
-
-Pytest suite includes:
-- `test_agent_watcher.py` → verifies emit & alert logic
-- (future) integration tests for brief->manifest->alert flow
-
-```bash
-uv run pytest -q
-```
-
----
-
-## 🧩 Example Stack (Docker Compose)
-
-- **poc-app** — watcher + pipeline  
-- **api** — FastAPI microservice  
-- **streamlit** — approvals dashboard (port 8501)  
-- **phoenix** — local observability (port 6006)  
-- **weaviate** — vector DB (port 8080)  
-- **postgres** — approvals database (port 5432)
-
-Run everything:
-```bash
-docker compose up --build -d
-```
-
----
-
-## 🪜 Scaling the Framework
-
-- Replace manual watcher logic with Celery, Prefect, or LangGraph agents.  
-- Replace local manifests with structured DB records.  
-- Integrate Slack/email webhooks for real-time alerts.  
-- Apply Weaviate for RAG-style creative retrieval.  
-- Deploy via Kubernetes / ArgoCD for persistent environments.
-
----
-
-## 🧾 Version History
-
-| Version  | Highlights                                                                                                   |
-|----------|--------------------------------------------------------------------------------------------------------------|
-| **v2.0** | Added schemas & PoC templates.                                                                               |
-| **v2.1** | Added Agentic (Phase 8) spec and experimental watcher.                                                       |
-| **v2.2** | Added Observability (Phoenix/Arize), FastAPI, Weaviate, Postgres, Streamlit, pytest suite, and Docker stack. |
+**Implementation-specific tooling:**
+- Observability layer integration (Phoenix, Arize)
+- Data storage patterns (Postgres, Weaviate, local filesystem)
+- User interface examples (CLI, Streamlit, FastAPI)
+- Development & operations tooling (Makefile commands, Docker Compose stacks)
+- Production scaling patterns (Celery, LangGraph agents, K8s deployment)
 
 ---
 
 ## 🧠 References
 
 - _Lean Product Playbook_ – Dan Olsen  
-- _Clean Architecture_ – Robert C. Martin  
+- _Clean Architecture_ – Robert C. Martin
 - Arize / Phoenix – ML Observability  
 - Weaviate – Vector Search Engine  
 - Streamlit – Rapid UI for data apps  

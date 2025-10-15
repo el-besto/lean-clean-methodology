@@ -19,7 +19,6 @@
 2. **Use planning deliverables**:
    - `entities.md` - Domain model with Python code examples
    - `campaign-brief-schema.yaml` - Input contract with 3 examples
-   - `presentation.md` - 30-min presentation outline (update iteratively)
 
 3. **Next steps** (remaining work):
    - Create `use-cases.md` + `function-composition.md`
