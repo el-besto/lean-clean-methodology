@@ -875,7 +875,7 @@ Maximum compatibility for interview context - easier for interviewers to run wit
 **Decision Discovery Process:**
 - All 13 decisions identified upfront during requirements analysis
 - Decisions derived from:
-  - PDF requirements (Tasks 1-3)
+  - PDF requirements (Tasks 1-3)  
   - User's initial ideation and pseudocode
   - Lean-Clean methodology principles
   - 6-8 hour time budget constraint
