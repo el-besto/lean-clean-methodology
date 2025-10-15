@@ -313,8 +313,6 @@ When adding Python code to this repository (examples, scripts, utilities), follo
 ### Methodology Core
 
 - `README.md` - Complete v2.2 methodology documentation with all 8 phases
-- `Lean-Clean-PoC-Playbook-v2-template.md` - Template for creating project-specific playbooks
-- `lean-clean-methodology-v1.csv` & `lean-clean-methodology-v2.csv` - Phase tables
 
 ### Visual Documentation
 
@@ -383,10 +381,6 @@ Following the **nikolovlazar modern pattern** (see `images/ca/`), the methodolog
 
 ### YAML-Driven Development
 
-- Use-case specs are YAML files defining inputs, steps, and acceptance criteria
-- Playbooks are YAML/Markdown capturing the full PoC journey through all 8 phases
-- Agent tasks in Phase 8 are defined in `agent_task.P8.yaml`
-
 **Acceptance Criteria Format** (Given/When/Then):
 
 ```yaml
@@ -432,12 +426,6 @@ class S3StorageAdapter(IStorageAdapter):
 - Easy substitution for testing (use LocalStorage in tests, S3 in production)
 - Technology-agnostic Use Cases
 - Supports Phase 8 observability (wrap adapters with telemetry)
-
-## Validation and CI
-
-- Schemas validate playbooks, use-cases, and agent tasks
-- GitHub Actions workflow (`.github/workflows/validate.yml`) runs validation on CI
-- Always validate before committing changes to YAML specs
 
 ## References
 
